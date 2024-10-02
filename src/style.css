@@ -2,13 +2,64 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Roboto"
 }
 
 .container {
+    border: 4px solid green;
     height: 100vh;
     display: grid;
     grid-template-columns: 1fr 4fr;
+    padding-top: 1rem;
 }
 .sidebar {
+    border: 3px solid black;
     grid-row: 1 / 3;
+}
+
+img:first-child {
+    width: 50px;
+    margin-top: 7px;
+}
+
+li + img {
+    width: 25px;
+    justify-self: center;
+}
+.ul-item {
+    margin-bottom: 60px;
+}
+
+.sidebar > ul {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    padding-left: 2.2rem;
+    row-gap: 10px;
+}
+
+ul > li {
+    font-size: 1.2rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+ul > .header {
+    font-size: 3rem;
+    margin-bottom: 35px;
+    font-family: caveat;
+}
+
+li {
+    list-style-type: none;
+}
+
+.main {
+    border: 3px solid brown;
+}
+
+.notes {
+    border: 3px solid red;
 }
