@@ -9,21 +9,25 @@
 
     <body>
         <div class="container">
-            <div class="sidebar">
-                <h1 class="title">Tasky</h1>
-                <div class="menu">
-                    <h3>Menu</h3>
-                    <button>New Task</button>
-                    <button>New Project</button>
-                    <button>Completed</button>
-                </div>
-                <div class="my-projects">
-                    <h3>My Projects</h3>
+            <ul class="sidebar">
+                    <img src="./assets/icons/notes.svg" alt="">
+                    <li class="header">Tasky</li>
+                    <img src="./assets/icons/menu.svg" alt="">
+                    <li class="title">Menu</li>
+                    <img src="./assets/icons/add-task.svg" alt="">
+                    <li>New Task</li>
+                    <img src="./assets/icons/add-folder.svg" alt="">
+                    <li>New Project</li>
+                    <img src="./assets/icons/check-circle.svg" alt="">
+                    <li>Completed</li>
+                    <img src="./assets/icons/folders.svg" alt="">
+                    <li class="title">My Projects</li>
                     <!--Project folder divs will be created in DOM via Javascript. Only for show-->
-                    <div>Grocery Shopping</div>
-                    <div>Project 2</div>
-                </div>
-            </div>
+                    <img src="./assets/icons/chevron-right.svg" alt="">
+                    <li>Grocery Shopping</li>
+                    <img src="./assets/icons/chevron-right.svg" alt="">
+                    <li>Project 2</li>
+            </ul>
             <div class="main">
                 <div class="header">
                     <!--Project name will be updated in DOM via Javascript-->
@@ -75,6 +79,7 @@
                 </div>
             </div>
             <div class="notes">
+                <p>Notes</p>
                 <!--Notes will be edited in DOM via Javascript-->
                 <div class="text-area"><input type="text"></div>
             </div>
