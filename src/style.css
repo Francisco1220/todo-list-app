@@ -6,14 +6,12 @@
 }
 
 .container {
-    border: 4px solid green;
     height: 100vh;
     display: grid;
     grid-template-columns: 1fr 4fr;
     padding-top: 1rem;
 }
 .sidebar {
-    border: 3px solid black;
     grid-row: 1 / 3;
 }
 
@@ -46,7 +44,7 @@ ul > li {
     font-weight: bold;
 }
 
-ul > .header {
+ul > .header-title {
     font-size: 3rem;
     margin-bottom: 35px;
     font-family: caveat;
@@ -57,9 +55,76 @@ li {
 }
 
 .main {
-    border: 3px solid brown;
+    display: grid;
+    grid-template-rows: auto 1fr;
 }
 
+.header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+    row-gap: 12px;
+    margin-left: 15px;
+}
 .notes {
     border: 3px solid red;
+}
+
+
+.tasks-container {
+    display: grid;
+    grid-template-rows: repeat(4, 80px);
+    grid-auto-rows: 80px;
+    row-gap: 10px;
+    padding: 8px;
+    padding-top: 10px;
+}
+
+.task-cards {
+    border: 2px solid black;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 25px repeat(2, 1fr);
+    grid-template-rows: 30px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 30px;
+    column-gap: 10px;
+}
+
+.circle-check {
+    grid-row: 1/3;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    border: 2px solid black;
+}
+
+.card-interact {
+    display: grid;
+    grid-template-columns: 50px 50px;
+    grid-template-rows: 1fr 1fr;
+    justify-content: end;
+    row-gap: 5px;
+}
+
+.card-interact > button {
+    grid-column: 1/4;
+    font-size: 1rem;
+    padding: 5px 15px 5px 15px;
+    border-radius: 8px;
+    border: solid;
+}
+
+.card-interact > img {
+    justify-self: center;
+}
+
+.task-title {
+    font-size: 1.2rem;
+}
+
+.date {
+    font-size: 0.8rem;
+    color: grey;
 }
