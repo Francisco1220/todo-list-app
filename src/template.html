@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tasky</title>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="sidebar">
+                <h1 class="title">Tasky</h1>
+                <div class="menu">
+                    <h3>Menu</h3>
+                    <button>New Task</button>
+                    <button>New Project</button>
+                    <button>Completed</button>
+                </div>
+                <div class="my-projects">
+                    <h3>My Projects</h3>
+                    <!--Project folder divs will be created in DOM via Javascript. Only for show-->
+                    <div>Grocery Shopping</div>
+                    <div>Project 2</div>
+                </div>
+            </div>
+            <div class="main">
+                <div class="header">
+                    <!--Project name will be updated in DOM via Javascript-->
+                    <h2>Project Name</h2>
+                    <h2>My Tasks</h2>
+                    <button class="change-project-name">Change Project Name</button>
+                </div>
+                <div class="tasks-container">
+                    <!--All task cards will be created in DOM via Javascript except for two task card examples. Only for show-->
+                    <div class="tasks">
+                        <p>Title here</p>
+                        <p>Due-date here</p>
+                        <div class="buttons">
+                            <button>description</button>
+                            <button>edit</button>
+                            <button>delete</button>
+                        </div>
+                    </div>
+                    <div class="tasks">
+                        <input type="checkbox">
+                        <p>Title here</p>
+                        <p>Due-date here</p>
+                        <div class="buttons">
+                            <button>description</button>
+                            <button>edit</button>
+                            <button>delete</button>
+                        </div>
+                    </div>
+                    <div class="tasks">
+                        <input type="checkbox">
+                        <p>Title here</p>
+                        <p>Due-date here</p>
+                        <div class="buttons">
+                            <button>description</button>
+                            <button>edit</button>
+                            <button>delete</button>
+                        </div>
+                    </div>
+                    <div class="tasks">
+                        <input type="checkbox">
+                        <p>Title here</p>
+                        <p>Due-date here</p>
+                        <div class="buttons">
+                            <button>description</button>
+                            <button>edit</button>
+                            <button>delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="notes">
+                <!--Notes will be edited in DOM via Javascript-->
+                <div class="text-area"><input type="text"></div>
+            </div>
+        </div>
+    </body>
+</html>
