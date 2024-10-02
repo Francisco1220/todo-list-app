@@ -18,7 +18,7 @@
             <div class="sidebar">
                 <ul>
                     <img src="./assets/icons/notes.svg" alt="">
-                    <li class="header">TASKY</li>
+                    <li class="header-title">TASKY</li>
                     <img src="./assets/icons/menu.svg" alt="">
                     <li class="title">Menu</li>
                     <img src="./assets/icons/add-task.svg" alt="">
@@ -40,49 +40,50 @@
                 <div class="header">
                     <!--Project name will be updated in DOM via Javascript-->
                     <h2>Project Name</h2>
+                    <img src="./assets/icons/edit-pen.svg" class="change-project-name">
                     <h2>My Tasks</h2>
-                    <button class="change-project-name">Change Project Name</button>
                 </div>
                 <div class="tasks-container">
                     <!--All task cards will be created in DOM via Javascript except for two task card examples. Only for show-->
-                    <div class="tasks">
-                        <p>Title here</p>
-                        <p>Due-date here</p>
-                        <div class="buttons">
+                    <div class="task-cards">
+                        <div class="circle-check"></div>
+                        <p class="task-title">Do Laundry</p>
+                        <div class="card-interact">
                             <button>description</button>
-                            <button>edit</button>
-                            <button>delete</button>
+                            <img src="./assets/icons/edit-pen.svg" alt="">
+                            <img src="./assets/icons/delete.svg" alt="">
                         </div>
+                        <p class="date">12/02/24</p>
                     </div>
-                    <div class="tasks">
-                        <input type="checkbox">
-                        <p>Title here</p>
-                        <p>Due-date here</p>
-                        <div class="buttons">
+                    <div class="task-cards">
+                        <div class="circle-check"></div>
+                        <p class="task-title">Groceries</p>
+                        <div class="card-interact">
                             <button>description</button>
-                            <button>edit</button>
-                            <button>delete</button>
+                            <img src="./assets/icons/edit-pen.svg" alt="">
+                            <img src="./assets/icons/delete.svg" alt="">
                         </div>
+                        <p class="date">14/2/24</p>
                     </div>
-                    <div class="tasks">
-                        <input type="checkbox">
-                        <p>Title here</p>
-                        <p>Due-date here</p>
-                        <div class="buttons">
+                    <div class="task-cards">
+                        <div class="circle-check"></div>
+                        <p class="task-title">Complete Take-Home Exam</p>
+                        <div class="card-interact">
                             <button>description</button>
-                            <button>edit</button>
-                            <button>delete</button>
+                            <img src="./assets/icons/edit-pen.svg" alt="">
+                            <img src="./assets/icons/delete.svg" alt="">
                         </div>
+                        <p class="date">23/3/24</p>
                     </div>
-                    <div class="tasks">
-                        <input type="checkbox">
-                        <p>Title here</p>
-                        <p>Due-date here</p>
-                        <div class="buttons">
+                    <div class="task-cards">
+                        <div class="circle-check"></div>
+                        <p class="task-title">Fix bicycle</p>
+                        <div class="card-interact">
                             <button>description</button>
-                            <button>edit</button>
-                            <button>delete</button>
+                            <img src="./assets/icons/edit-pen.svg" alt="">
+                            <img src="./assets/icons/delete.svg" alt="">
                         </div>
+                        <p class="date">19/2/24</p>
                     </div>
                 </div>
             </div>
