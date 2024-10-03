@@ -210,3 +210,13 @@ label {
 dialog::backdrop {
     backdrop-filter: blur(8px);
 }
+
+li:nth-child(6):hover,
+li:nth-child(8):hover,
+li:nth-child(10):hover,
+li:nth-child(14):hover,
+li:nth-child(16):hover {
+    color: var(--main-color);
+    opacity: 0.4;
+}
+
