@@ -2,22 +2,31 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Roboto"
+    font-family: "Roboto";
+}
+
+:root {
+    --sidebar-color: #9a8c98;
+    --main-color: #F2E9E4;
+    --task-color: #F2E9E4;
+    --note-color: #4A4E69;
 }
 
 .container {
     height: 100vh;
     display: grid;
     grid-template-columns: 1fr 4fr;
-    padding-top: 1rem;
+    gap: 10px;
 }
 .sidebar {
     grid-row: 1 / 3;
+    background-color: var(--sidebar-color);
 }
 
 img:first-child {
     width: 50px;
     margin-top: 7px;
+    padding-top: 10px;
 }
 
 li + img {
@@ -48,6 +57,12 @@ ul > .header-title {
     font-size: 3rem;
     margin-bottom: 35px;
     font-family: caveat;
+    padding-top: 10px
+}
+
+.header > h2,
+.header > img:nth-child(2) {
+    padding-top: 10px;
 }
 
 li {
@@ -57,6 +72,7 @@ li {
 .main {
     display: grid;
     grid-template-rows: auto 1fr;
+    background-color: var(--main-color);
 }
 
 .header {
@@ -86,6 +102,7 @@ li {
     padding-top: 10px;
     padding-right: 30px;
     column-gap: 10px;
+    background-color: var(--task-color);
 }
 
 .circle-check {
@@ -110,6 +127,7 @@ li {
     padding: 5px 15px 5px 15px;
     border-radius: 8px;
     border: solid;
+    background-color: white;
 }
 
 .card-interact > img {
@@ -133,21 +151,20 @@ li {
     gap: 5px;
     padding-bottom: 10px;
     padding-right: 10px;
+    background-color: var(--note-color);
 }
 
-.notes > div {
-    height: 100%;
-    width: 100%;
+.notes > p {
+    background-color: var(--note-color);
 }
 
 .notes > p > img {
     width: 25px;
+    background-color: var(--note-color);
 }
 
-textarea {
-    width: 100%;
+.text-area {
     height: 100%;
-    padding: 10px 10px 10px 10px;
     font-size: 1.2rem;
-    resize: none;
+    padding: 10px 10px 10px 10px;
 }
