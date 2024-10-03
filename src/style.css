@@ -168,3 +168,45 @@ li {
     font-size: 1.2rem;
     padding: 10px 10px 10px 10px;
 }
+
+#task-form {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 60%;
+    border: solid;
+    border-radius: 20px;
+}
+
+#task-form > form {
+    display: grid;
+    gap: 5px;
+    padding: 1em;
+}
+
+form > input {
+    width: 200px;
+    height: 30px;
+    padding-left: 5px;
+    font-size: 1rem;
+}
+
+label {
+    font-size: 1.5rem;
+}
+
+#create-task {
+    margin-top: 40px;
+    width: 100px;
+    height: 30px;
+}
+
+.dropdown {
+    width: 150px;
+    height: 30px;
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(8px);
+}
