@@ -94,6 +94,29 @@
                 <!--Notes will be edited in DOM via Javascript-->
                 <p class="text-area">I think I will delay fixing the bike</p>
             </div>
+            <dialog id="task-form">
+                <form>
+                    <label>Title</label>
+                    <input type="text">
+                    <label>Description</label>
+                    <input type="text">
+                    <label>Due-Date</label>
+                    <input type="date">
+                    <label>Priority</label>
+                        <select class="dropdown">
+                            <option value="default">High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                        </select>
+                    <label>Choose Project folder</label>
+                        <select class="dropdown">
+                            <option value="default"></option>
+                            <option>Grocery Shopping</option>
+                            <option>Project 2</option>
+                        </select>
+                        <button id="create-task">Create</button>
+                </form>
+            </dialog>
         </div>
     </body>
 </html>
