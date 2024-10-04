@@ -3,7 +3,7 @@
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
-import {checkFormComplete} from "./index.js"
+import {checkFormComplete, createTask} from "./index.js"
 
 newTask.addEventListener("click", () => {
     // opens modal
@@ -21,6 +21,7 @@ submitTaskBtn.addEventListener("click", (e) => {
         alert(alertMessage);
     } else {
         dialog.close();
+        createTask();
     }
 })
 
@@ -32,3 +33,4 @@ export function getTaskInput () {
     const projectVal = document.getElementById("project").value
     return {titleVal, descriptionVal, dueDateVal, priorityVal, projectVal}
 }
+
