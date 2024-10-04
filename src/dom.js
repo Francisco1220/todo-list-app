@@ -25,10 +25,10 @@ submitTaskBtn.addEventListener("click", (e) => {
 })
 
 export function getTaskInput () {
-    let titleVal = document.getElementById("title").value;
-    let descriptionVal = document.getElementById("description").value;
-    let dueDateVal = document.getElementById("date").value;
-    let priorityVal = document.getElementById("priority").value;
-    let projectVal = document.getElementById("project").value
+    const titleVal = document.getElementById("title").value;
+    const descriptionVal = document.getElementById("description").value;
+    const dueDateVal = document.getElementById("date").value;
+    const priorityVal = document.getElementById("priority").value;
+    const projectVal = document.getElementById("project").value
     return {titleVal, descriptionVal, dueDateVal, priorityVal, projectVal}
 }
