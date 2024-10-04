@@ -4,6 +4,7 @@ export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
 import {checkFormComplete, createTask, taskList} from "./index.js"
+import { format } from "date-fns";
 
 // import (default) image SVGs
 
@@ -27,9 +28,11 @@ submitTaskBtn.addEventListener("click", (e) => {
     } else {
         dialog.close();
         createTask();
+        updateCardUI();
     }
 })
 
+// Gets the user data from the form and exports it to index.js
 export function getTaskInput () {
     const titleVal = document.getElementById("title").value;
     const descriptionVal = document.getElementById("description").value;
@@ -74,4 +77,32 @@ function createCards () {
     const date = document.createElement("p");
     date.setAttribute("class", "date");
     cardDiv.appendChild(date);
+
+    return {titleDiv, date}
+}
+
+// Creates title, date, and priority text from taskList array
+function createCardTxt () {
+    const {titleDiv, date} = createCards();
+    // Access last element from the array and use that to update title
+    let lastElIndex = taskList.length - 1;
+    // Update title and date
+    titleDiv.innerHTML = `${taskList[lastElIndex].title}`;
+        // Reformat date using date-fns
+    let oldDateFormat = taskList[lastElIndex].dueDate;
+    const dateArr = oldDateFormat.split ("-");
+    let year = dateArr[0];
+    let month = dateArr[1];
+    let day = dateArr[2];
+    const dateObj = new Date(year, month, day);
+    // date using date-fns
+    const newDateFormat = format(dateObj, 'PPPP');
+    date.innerHTML = `due by ${newDateFormat}`;
+}
+
+function updateCardUI() {
+    // Creates task cards
+    createCards();
+    // Insert title, date, and priority from user data into DOM
+    createCardTxt ()
 }
