@@ -19,7 +19,7 @@ export function checkFormComplete (firstVal, secondVal) {
 }
 
 // Tasks stored as an array of objects
-const taskList = [];
+export const taskList = [];
 
 class Task {
     constructor(title, description, dueDate, priority, project) {
