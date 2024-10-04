@@ -1,4 +1,4 @@
-// DOM related stuff goes here
+// DOM related stuff goes here (manipulating DOM, updating UI, handling user inputs)
 
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
