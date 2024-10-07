@@ -108,6 +108,7 @@ function updateCardUI() {
     const {titleDiv, date} = createCards();
     // Insert title, date, and priority from user data into DOM
     createCardTxt (titleDiv, date);
+    setBorderColour ();
 }
 
 export function createDefault() {
@@ -120,5 +121,18 @@ export function createDefault() {
         formatDate(oldDateFormat);
         const {newDateFormat} = formatDate(oldDateFormat);
         date.innerHTML = `by ${newDateFormat}`;
+    }
+}
+
+function setBorderColour () {
+    const {priorityVal} = getTaskInput();
+    // Get the task-card div that's created
+    const borderDiv = document.querySelector(".task-cards:last-child");
+    if (priorityVal === "High") {
+        borderDiv.style.borderColor = "red";
+    } else if (priorityVal === "Medium") {
+        borderDiv.style.borderColor = "green";
+    } else {
+        borderDiv.style.borderColor = "yellow";
     }
 }
