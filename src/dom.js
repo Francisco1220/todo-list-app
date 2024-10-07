@@ -31,6 +31,8 @@ submitTaskBtn.addEventListener("click", (e) => {
         updateCardUI();
         // Clear form inputs to prepare for new submission
         clearForm();
+        // Update project name 
+        updateProjectName();
     }
 })
 
@@ -150,4 +152,11 @@ function setBorderColour () {
 function clearForm () {
     const taskForm = document.querySelector("#task-form > form");
     taskForm.reset();
+}
+
+function updateProjectName() {
+    const headerTitle = document.getElementById("project-name");
+    console.log(headerTitle);
+    let index = taskList.length - 1
+    headerTitle.innerHTML = taskList[index].project;
 }
