@@ -9,8 +9,6 @@ import { format } from "date-fns";
 import editSVG from "./assets/icons/edit-pen.svg";
 import deleteSVG from "./assets/icons/delete.svg";
 
-
-
 newTask.addEventListener("click", () => {
     // opens modal
     dialog.showModal();
@@ -82,17 +80,16 @@ function createCards () {
 }
 
 // Creates title, date, and priority text from taskList array
-function createCardTxt () {
-    const {titleDiv, date} = createCards();
+function createCardTxt (firstDiv, secondDiv) {
     // Access last element from the array and use that to update title
     let lastElIndex = taskList.length - 1;
     // Update title and date
-    titleDiv.innerHTML = `${taskList[lastElIndex].title}`;
+    firstDiv.innerHTML = `${taskList[lastElIndex].title}`;
         // Reformat date using date-fns
     let oldDateFormat = taskList[lastElIndex].dueDate;
     formatDate(oldDateFormat);
     const {newDateFormat} = formatDate(oldDateFormat);
-    date.innerHTML = `by ${newDateFormat}`;
+    secondDiv.innerHTML = `by ${newDateFormat}`;
 }
 
 function formatDate(date) {
@@ -108,7 +105,8 @@ function formatDate(date) {
 
 function updateCardUI() {
     // Creates task cards
-    createCards();
+    const card = createCards();
+    const {titleDiv, date} = card;
     // Insert title, date, and priority from user data into DOM
-    createCardTxt ()
+    createCardTxt (titleDiv, date);
 }
