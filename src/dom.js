@@ -25,8 +25,12 @@ submitTaskBtn.addEventListener("click", (e) => {
         alert(alertMessage);
     } else {
         dialog.close();
+        // Create task objects
         createTask();
+        // Update task card UI
         updateCardUI();
+        // Clear form inputs to prepare for new submission
+        clearForm();
     }
 })
 
@@ -141,4 +145,9 @@ function setBorderColour () {
     } else {
         borderDiv.style.borderColor = "yellow";
     }
+}
+
+function clearForm () {
+    const taskForm = document.querySelector("#task-form > form");
+    taskForm.reset();
 }
