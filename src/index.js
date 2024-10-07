@@ -1,8 +1,11 @@
 // Imported files
 import "./style.css";
-import {newTask, getTaskInput} from "./dom.js";
+import {newTask, getTaskInput, createDefault} from "./dom.js";
 
 // Application Logic goes here (creating new todos, setting todos as complete, changing todo priority)
+
+// Tasks stored as an array of objects
+export const taskList = [];
 
 export function checkFormComplete (firstVal, secondVal) {
     const {titleVal, priorityVal} = getTaskInput();
@@ -17,9 +20,6 @@ export function checkFormComplete (firstVal, secondVal) {
     }
     return {closeDialog, alertMessage}
 }
-
-// Tasks stored as an array of objects
-export const taskList = [];
 
 class Task {
     constructor(title, description, dueDate, priority, project) {
@@ -46,14 +46,17 @@ function addTaskToList (...task) {
     console.log(taskList);
 }
 
-// Creates object instance for every task upon completing task form
-export function createTask() {
-    // Default tasks
-    const defaultTask1 = new Task("Wash car", "use a mild soap", "12/10/24", "High", "default");
-    const defaultTask2 = new Task("Buy groceries", "Need to buy chicken, eggs, rice, tomatoes, and apples", "8/10/24", "Medium", "default");
+// Create default task instances
+(function createDefaultTasks() {
+    const defaultTask1 = new Task("Wash car", "use a mild soap", "2024-10-12", "High", "default");
+    const defaultTask2 = new Task("Buy groceries", "Need to buy chicken, eggs, rice, tomatoes, and apples", "2024-10-8", "Medium", "default");
     addTaskToList(defaultTask1);
     addTaskToList(defaultTask2);
-    // Dynamically created object instances based on user input
+    createDefault();
+})();
+
+// Dynamically create object instance for every task upon completing task form
+export function createTask() {
     const {titleVal, priorityVal, descriptionVal, projectVal, dueDateVal} = getTaskInput();
     addTaskToList(new Task(titleVal, descriptionVal, dueDateVal, priorityVal, projectVal));
 }

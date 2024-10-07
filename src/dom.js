@@ -105,8 +105,20 @@ function formatDate(date) {
 
 function updateCardUI() {
     // Creates task cards
-    const card = createCards();
-    const {titleDiv, date} = card;
+    const {titleDiv, date} = createCards();
     // Insert title, date, and priority from user data into DOM
     createCardTxt (titleDiv, date);
+}
+
+export function createDefault() {
+    // Update title and date
+    for (let i = 0; i < 2; i++) {
+        const {titleDiv, date} = createCards();
+        titleDiv.innerHTML = `${taskList[i].title}`;
+        // Reformat date using date-fns
+        let oldDateFormat = taskList[i].dueDate;
+        formatDate(oldDateFormat);
+        const {newDateFormat} = formatDate(oldDateFormat);
+        date.innerHTML = `by ${newDateFormat}`;
+    }
 }
