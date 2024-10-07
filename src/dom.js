@@ -1,5 +1,4 @@
 // DOM related stuff goes here (manipulating DOM, updating UI, handling user inputs)
-
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
@@ -7,9 +6,10 @@ import {checkFormComplete, createTask, taskList} from "./index.js"
 import { format } from "date-fns";
 
 // import (default) image SVGs
-
 import editSVG from "./assets/icons/edit-pen.svg";
 import deleteSVG from "./assets/icons/delete.svg";
+
+
 
 newTask.addEventListener("click", () => {
     // opens modal
@@ -90,14 +90,20 @@ function createCardTxt () {
     titleDiv.innerHTML = `${taskList[lastElIndex].title}`;
         // Reformat date using date-fns
     let oldDateFormat = taskList[lastElIndex].dueDate;
-    const dateArr = oldDateFormat.split ("-");
+    formatDate(oldDateFormat);
+    const {newDateFormat} = formatDate(oldDateFormat);
+    date.innerHTML = `by ${newDateFormat}`;
+}
+
+function formatDate(date) {
+    const dateArr = date.split("-");
     let year = dateArr[0];
     let month = dateArr[1];
     let day = dateArr[2];
     const dateObj = new Date(year, month, day);
     // date using date-fns
     const newDateFormat = format(dateObj, 'PPPP');
-    date.innerHTML = `due by ${newDateFormat}`;
+    return {newDateFormat};
 }
 
 function updateCardUI() {
