@@ -76,7 +76,7 @@ function createCards () {
     date.setAttribute("class", "date");
     cardDiv.appendChild(date);
 
-    return {titleDiv, date}
+    return {titleDiv, date, cardDiv}
 }
 
 // Creates title, date, and priority text from taskList array
@@ -114,13 +114,19 @@ function updateCardUI() {
 export function createDefault() {
     // Update title and date
     for (let i = 0; i < 2; i++) {
-        const {titleDiv, date} = createCards();
+        const {titleDiv, date, cardDiv} = createCards();
         titleDiv.innerHTML = `${taskList[i].title}`;
         // Reformat date using date-fns
         let oldDateFormat = taskList[i].dueDate;
         formatDate(oldDateFormat);
         const {newDateFormat} = formatDate(oldDateFormat);
         date.innerHTML = `by ${newDateFormat}`;
+        // Set the border colour for the default tasks
+        if (i === 0) {
+            cardDiv.style.borderColor = "green";
+        } else {
+            cardDiv.style.borderColor = "yellow";
+        }
     }
 }
 
