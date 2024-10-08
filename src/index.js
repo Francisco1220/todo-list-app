@@ -60,3 +60,12 @@ export function createTask() {
     const {titleVal, priorityVal, descriptionVal, projectVal, dueDateVal} = getTaskInput();
     addTaskToList(new Task(titleVal, descriptionVal, dueDateVal, priorityVal, projectVal));
 }
+
+export function deleteFromLibrary(element) {
+    for (let i = 0; i < taskList.length; i++) {
+        // Compare data attribute with title from taskList
+        if (taskList[i].title === element.getAttribute("data-id")) {
+            taskList.splice(i, 1);
+        }
+    }
+}

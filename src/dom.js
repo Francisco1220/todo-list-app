@@ -2,13 +2,8 @@
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
-import {checkFormComplete, createTask, taskList} from "./index.js"
+import {checkFormComplete, createTask, taskList, deleteFromLibrary} from "./index.js"
 import { format } from "date-fns";
-
-// import (default) image SVGs
-import editSVG from "./assets/icons/edit-pen.svg";
-import deleteSVG from "./assets/icons/delete.svg";
-import closeSVG from "./assets/icons/close.svg";
 
 newTask.addEventListener("click", () => {
     // opens modal
@@ -36,6 +31,9 @@ submitTaskBtn.addEventListener("click", (e) => {
         updateProjectName();
         // Description button functionality
         handleDescriptionBtn();
+        // Delete button functionality
+        deleteTask();
+
     }
 })
 
@@ -74,13 +72,13 @@ function createCards () {
     descriptionBtn.setAttribute("class", "show-description");
     cardOptionsDiv.appendChild(descriptionBtn);
 
-    const editImage = document.createElement("img");
-    editImage.src = editSVG;
-    descriptionBtn.insertAdjacentElement("afterend", editImage);
+    const editTaskBtn = document.createElement("button");
+    editTaskBtn.setAttribute("class", "edit-task");
+    descriptionBtn.insertAdjacentElement("afterend", editTaskBtn);
 
-    const deleteImage = document.createElement("img");
-    deleteImage.src = deleteSVG;
-    descriptionBtn.insertAdjacentElement("afterend", deleteImage);
+    const deleteTaskBtn = document.createElement("button");
+    deleteTaskBtn.setAttribute("class", "delete-task");
+    editTaskBtn.insertAdjacentElement("afterend", deleteTaskBtn);
 
     const date = document.createElement("p");
     date.setAttribute("class", "date");
@@ -139,6 +137,15 @@ export function createDefault() {
         }
     }
     handleDescriptionBtn();
+    deleteTask ();
+}
+
+// Assigns unique IDs to each task card
+function createDataAttributes() {
+    const taskCards = document.querySelectorAll(".task-cards");
+    for (let i = 0; i < taskCards.length; i++) {
+        taskCards[i].setAttribute("data-id",`${taskList[i].title}`);
+    }
 }
 
 function setBorderColour () {
@@ -195,7 +202,22 @@ function clearForm () {
 
 function updateProjectName() {
     const headerTitle = document.getElementById("project-name");
-    console.log(headerTitle);
     let index = taskList.length - 1
     headerTitle.innerHTML = taskList[index].project;
+}
+
+function deleteTask () {
+    // Set data attributes for each task card
+    createDataAttributes();
+    // Make use of event bubbling to know which task card to delete
+    document.querySelector(".tasks-container").addEventListener("click", (e) => {
+        // Get element to be deleted
+        if (e.target.className === "delete-task") {
+            let elToRemove = e.target.parentElement.closest(".task-cards");
+            // Remove element from library
+            deleteFromLibrary(elToRemove);
+            // Remove element from DOM
+            elToRemove.remove();
+        }
+    })
 }
