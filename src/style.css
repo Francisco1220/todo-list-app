@@ -118,20 +118,16 @@ li {
     grid-template-columns: 50px 50px;
     grid-template-rows: 1fr 1fr;
     justify-content: end;
-    row-gap: 5px;
 }
 
-.card-interact > button {
+/* Take note */
+.card-interact > button:first-child {
     grid-column: 1/4;
     font-size: 1rem;
     padding: 5px 15px 5px 15px;
     border-radius: 8px;
     border: solid;
     background-color: white;
-}
-
-.card-interact > img {
-    justify-self: center;
 }
 
 .task-title {
@@ -238,6 +234,30 @@ label {
     background-repeat: no-repeat;
     background-origin: border-box;
     background-position: center;
+}
+
+.delete-task {
+    width: 20px;
+    height: 30px;
+    border: none;
+    background-color: var(--main-color);
+    background-image: url("./assets/icons/delete.svg"); 
+    background-repeat: no-repeat;
+    background-origin: border-box;
+    background-position: center;
+    justify-self: center;
+}
+
+.edit-task {
+    width: 20px;
+    height: 30px;
+    border: none;
+    background-color: var(--main-color);
+    background-image: url("./assets/icons/edit-pen.svg"); 
+    background-repeat: no-repeat;
+    background-origin: border-box;
+    background-position: center;
+    justify-self: center;
 }
 
 .dropdown {
