@@ -8,6 +8,7 @@ import { format } from "date-fns";
 // import (default) image SVGs
 import editSVG from "./assets/icons/edit-pen.svg";
 import deleteSVG from "./assets/icons/delete.svg";
+import closeSVG from "./assets/icons/close.svg";
 
 newTask.addEventListener("click", () => {
     // opens modal
@@ -33,6 +34,8 @@ submitTaskBtn.addEventListener("click", (e) => {
         clearForm();
         // Update project name 
         updateProjectName();
+        // Description button functionality
+        handleDescriptionBtn();
     }
 })
 
@@ -68,6 +71,7 @@ function createCards () {
 
     const descriptionBtn = document.createElement("button");
     descriptionBtn.innerHTML = "description";
+    descriptionBtn.setAttribute("class", "show-description");
     cardOptionsDiv.appendChild(descriptionBtn);
 
     const editImage = document.createElement("img");
@@ -134,6 +138,7 @@ export function createDefault() {
             cardDiv.style.borderColor = "yellow";
         }
     }
+    handleDescriptionBtn();
 }
 
 function setBorderColour () {
@@ -147,6 +152,40 @@ function setBorderColour () {
     } else {
         borderDiv.style.borderColor = "yellow";
     }
+}
+
+function handleDescriptionBtn () {
+    const description = showDescription();
+    const {descriptionDialog} = description;
+    closeDescription(descriptionDialog);
+}
+
+
+function showDescription () {
+    const descriptionBtn = document.querySelectorAll(".show-description");
+    const descriptionDialog = document.getElementById("description-modal");
+    for (let i = 0; i < descriptionBtn.length; i++) {
+        descriptionBtn[i].addEventListener("click", () => {
+            // Show modal
+            descriptionDialog.showModal();
+            // Update description text
+            const div = document.querySelector("#description-modal > div:first-child");
+            div.innerHTML = `${taskList[i].description}`;
+            // Add display of flex to modal
+            descriptionDialog.style.display = "flex";
+        })
+    }
+    return {descriptionDialog}
+}
+
+function closeDescription(description) {
+    const closeBtn = document.getElementById("close-btn");
+    closeBtn.addEventListener("click", () => {
+        description.close();
+        // Remove display of flex to modal
+            // NOTE: for some reason not removing display property interferes with the interactivity of the modal
+        description.style.display = "none";
+    })
 }
 
 function clearForm () {
