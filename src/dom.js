@@ -2,7 +2,7 @@
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
-import {checkFormComplete, createTask, taskList, deleteFromLibrary} from "./index.js"
+import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList} from "./index.js"
 import { format } from "date-fns";
 
 newTask.addEventListener("click", () => {
@@ -116,7 +116,9 @@ function updateCardUI() {
     const {titleDiv, date} = createCards();
     // Insert title, date, and priority from user data into DOM
     createCardTxt (titleDiv, date);
-    setBorderColour ();
+    const borderDiv = document.querySelector(".task-cards:last-child");
+    const {priorityVal} = getTaskInput();
+    setBorderColour(borderDiv, priorityVal);
 }
 
 export function createDefault() {
@@ -138,6 +140,7 @@ export function createDefault() {
     }
     handleDescriptionBtn();
     deleteTask ();
+    // submitEditedTask ();
 }
 
 // Assigns unique IDs to each task card
@@ -148,16 +151,14 @@ function createDataAttributes() {
     }
 }
 
-function setBorderColour () {
-    const {priorityVal} = getTaskInput();
+function setBorderColour (border, priority) {
     // Get the task-card div that's created
-    const borderDiv = document.querySelector(".task-cards:last-child");
-    if (priorityVal === "High") {
-        borderDiv.style.borderColor = "red";
-    } else if (priorityVal === "Medium") {
-        borderDiv.style.borderColor = "green";
-    } else {
-        borderDiv.style.borderColor = "yellow";
+    if (priority === "High") {
+        border.style.borderColor = "red";
+    } else if (priority === "Medium") {
+        border.style.borderColor = "green";
+    } else if (priority === "Low") {
+        border.style.borderColor = "yellow";
     }
 }
 
@@ -220,4 +221,65 @@ function deleteTask () {
             elToRemove.remove();
         }
     })
+}
+
+const editDialog = document.getElementById("edit-form");
+let elToEdit;
+
+// If edit button clicked: show modal, prefill form
+document.querySelector(".tasks-container").addEventListener("click", (e) => {
+    if (e.target.className === "edit-task") {
+        // Show modal
+        editDialog.showModal();
+        // Get the user input for specific task-card and prefill that data in edit-task form
+        elToEdit = e.target.parentElement.closest(".task-cards"); // Element to edit
+        prefillForm(elToEdit);
+    }
+})
+
+
+// If submit task button clicked: close modal, update DOM elements, update taskList
+document.getElementById("edit-task").addEventListener("click", (e) => {
+    e.preventDefault();
+    // Update TaskList
+    updateTaskList(elToEdit);
+    // Remove previous data attribute and replace with new one
+    const {titleVal, priorityVal} = getEditInputs ();
+    elToEdit.dataset.id = titleVal;
+    // Update DOM elements by first getting titleDiv and dateDiv
+    let titleDiv = elToEdit.querySelector(".task-title");
+    let dateDiv = elToEdit.querySelector(".date");
+    updateDOM(titleDiv, dateDiv);
+    // Close modal
+    editDialog.close();
+})
+
+function updateDOM (title, date) {
+    // Update task card details
+    createCardTxt (title, date);
+    // Update priority colour
+    const {priorityVal} = getEditInputs ();
+    setBorderColour(elToEdit, priorityVal);
+}
+// Get edit-task form inputs and update the taskList with the new values
+export function getEditInputs() {
+    const titleVal = document.getElementById("edit-title").value;
+    const descriptionVal = document.getElementById("edit-description").value;
+    const dueDateVal = document.getElementById("edit-date").value;
+    const priorityVal = document.getElementById("edit-priority").value;
+    const projectVal = document.getElementById("edit-project").value;
+    return {titleVal, descriptionVal, dueDateVal, priorityVal, projectVal}
+}
+
+// Get previously completed task-form data and prefill edit-task form
+function prefillForm(el) {
+            let getTaskObjects = getTaskObject(el);
+            const {title, description, priority} = getTaskObjects;
+            
+            let titleInput = document.getElementById("edit-title");
+            titleInput.value = title;
+            let descriptionInput = document.getElementById("edit-description");
+            descriptionInput.value = description;
+            let priorityInput = document.getElementById("edit-priority");
+            priorityInput.value = priority;
 }

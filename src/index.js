@@ -1,6 +1,6 @@
 // Imported files
 import "./style.css";
-import {newTask, getTaskInput, createDefault} from "./dom.js";
+import {newTask, getTaskInput, createDefault, getEditInputs} from "./dom.js";
 
 // Application Logic goes here (creating new todos, setting todos as complete, changing todo priority)
 
@@ -66,6 +66,38 @@ export function deleteFromLibrary(element) {
         // Compare data attribute with title from taskList
         if (taskList[i].title === element.getAttribute("data-id")) {
             taskList.splice(i, 1);
+        }
+    }
+}
+
+export function getTaskObject(element) {
+    let title;
+    let description;
+    let project;
+    let priority;
+    let dueDate;
+    for (let i = 0; i < taskList.length; i++) {
+        // Compare data attribute with title from taskList
+        if (taskList[i].title === element.getAttribute("data-id")) {
+            title = taskList[i].title;
+            description = taskList[i].description;
+            project = taskList[i].project;
+            priority = taskList[i].priority;
+            dueDate = taskList[i].dueDate;
+        }
+    }
+    return {title, description, project, priority}
+}
+
+export function updateTaskList (element) {
+    const {titleVal, descriptionVal, dueDateVal, priorityVal, projectVal} = getEditInputs();
+    for (let i = 0; i < taskList.length; i++) {
+        if (taskList[i].title === element.getAttribute("data-id")) {
+            taskList[i].title = titleVal;
+            taskList[i].description = descriptionVal;
+            taskList[i].dueDate = dueDateVal;
+            taskList[i].priority = priorityVal;
+            taskList[i].project = projectVal;
         }
     }
 }
