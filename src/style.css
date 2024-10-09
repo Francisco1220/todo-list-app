@@ -202,10 +202,29 @@ li {
 }
 
 #task-form > form,
-#edit-form > form {
+#edit-form > form,
+#project-form > form {
     display: grid;
     gap: 5px;
     padding: 1em;
+}
+
+#project-form > form {
+    padding: 1em;
+}
+
+#project-form {
+    top: 15%;
+    left: 36%;
+    transform: translate(-50%, -50%);
+    width: 25%;
+    height: 20%;
+    border: solid;
+    border-radius: 20px;
+}
+
+#project-form::backdrop {
+    backdrop-filter: none;
 }
 
 form > input {
@@ -222,6 +241,12 @@ label {
 #create-task,
 #edit-task {
     margin-top: 40px;
+    width: 100px;
+    height: 30px;
+}
+
+#edit-name {
+    margin-top: 20px;
     width: 100px;
     height: 30px;
 }
