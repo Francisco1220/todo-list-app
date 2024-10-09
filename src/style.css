@@ -166,7 +166,8 @@ li {
     color: var(--main-color);
 }
 
-#task-form {
+#task-form,
+#edit-form {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -201,7 +202,8 @@ li {
     right: 5%;
 }
 
-#task-form > form {
+#task-form > form,
+#edit-form > form {
     display: grid;
     gap: 5px;
     padding: 1em;
@@ -218,7 +220,8 @@ label {
     font-size: 1.5rem;
 }
 
-#create-task {
+#create-task,
+#edit-task {
     margin-top: 40px;
     width: 100px;
     height: 30px;
