@@ -77,6 +77,29 @@
                         <button type="submit" id="create-task">Create</button>
                 </form>
             </dialog>
+            <dialog id="edit-form">
+                <form>
+                    <label>*Title</label>
+                    <input type="text" id="edit-title" required>
+                    <label>Description</label>
+                    <input type="text" id="edit-description">
+                    <label>Due-Date</label>
+                    <input type="date" id="edit-date">
+                    <label>*Priority</label>
+                        <select class="dropdown" id="edit-priority" required>
+                            <option value="default"></option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                        </select>
+                    <label>Choose Project Folder</label>
+                        <select class="dropdown" id="edit-project" required>
+                            <option value="Default">Default</option>
+                            <option>Project 2</option>
+                        </select>
+                        <button type="submit" id="edit-task">Update</button>
+                </form>
+            </dialog>
             <dialog id="description-modal">
                 <div></div>
                 <button id="close-btn"></button>
