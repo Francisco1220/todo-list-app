@@ -40,7 +40,7 @@
                 <div class="header">
                     <!--Project name will be updated in DOM via Javascript-->
                     <h2 id="project-name">Project Name</h2>
-                    <img src="./assets/icons/edit-pen.svg" class="change-project-name">
+                    <button class="edit-project-name"></button>
                     <h2>My Tasks</h2>
                 </div>
                 <div class="tasks-container">
@@ -99,6 +99,14 @@
                         </select>
                         <button type="submit" id="edit-task">Update</button>
                 </form>
+            </dialog>
+            <dialog id="project-form">
+                <form>
+                    <label>New Project Name</label>
+                    <input type="text">
+                    <button type="submit" id="edit-name">Update</button>
+                </form>
+
             </dialog>
             <dialog id="description-modal">
                 <div></div>
