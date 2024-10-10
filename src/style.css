@@ -315,3 +315,21 @@ li:nth-child(16):hover {
     opacity: 0.4;
 }
 
+.no-completed {
+    justify-self: center;
+    align-self: end;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
+
+[data-check-svg] {
+    border: none;
+    background-size: 110%;
+    background-image: url("./assets/icons/check.svg"); 
+    background-repeat: no-repeat;
+    background-origin: border-box;
+    background-position: center;
+    justify-self: center;
+}
