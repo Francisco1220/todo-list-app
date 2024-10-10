@@ -23,12 +23,15 @@
     background-color: var(--sidebar-color);
 }
 
+/* OF CONCERN */
 img:first-child {
-    width: 50px;
-    margin-top: 7px;
+    width: 30px;
     padding-top: 10px;
+    justify-self: center;
+    align-self: start;
 }
 
+/* OF CONCERN */
 li + img {
     width: 25px;
     justify-self: center;
@@ -37,27 +40,22 @@ li + img {
     margin-bottom: 60px;
 }
 
+/* OF CONCERN */
 .sidebar > ul {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 50px 1fr;
     padding-left: 2.2rem;
     row-gap: 10px;
 }
 
-ul > li {
+ul > li,
+#default-project {
     font-size: 1.2rem;
 }
 
 .title {
     font-size: 1.5rem;
     font-weight: bold;
-}
-
-ul > .header-title {
-    font-size: 3rem;
-    margin-bottom: 35px;
-    font-family: caveat;
-    padding-top: 10px
 }
 
 .header > h2,
@@ -306,11 +304,9 @@ dialog::backdrop {
     backdrop-filter: blur(8px);
 }
 
-li:nth-child(6):hover,
-li:nth-child(8):hover,
-li:nth-child(10):hover,
-li:nth-child(14):hover,
-li:nth-child(16):hover {
+ul > li:nth-child(6):hover,
+ul > li:nth-child(8):hover,
+ul > li:nth-child(10):hover {
     color: var(--main-color);
     opacity: 0.4;
 }
@@ -332,4 +328,44 @@ li:nth-child(16):hover {
     background-origin: border-box;
     background-position: center;
     justify-self: center;
+}
+
+#project-form {
+    top: 30%;
+    left: 32%;
+    width: 20%;
+    height: 20%;
+    border-radius: 20px;
+}
+
+#my-projects {
+    display: grid;
+    grid-template-columns: 50px 150px;
+    row-gap: 10px;
+}
+
+#my-projects > .title {
+    align-self: end;
+}
+
+.header-title > img:first-child {
+    width: 50px;
+}
+
+#header-logo {
+    width: 60px;
+    align-self: center;
+}
+
+#header-title {
+    align-self: center;
+    font-size: 3rem;
+    
+    font-family: caveat;
+    padding-top: 10px
+}
+
+#header-logo,
+#header-title {
+    margin-bottom: 35px;
 }

@@ -17,23 +17,23 @@
         <div class="container">
             <div class="sidebar">
                 <ul>
-                    <img src="./assets/icons/notes.svg" alt="">
-                    <li class="header-title">TASKY</li>
+                    <img src="./assets/icons/notes.svg" alt="" id="header-logo">
+                    <li id="header-title">TASKY</li>
                     <img src="./assets/icons/menu.svg" alt="">
                     <li class="title">Menu</li>
                     <img src="./assets/icons/add-task.svg" alt="">
                     <li>New Task</li>
                     <img src="./assets/icons/add-folder.svg" alt="">
-                    <li>New Project</li>
+                    <li id="new-project">New Project</li>
                     <img src="./assets/icons/check-circle.svg" alt="">
                     <li class="ul-item">Completed</li>
-                    <img src="./assets/icons/folders.svg" alt="">
-                    <li class="title">My Projects</li>
-                    <!--Project folder divs will be created in DOM via Javascript. Only for show-->
-                    <img src="./assets/icons/chevron-right.svg" alt="">
-                    <li>Grocery Shopping</li>
-                    <img src="./assets/icons/chevron-right.svg" alt="">
-                    <li>Project 2</li>
+                    <div id="my-projects">
+                        <img src="./assets/icons/folders.svg" alt="">
+                        <li class="title" id="project-tabs">My Projects</li>
+                        <!--Project folder divs will be created in DOM via Javascript. Only for show-->
+                        <img src="./assets/icons/chevron-right.svg" alt="">
+                        <li id="default-project"></li>
+                    </div>
                 </ul>
             </div>
             <div class="main">
@@ -72,7 +72,7 @@
                     <label>Choose Project Folder</label>
                         <select class="dropdown" id="project" required>
                             <option value="Default">Default</option>
-                            <option>Project 2</option>
+                            <!-- <option>Project 2</option> -->
                         </select>
                         <button type="submit" id="create-task">Create</button>
                 </form>
@@ -103,7 +103,7 @@
             <dialog id="project-form">
                 <form>
                     <label>New Project Name</label>
-                    <input type="text">
+                    <input type="text" id="new-project-name">
                     <button type="submit" id="edit-name">Update</button>
                 </form>
 
@@ -112,6 +112,7 @@
                 <div></div>
                 <button id="close-btn"></button>
             </dialog>
+            
         </div>
     </body>
 </html>
