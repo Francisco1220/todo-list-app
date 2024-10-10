@@ -361,12 +361,13 @@ function displayCompleted() {
             titleDiv.setAttribute("class", "strikethrough");
             date.setAttribute("class", "strikethrough");
             cardDiv.style.borderColor = setBorderColour(cardDiv, taskList[i].priority);
-            // Disable checkDiv, edit button, and delete button events
+            editTaskBtn.style.opacity = "0.2";
+            // Disable checkDiv and edit button events
             checkDiv.style["pointer-events"] = "none";
             editTaskBtn.style["pointer-events"] = "none";
-            // REVISIT: Add way for deleteBtn to work to delete completed task from the list (remove from taskList)
-            deleteTaskBtn.style["pointer-events"] = "none";
+            // Delete button from taskList
             showDescription ();
+            deleteTask();
         }
     }
 }
