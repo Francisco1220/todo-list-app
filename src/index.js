@@ -22,19 +22,13 @@ export function checkFormComplete (firstVal, secondVal) {
 }
 
 class Task {
-    constructor(title, description, dueDate, priority, project) {
+    constructor(title, description, dueDate, priority, project, completed) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.project = project;
-    }
-    showTask () {
-        console.log(`Title: ${this.title}`);
-        console.log(`Description: ${this.description}`);
-        console.log(`Due Date: ${this.dueDate}`);
-        console.log(`Priority: ${this.priority}`);
-        console.log(`Project: ${this.project}`);
+        this.completed = completed;
     }
 }
 
@@ -48,8 +42,8 @@ function addTaskToList (...task) {
 
 // Create default task instances
 (function createDefaultTasks() {
-    const defaultTask1 = new Task("Wash car", "use a mild soap", "2024-10-12", "High", "default");
-    const defaultTask2 = new Task("Buy groceries", "Need to buy chicken, eggs, rice, tomatoes, and apples", "2024-10-8", "Medium", "default");
+    const defaultTask1 = new Task("Wash car", "use a mild soap", "2024-10-12", "High", "default", false);
+    const defaultTask2 = new Task("Buy groceries", "Need to buy chicken, eggs, rice, tomatoes, and apples", "2024-10-8", "Medium", "default", false);
     addTaskToList(defaultTask1);
     addTaskToList(defaultTask2);
     createDefault();
@@ -98,6 +92,14 @@ export function updateTaskList (element) {
             taskList[i].dueDate = dueDateVal;
             taskList[i].priority = priorityVal;
             taskList[i].project = projectVal;
+        }
+    }
+}
+
+export function updateTaskCompleted (element) {
+    for (let i = 0; i < taskList.length; i++) {
+        if (taskList[i].title === element.getAttribute("data-id")) {
+            taskList[i].completed = true;
         }
     }
 }

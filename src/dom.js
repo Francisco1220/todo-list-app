@@ -2,7 +2,7 @@
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
-import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList} from "./index.js"
+import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted} from "./index.js"
 import { format } from "date-fns";
 
 newTask.addEventListener("click", () => {
@@ -33,7 +33,8 @@ submitTaskBtn.addEventListener("click", (e) => {
         handleDescriptionBtn();
         // Delete button functionality
         deleteTask();
-
+        // Complete task functionaliy
+        completeTask();
     }
 })
 
@@ -84,7 +85,7 @@ function createCards () {
     date.setAttribute("class", "date");
     cardDiv.appendChild(date);
 
-    return {titleDiv, date, cardDiv}
+    return {titleDiv, date, cardDiv, checkDiv, descriptionBtn, editTaskBtn, deleteTaskBtn}
 }
 
 // Creates title, date, and priority text from taskList array
@@ -140,7 +141,7 @@ export function createDefault() {
     }
     handleDescriptionBtn();
     deleteTask ();
-    // submitEditedTask ();
+    completeTask();
 }
 
 // Assigns unique IDs to each task card
@@ -282,4 +283,93 @@ function prefillForm(el) {
             descriptionInput.value = description;
             let priorityInput = document.getElementById("edit-priority");
             priorityInput.value = priority;
+}
+
+function completeTask() {
+    let elToComplete;
+    document.querySelector(".tasks-container").addEventListener("click", (e) => {
+        if (e.target.className === "circle-check") {
+            // Get the task card that's completed
+            elToComplete = e.target.parentElement;
+            // Update taskList 
+            updateTaskCompleted(elToComplete);
+            // Update DOM, ie. remove completed task
+            elToComplete.remove();
+        }
+    })
+    return {elToComplete}
+}
+
+
+// Come back to change project name feature later
+
+// Completed Task feature
+document.querySelector("li:nth-child(10)").addEventListener("click", () => {
+    // Clear main
+    let clearCards = document.querySelectorAll(".task-cards");
+    for (let i = 0; i < clearCards.length; i++) {
+        clearCards[i].remove();
+    }
+    // Display message if no tasks have been completed yet
+    const {trueCounter} = checkIfNoCompleted();
+    // Call createCards for those cards whose taskList[i].completed is set to true
+    if (trueCounter > 0) {
+        displayCompleted();
+    }
+    // Clear header titles, header button icon
+    let clearTitle = document.getElementById("project-name");
+    clearTitle.remove();
+    let clearBtn = document.querySelector(".edit-project-name");
+    clearBtn.remove();
+    // Edit innerHTML of what was before "My Tasks"
+    document.querySelector(".header > h2").innerHTML = "Completed Tasks";
+})
+
+// Checks if there are zero completed tasks any if so, show the message from showNoCompleted()
+function checkIfNoCompleted () {
+    let trueCounter = 0;
+        for (let i = 0; i < taskList.length; i++) {
+            if (taskList[i].completed === true) {
+                trueCounter++;
+            }
+            if (i + 1 === taskList.length && trueCounter === 0) {
+                showNoCompleted();
+            }
+        }
+    return {trueCounter}
+}
+
+function showNoCompleted () {
+    // Create p tag and append to task container
+    const p = document.createElement("p");
+    const parent = document.querySelector(".tasks-container");
+    p.innerHTML = "No Tasks have been Completed Yet";
+    p.style.opacity = "0.3";
+    p.setAttribute("class", "no-completed");
+    p.style.fontSize = "2rem";
+    parent.appendChild(p);
+}
+
+function displayCompleted() {
+    for (let i = 0; i < taskList.length; i++) {
+        // For every task object whose completed value is set to true, show that task and style it accordingly
+        if (taskList[i].completed === true) {
+            const {titleDiv, date, cardDiv, checkDiv, descriptionBtn, editTaskBtn, deleteTaskBtn} = createCards();
+            titleDiv.innerHTML = taskList[i].title;
+            // Render date correctly
+            let oldDateFormat = taskList[i].dueDate;
+            const {newDateFormat} = formatDate(oldDateFormat);
+            date.innerHTML = `by ${newDateFormat}`;
+            // Custom styles for completedTasks
+            checkDiv.setAttribute("data-check-svg", "");
+            titleDiv.setAttribute("class", "strikethrough");
+            date.setAttribute("class", "strikethrough");
+            // Disable checkDiv, edit button, and delete button events
+            checkDiv.style["pointer-events"] = "none";
+            editTaskBtn.style["pointer-events"] = "none";
+            // REVISIT: Add way for deleteBtn to work to delete completed task from the list (remove from taskList)
+            deleteTaskBtn.style["pointer-events"] = "none";
+            showDescription ();
+        }
+    }
 }
