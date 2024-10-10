@@ -133,11 +133,7 @@ export function createDefault() {
         const {newDateFormat} = formatDate(oldDateFormat);
         date.innerHTML = `by ${newDateFormat}`;
         // Set the border colour for the default tasks
-        if (i === 0) {
-            cardDiv.style.borderColor = "green";
-        } else {
-            cardDiv.style.borderColor = "yellow";
-        }
+        setBorderColour(cardDiv, taskList[i].priority);
     }
     handleDescriptionBtn();
     deleteTask ();
