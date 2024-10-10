@@ -42,8 +42,8 @@ function addTaskToList (...task) {
 
 // Create default task instances
 (function createDefaultTasks() {
-    const defaultTask1 = new Task("Wash car", "use a mild soap", "2024-10-12", "High", "default", false);
-    const defaultTask2 = new Task("Buy groceries", "Need to buy chicken, eggs, rice, tomatoes, and apples", "2024-10-8", "Medium", "default", false);
+    const defaultTask1 = new Task("Wash car", "use a mild soap", "2024-10-12", "High", "Default", false);
+    const defaultTask2 = new Task("Buy groceries", "Need to buy chicken, eggs, rice, tomatoes, and apples", "2024-10-8", "Medium", "Default", false);
     addTaskToList(defaultTask1);
     addTaskToList(defaultTask2);
     createDefault();

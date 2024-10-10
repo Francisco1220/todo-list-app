@@ -5,6 +5,8 @@ const submitTaskBtn = document.querySelector("#create-task");
 import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted} from "./index.js"
 import { format } from "date-fns";
 
+import chevronImage from "./assets/icons/chevron-right.svg"
+
 newTask.addEventListener("click", () => {
     // opens modal
     dialog.showModal();
@@ -138,6 +140,7 @@ export function createDefault() {
     handleDescriptionBtn();
     deleteTask ();
     completeTask();
+    createProjectDefault();
 }
 
 // Assigns unique IDs to each task card
@@ -367,7 +370,71 @@ function displayCompleted() {
             editTaskBtn.style["pointer-events"] = "none";
             // Delete button from taskList
             showDescription ();
-            deleteTask();
+            deleteTask ();
         }
     }
+}
+
+function createProjectDefault () {
+     for (let i = 0; i < taskList.length; i++) {
+        if (taskList[i].project === "Default") {    
+            // Update project folder title
+            document.getElementById("default-project").innerHTML = taskList[i].project;
+             // Update header title
+            document.getElementById("project-name").innerHTML = taskList[i].project;
+        }
+     }
+};
+
+const newProjectDialog = document.getElementById("project-form");
+
+(function createNewProject () {
+    document.getElementById("new-project").addEventListener("click", () => {
+        // Show modal
+        newProjectDialog.showModal();
+    })
+    // Project-form submit button
+    document.getElementById("edit-name").addEventListener("click", (e) => {
+        e.preventDefault();
+        // Get user input from form
+        let newProjectName = document.getElementById("new-project-name").value;
+        console.log(newProjectName);
+        // Clear form input
+        document.querySelector("#project-form > form").reset();
+        // Add input as a dropdown option when creating new task with new-task form
+        addProjectToTaskForm(newProjectName);
+        // Create a new project tab under My Projects
+        createProjectTab (newProjectName);
+        // Close modal
+        newProjectDialog.close();
+    });
+})();
+
+function addProjectToTaskForm (projectName) {
+    const newProjectOption = document.createElement("option");
+    const projectDropdown = document.getElementById("project");
+    newProjectOption.innerHTML = projectName;
+    projectDropdown.appendChild(newProjectOption);
+}
+
+
+function createProjectTab (projectName) {
+    // Create new elements
+    const tabLi = document.createElement("li");
+    const tabIcon = document.createElement("img");
+    tabLi.innerHTML = projectName;
+    tabLi.style.fontSize = "1.2rem";
+    tabIcon.src = chevronImage;
+    const myProjects = document.getElementById("my-projects");
+    myProjects.appendChild(tabIcon);
+    myProjects.appendChild(tabLi);
+}
+
+function createProjectPage () {
+    // Clear main
+    let clearCards = document.querySelectorAll(".task-cards");
+    for (let i = 0; i < clearCards.length; i++) {
+        clearCards[i].remove();
+    }
+    // Build DOM for the task cards for that project
 }
