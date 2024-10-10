@@ -360,6 +360,7 @@ function displayCompleted() {
             checkDiv.setAttribute("data-check-svg", "");
             titleDiv.setAttribute("class", "strikethrough");
             date.setAttribute("class", "strikethrough");
+            cardDiv.style.borderColor = setBorderColour(cardDiv, taskList[i].priority);
             // Disable checkDiv, edit button, and delete button events
             checkDiv.style["pointer-events"] = "none";
             editTaskBtn.style["pointer-events"] = "none";
