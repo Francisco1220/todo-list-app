@@ -38,8 +38,6 @@ submitTaskBtn.addEventListener("click", (e) => {
         }
         // Clear form inputs to prepare for new submission
         clearForm();
-        // Description button functionality
-        handleDescriptionBtn();
         // Delete button functionality
         deleteTask();
         // Complete task functionaliy
@@ -169,19 +167,20 @@ function handleDescriptionBtn () {
 
 
 function showDescription () {
-    const descriptionBtn = document.querySelectorAll(".show-description");
     const descriptionDialog = document.getElementById("description-modal");
-    for (let i = 0; i < descriptionBtn.length; i++) {
-        descriptionBtn[i].addEventListener("click", () => {
+    document.querySelector(".tasks-container").addEventListener("click", (e) => {
+        if (e.target.className === "show-description") {
+            let taskCard = e.target.parentElement.closest(".task-cards");
+            const {description} = getTaskObject(taskCard);
             // Show modal
             descriptionDialog.showModal();
             // Update description text
             const div = document.querySelector("#description-modal > div:first-child");
-            div.innerHTML = `${taskList[i].description}`;
+            div.innerHTML = `${description}`;
             // Add display of flex to modal
             descriptionDialog.style.display = "flex";
-        })
-    }
+        }
+    });
     return {descriptionDialog}
 }
 
@@ -464,14 +463,8 @@ function createProjectTab (projectName) {
                 setBorderColour(cardDiv, filteredArray[i].priority);
             }
             createDataAttributes(filteredArray);
+            // Description button functionality
+            handleDescriptionBtn();
         }
     })
 })();
-
-// Finish: 
-//  * Fix sidebar layout so that it's not so ugly
-//  * Project tabs section
-//  * Notes section
-//  * Add cleint-side verification to edit form
-//  * Modify client-side verification so that it doesn't allow date to be blank
-//  * Fix up styles
