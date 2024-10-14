@@ -122,7 +122,6 @@ function formatDate(date) {
     return {newDateFormat};
 }
 
-// MOVE THIS GUY TO createProjectPage() SO THAT DEFAULT TASKS ARE THERE WHEN PROJECT TAB IS SELECTED
 export function createDefault() {
     // Update title and date
     for (let i = 0; i < 2; i++) {
@@ -315,13 +314,12 @@ document.querySelector("li:nth-child(10)").addEventListener("click", () => {
     if (trueCounter > 0) {
         displayCompleted();
     }
-    // Clear header titles, header button icon
-    let clearTitle = document.getElementById("project-name");
-    clearTitle.remove();
-    let clearBtn = document.querySelector(".edit-project-name");
-    clearBtn.remove();
-    // Edit innerHTML of what was before "My Tasks"
-    document.querySelector(".header > h2").innerHTML = "Completed Tasks";
+    // Make header button invisible
+    let headerBtn = document.querySelector(".edit-project-name");
+    headerBtn.style.opacity = "0";
+    // Edit innerHTML of what was before the header title
+    let headerTitle = document.getElementById("project-name");
+    headerTitle.innerHTML = "Completed Tasks";
 })
 
 // Checks if there are zero completed tasks any if so, show the message from showNoCompleted()
@@ -435,6 +433,15 @@ function createProjectTab (projectName) {
 (function createProjectPage () {
     document.getElementById("my-projects").addEventListener("click", (e) => {
         if (e.target.tagName === "LI") {
+            // First check if the p element(no-completed) exists
+            if (document.querySelector(".no-completed")) {
+                console.log("element exists");
+                // Remove element
+                document.querySelector(".no-completed").remove();
+                // Bring back headerBtn
+                let headerBtn = document.querySelector(".edit-project-name");
+                headerBtn.style.opacity = "10";
+            }
             let currentProjectName = e.target.innerHTML;
             // Update header title
             console.log(currentProjectName);
