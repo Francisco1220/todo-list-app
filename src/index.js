@@ -1,6 +1,6 @@
 // Imported files
 import "./style.css";
-import {newTask, getTaskInput, createDefault, getEditInputs} from "./dom.js";
+import {newTask, getTaskInput, getEditInputs, createDefault} from "./dom.js";
 
 // Application Logic goes here (creating new todos, setting todos as complete, changing todo priority)
 
@@ -102,4 +102,11 @@ export function updateTaskCompleted (element) {
             taskList[i].completed = true;
         }
     }
+}
+
+export function getProjectInfo (projectName) {
+    let filteredArray = taskList.filter(function(task) {
+        return task.project === projectName
+    });
+    return {filteredArray}
 }

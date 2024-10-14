@@ -2,7 +2,7 @@
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
-import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted} from "./index.js"
+import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted, getProjectInfo} from "./index.js"
 import { format } from "date-fns";
 
 import chevronImage from "./assets/icons/chevron-right.svg"
@@ -25,12 +25,19 @@ submitTaskBtn.addEventListener("click", (e) => {
         dialog.close();
         // Create task objects
         createTask();
-        // Update task card UI
-        updateCardUI();
+        // Update task card UI if the created task is "Default" Project
+        const {projectVal} = getTaskInput();
+        if (projectVal === "Default") {
+            // Creates task cards
+            const {titleDiv, date} = createCards();
+            // Insert title, date, and priority from user data into DOM
+            createCardTxt (titleDiv, date);
+            const borderDiv = document.querySelector(".task-cards:last-child");
+            const {priorityVal} = getTaskInput();
+            setBorderColour(borderDiv, priorityVal);
+        }
         // Clear form inputs to prepare for new submission
         clearForm();
-        // Update project name 
-        updateProjectName();
         // Description button functionality
         handleDescriptionBtn();
         // Delete button functionality
@@ -94,9 +101,10 @@ function createCards () {
 function createCardTxt (firstDiv, secondDiv) {
     // Access last element from the array and use that to update title
     let lastElIndex = taskList.length - 1;
+    // Checks whether the new task is default project or not
     // Update title and date
     firstDiv.innerHTML = `${taskList[lastElIndex].title}`;
-        // Reformat date using date-fns
+    // Reformat date using date-fns
     let oldDateFormat = taskList[lastElIndex].dueDate;
     formatDate(oldDateFormat);
     const {newDateFormat} = formatDate(oldDateFormat);
@@ -114,16 +122,7 @@ function formatDate(date) {
     return {newDateFormat};
 }
 
-function updateCardUI() {
-    // Creates task cards
-    const {titleDiv, date} = createCards();
-    // Insert title, date, and priority from user data into DOM
-    createCardTxt (titleDiv, date);
-    const borderDiv = document.querySelector(".task-cards:last-child");
-    const {priorityVal} = getTaskInput();
-    setBorderColour(borderDiv, priorityVal);
-}
-
+// MOVE THIS GUY TO createProjectPage() SO THAT DEFAULT TASKS ARE THERE WHEN PROJECT TAB IS SELECTED
 export function createDefault() {
     // Update title and date
     for (let i = 0; i < 2; i++) {
@@ -140,14 +139,15 @@ export function createDefault() {
     handleDescriptionBtn();
     deleteTask ();
     completeTask();
-    createProjectDefault();
+    createDataAttributes(taskList);
 }
 
-// Assigns unique IDs to each task card
-function createDataAttributes() {
+// Assigns unique IDs to each task card (for deletion of task card from list, getting the task object to prefill form, updating the task list when done editing, and marking completed tasks)
+function createDataAttributes(arr) {
     const taskCards = document.querySelectorAll(".task-cards");
+    console.log(taskCards);
     for (let i = 0; i < taskCards.length; i++) {
-        taskCards[i].setAttribute("data-id",`${taskList[i].title}`);
+        taskCards[i].setAttribute("data-id",`${arr[i].title}`);
     }
 }
 
@@ -156,9 +156,9 @@ function setBorderColour (border, priority) {
     if (priority === "High") {
         border.style.borderColor = "red";
     } else if (priority === "Medium") {
-        border.style.borderColor = "green";
-    } else if (priority === "Low") {
         border.style.borderColor = "yellow";
+    } else if (priority === "Low") {
+        border.style.borderColor = "green";
     }
 }
 
@@ -201,15 +201,13 @@ function clearForm () {
     taskForm.reset();
 }
 
-function updateProjectName() {
+function updateProjectName(projectName) {
     const headerTitle = document.getElementById("project-name");
-    let index = taskList.length - 1
-    headerTitle.innerHTML = taskList[index].project;
+    console.log(headerTitle);
+    headerTitle.innerHTML = projectName;
 }
 
 function deleteTask () {
-    // Set data attributes for each task card
-    createDataAttributes();
     // Make use of event bubbling to know which task card to delete
     document.querySelector(".tasks-container").addEventListener("click", (e) => {
         // Get element to be deleted
@@ -274,7 +272,7 @@ export function getEditInputs() {
 // Get previously completed task-form data and prefill edit-task form
 function prefillForm(el) {
             let getTaskObjects = getTaskObject(el);
-            const {title, description, priority} = getTaskObjects;
+            const {title, description, priority, project} = getTaskObjects;
             
             let titleInput = document.getElementById("edit-title");
             titleInput.value = title;
@@ -282,6 +280,8 @@ function prefillForm(el) {
             descriptionInput.value = description;
             let priorityInput = document.getElementById("edit-priority");
             priorityInput.value = priority;
+            let projectInput = document.getElementById("edit-project");
+            projectInput = project;
 }
 
 function completeTask() {
@@ -375,17 +375,6 @@ function displayCompleted() {
     }
 }
 
-function createProjectDefault () {
-     for (let i = 0; i < taskList.length; i++) {
-        if (taskList[i].project === "Default") {    
-            // Update project folder title
-            document.getElementById("default-project").innerHTML = taskList[i].project;
-             // Update header title
-            document.getElementById("project-name").innerHTML = taskList[i].project;
-        }
-     }
-};
-
 const newProjectDialog = document.getElementById("project-form");
 
 (function createNewProject () {
@@ -403,6 +392,8 @@ const newProjectDialog = document.getElementById("project-form");
         document.querySelector("#project-form > form").reset();
         // Add input as a dropdown option when creating new task with new-task form
         addProjectToTaskForm(newProjectName);
+        // Add input as a dropdown option when editing task card with edit-task form
+        addProjectToEditForm (newProjectName);
         // Create a new project tab under My Projects
         createProjectTab (newProjectName);
         // Close modal
@@ -411,18 +402,28 @@ const newProjectDialog = document.getElementById("project-form");
 })();
 
 function addProjectToTaskForm (projectName) {
+    // Add to task form
     const newProjectOption = document.createElement("option");
     const projectDropdown = document.getElementById("project");
     newProjectOption.innerHTML = projectName;
     projectDropdown.appendChild(newProjectOption);
 }
 
+function addProjectToEditForm (projectName) {
+    // Add to edit task form
+    const newProjectOption = document.createElement("option");
+    const projectDropdown = document.getElementById("edit-project");
+    newProjectOption.innerHTML = projectName;
+    newProjectOption.setAttribute("selected", "selected");
+    projectDropdown.appendChild(newProjectOption);
+}
 
 function createProjectTab (projectName) {
     // Create new elements
     const tabLi = document.createElement("li");
     const tabIcon = document.createElement("img");
     tabLi.innerHTML = projectName;
+    tabLi.setAttribute("class", "projects");
     tabLi.style.fontSize = "1.2rem";
     tabIcon.src = chevronImage;
     const myProjects = document.getElementById("my-projects");
@@ -430,11 +431,40 @@ function createProjectTab (projectName) {
     myProjects.appendChild(tabLi);
 }
 
-function createProjectPage () {
-    // Clear main
-    let clearCards = document.querySelectorAll(".task-cards");
-    for (let i = 0; i < clearCards.length; i++) {
-        clearCards[i].remove();
-    }
-    // Build DOM for the task cards for that project
-}
+// Creates the project page when a project tab is clicked
+(function createProjectPage () {
+    document.getElementById("my-projects").addEventListener("click", (e) => {
+        if (e.target.tagName === "LI") {
+            let currentProjectName = e.target.innerHTML;
+            // Update header title
+            console.log(currentProjectName);
+            updateProjectName(currentProjectName);
+            // Clear main
+            let clearCards = document.querySelectorAll(".task-cards");
+            for (let i = 0; i < clearCards.length; i++) {
+                clearCards[i].remove();
+            }
+            // Update DOM with respective taskList object that coincides with the name of the current project
+                // Filter tasks that match currentProjectName
+            const {filteredArray} = getProjectInfo (currentProjectName);
+            for (let i = 0; i < filteredArray.length; i++) {
+                // Create taskCards
+                const {titleDiv, date, cardDiv} = createCards();
+                titleDiv.innerHTML = filteredArray[i].title;
+                let oldDateFormat = filteredArray[i].dueDate;
+                const {newDateFormat} = formatDate(oldDateFormat);
+                date.innerHTML = newDateFormat;
+                setBorderColour(cardDiv, filteredArray[i].priority);
+            }
+            createDataAttributes(filteredArray);
+        }
+    })
+})();
+
+// Finish: 
+//  * Fix sidebar layout so that it's not so ugly
+//  * Project tabs section
+//  * Notes section
+//  * Add cleint-side verification to edit form
+//  * Modify client-side verification so that it doesn't allow date to be blank
+//  * Fix up styles
