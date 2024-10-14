@@ -306,7 +306,9 @@ dialog::backdrop {
 
 ul > li:nth-child(6):hover,
 ul > li:nth-child(8):hover,
-ul > li:nth-child(10):hover {
+ul > li:nth-child(10):hover,
+.projects:hover,
+#default-project:hover {
     color: var(--main-color);
     opacity: 0.4;
 }
