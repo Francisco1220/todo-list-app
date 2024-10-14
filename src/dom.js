@@ -240,23 +240,18 @@ document.getElementById("edit-task").addEventListener("click", (e) => {
     // Update TaskList
     updateTaskList(elToEdit);
     // Remove previous data attribute and replace with new one
-    const {titleVal, priorityVal} = getEditInputs ();
+    const {titleVal, dueDateVal, priorityVal} = getEditInputs();
     elToEdit.dataset.id = titleVal;
-    // Update DOM elements by first getting titleDiv and dateDiv
-    let titleDiv = elToEdit.querySelector(".task-title");
-    let dateDiv = elToEdit.querySelector(".date");
-    updateDOM(titleDiv, dateDiv);
+    // Update DOM elements
+    elToEdit.querySelector(".task-title").innerHTML = titleVal;
+    let oldDateFormat = dueDateVal;
+    const {newDateFormat} = formatDate(oldDateFormat);
+    elToEdit.querySelector(".date").innerHTML = newDateFormat;
+    setBorderColour(elToEdit, priorityVal);
     // Close modal
     editDialog.close();
 })
 
-function updateDOM (title, date) {
-    // Update task card details
-    createCardTxt (title, date);
-    // Update priority colour
-    const {priorityVal} = getEditInputs ();
-    setBorderColour(elToEdit, priorityVal);
-}
 // Get edit-task form inputs and update the taskList with the new values
 export function getEditInputs() {
     const titleVal = document.getElementById("edit-title").value;
