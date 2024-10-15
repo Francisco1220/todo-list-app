@@ -106,7 +106,9 @@ export function updateTaskCompleted (element) {
 
 export function getProjectInfo (projectName) {
     let filteredArray = taskList.filter(function(task) {
-        return task.project === projectName
+        if (task.completed === false) {
+            return task.project === projectName;
+        }
     });
     return {filteredArray}
 }
