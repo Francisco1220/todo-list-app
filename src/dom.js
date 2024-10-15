@@ -38,6 +38,7 @@ submitTaskBtn.addEventListener("click", (e) => {
         }
         // Clear form inputs to prepare for new submission
         clearForm();
+        createDataAttributes(taskList);
     }
 })
 
@@ -280,6 +281,8 @@ function prefillForm(el) {
             // Get the task card that's completed
             elToComplete = e.target.parentElement;
             // Update taskList 
+            console.log(elToComplete);
+            console.log(elToComplete.getAttribute("data-id"));
             updateTaskCompleted(elToComplete);
             // Update DOM, ie. remove completed task
             elToComplete.remove();
@@ -447,6 +450,7 @@ function createProjectTab (projectName) {
             // Update DOM with respective taskList object that coincides with the name of the current project
                 // Filter tasks that match currentProjectName
             const {filteredArray} = getProjectInfo (currentProjectName);
+            console.log(filteredArray);
             for (let i = 0; i < filteredArray.length; i++) {
                 // Create taskCards
                 const {titleDiv, date, cardDiv} = createCards();
