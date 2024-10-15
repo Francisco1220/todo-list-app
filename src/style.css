@@ -76,7 +76,6 @@ li {
 .header {
     display: grid;
     grid-template-columns: auto 1fr;
-    column-gap: 8px;
     row-gap: 12px;
     margin-left: 15px;
 }
@@ -285,12 +284,14 @@ label {
     justify-self: center;
 }
 
-.edit-project-name {
+.delete-project {
     width: 20px;
     height: 30px;
     border: none;
+    margin-left: -10px;
+    margin-top: 5px;
     background-color: var(--main-color);
-    background-image: url("./assets/icons/edit-pen.svg"); 
+    background-image: url("./assets/icons/delete.svg"); 
     background-repeat: no-repeat;
     background-origin: border-box;
     background-position: center;
