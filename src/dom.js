@@ -112,7 +112,7 @@ function createCardTxt (firstDiv, secondDiv) {
 function formatDate(date) {
     const dateArr = date.split("-");
     let year = dateArr[0];
-    let month = dateArr[1];
+    let month = dateArr[1] - 1;
     let day = dateArr[2];
     const dateObj = new Date(year, month, day);
     // date using date-fns
