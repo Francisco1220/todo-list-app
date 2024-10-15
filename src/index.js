@@ -112,3 +112,12 @@ export function getProjectInfo (projectName) {
     });
     return {filteredArray}
 }
+
+export function deleteCompleted (element) {
+    for(let i = 0; i < taskList.length; i++) {
+        if (taskList[i].title === element) {
+            taskList.splice(i, 1);
+        }
+    }
+}
+

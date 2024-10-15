@@ -2,7 +2,7 @@
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
-import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted, getProjectInfo} from "./index.js"
+import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted, getProjectInfo, deleteCompleted} from "./index.js"
 import { format } from "date-fns";
 
 import chevronImage from "./assets/icons/chevron-right.svg"
@@ -284,8 +284,12 @@ function prefillForm(el) {
             // Update DOM, ie. remove completed task
             elToComplete.remove();
         }
+        // Delete task from list if delete button is clicked
+        if (e.target.className === "delete-task") {
+            const elToDelete = e.target.parentElement.closest(".task-cards").querySelector("p").innerHTML;
+            deleteCompleted(elToDelete);
+        }
     })
-    return {elToComplete}
 })();
 
 
@@ -458,9 +462,3 @@ function createProjectTab (projectName) {
         }
     })
 })();
-
-// BUG: Completed tasks not getting deleted in DOM
-// BUG: Completed tasks not appearing in completed page
-// Add edit project name functionality
-// Add notes functionality
-// Add edit notes functionality
