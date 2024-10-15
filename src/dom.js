@@ -38,8 +38,6 @@ submitTaskBtn.addEventListener("click", (e) => {
         }
         // Clear form inputs to prepare for new submission
         clearForm();
-        // Complete task functionaliy
-        completeTask();
     }
 })
 
@@ -132,7 +130,6 @@ export function createDefault() {
         setBorderColour(cardDiv, taskList[i].priority);
     }
     handleDescriptionBtn();
-    completeTask();
     createDataAttributes(taskList);
 }
 
@@ -276,7 +273,7 @@ function prefillForm(el) {
             projectInput = project;
 }
 
-function completeTask() {
+(function completeTask() {
     let elToComplete;
     document.querySelector(".tasks-container").addEventListener("click", (e) => {
         if (e.target.className === "circle-check") {
@@ -289,7 +286,7 @@ function completeTask() {
         }
     })
     return {elToComplete}
-}
+})();
 
 
 // Come back to change project name feature later
