@@ -121,3 +121,10 @@ export function deleteCompleted (element) {
     }
 }
 
+export function deleteProject (element) {
+    for (let i = 0; i < taskList.length; i++) {
+        if (taskList[i].project === element) {
+            taskList.splice(i, 1);
+        }
+    }
+}

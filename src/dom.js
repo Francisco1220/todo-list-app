@@ -2,7 +2,7 @@
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
-import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted, getProjectInfo, deleteCompleted} from "./index.js"
+import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted, getProjectInfo, deleteCompleted, deleteProject} from "./index.js"
 import { format } from "date-fns";
 
 import chevronImage from "./assets/icons/chevron-right.svg"
@@ -312,7 +312,7 @@ document.querySelector("li:nth-child(10)").addEventListener("click", () => {
         displayCompleted();
     }
     // Make header button invisible
-    let headerBtn = document.querySelector(".edit-project-name");
+    let headerBtn = document.querySelector(".delete-project");
     headerBtn.style.opacity = "0";
     // Edit innerHTML of what was before the header title
     let headerTitle = document.getElementById("project-name");
@@ -419,6 +419,7 @@ function createProjectTab (projectName) {
     tabLi.innerHTML = projectName;
     tabLi.setAttribute("class", "projects");
     tabLi.style.fontSize = "1.2rem";
+    tabIcon.setAttribute("class", "project-icon");
     tabIcon.src = chevronImage;
     const myProjects = document.getElementById("my-projects");
     myProjects.appendChild(tabIcon);
@@ -435,7 +436,7 @@ function createProjectTab (projectName) {
                 // Remove element
                 document.querySelector(".no-completed").remove();
                 // Bring back headerBtn
-                let headerBtn = document.querySelector(".edit-project-name");
+                let headerBtn = document.querySelector(".delete-project");
                 headerBtn.style.opacity = "10";
             }
             let currentProjectName = e.target.innerHTML;
@@ -467,7 +468,37 @@ function createProjectTab (projectName) {
     })
 })();
 
-// BUG: new tasks not appearing in project tab (in DOM)
-// Add edit project name functionality
-// Add notes functionality
-// Add edit notes functionality
+document.querySelector(".delete-project").addEventListener("click", (e) => {
+    let projectToDelete = e.target.parentElement.querySelector("#project-name").innerHTML;
+    if (projectToDelete === "Default") {
+        alert("Default Project folder cannot be deleted");
+    } else {
+        console.log(projectToDelete);
+        // Delete from DOM
+            // Clear main
+        let clearCards = document.querySelectorAll(".task-cards");
+        for (let i = 0; i < clearCards.length; i++) {
+            clearCards[i].remove();
+        }
+            // delete project folder tab from my projects
+        deleteProjectTab (projectToDelete)
+        // Delete from taskList
+        deleteProject(projectToDelete);
+    }
+})
+
+function deleteProjectTab (element) {
+    let projects = document.querySelectorAll(".projects");
+    let projectIcons = document.querySelectorAll(".project-icon");
+    console.log(projectIcons);
+    // Delete
+    for (let i = 0; i < projects.length; i++) {
+        if (projects[i].innerHTML === element) {
+            projects[i].remove();
+            projectIcons[i].remove();
+        }
+    }
+    // Switch to default tab
+    let defaultTab = document.getElementById("my-projects").querySelector("#default-project");
+    defaultTab.click();
+}
