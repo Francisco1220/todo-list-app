@@ -38,8 +38,6 @@ submitTaskBtn.addEventListener("click", (e) => {
         }
         // Clear form inputs to prepare for new submission
         clearForm();
-        // Delete button functionality
-        deleteTask();
         // Complete task functionaliy
         completeTask();
     }
@@ -134,7 +132,6 @@ export function createDefault() {
         setBorderColour(cardDiv, taskList[i].priority);
     }
     handleDescriptionBtn();
-    deleteTask ();
     completeTask();
     createDataAttributes(taskList);
 }
@@ -205,19 +202,21 @@ function updateProjectName(projectName) {
     headerTitle.innerHTML = projectName;
 }
 
-function deleteTask () {
+(function deleteTask () {
     // Make use of event bubbling to know which task card to delete
     document.querySelector(".tasks-container").addEventListener("click", (e) => {
         // Get element to be deleted
         if (e.target.className === "delete-task") {
             let elToRemove = e.target.parentElement.closest(".task-cards");
+            console.log(elToRemove);
+            console.log(elToRemove.getAttribute("data-id"));
             // Remove element from library
             deleteFromLibrary(elToRemove);
             // Remove element from DOM
             elToRemove.remove();
         }
     })
-}
+})();
 
 const editDialog = document.getElementById("edit-form");
 let elToEdit;
@@ -357,12 +356,11 @@ function displayCompleted() {
             date.setAttribute("class", "strikethrough");
             cardDiv.style.borderColor = setBorderColour(cardDiv, taskList[i].priority);
             editTaskBtn.style.opacity = "0.2";
-            // Disable checkDiv and edit button events
+            descriptionBtn.style.opacity = "0.2";
+            // Disable checkDiv, description button, and edit button events
             checkDiv.style["pointer-events"] = "none";
             editTaskBtn.style["pointer-events"] = "none";
-            // Delete button from taskList
-            showDescription ();
-            deleteTask ();
+            descriptionBtn.style["pointer-events"] = "none";
         }
     }
 }
@@ -463,3 +461,9 @@ function createProjectTab (projectName) {
         }
     })
 })();
+
+// BUG: Completed tasks not getting deleted in DOM
+// BUG: Completed tasks not appearing in completed page
+// Add edit project name functionality
+// Add notes functionality
+// Add edit notes functionality
