@@ -52,7 +52,7 @@ function addTaskToList (...task) {
 // Dynamically create object instance for every task upon completing task form
 export function createTask() {
     const {titleVal, priorityVal, descriptionVal, projectVal, dueDateVal} = getTaskInput();
-    addTaskToList(new Task(titleVal, descriptionVal, dueDateVal, priorityVal, projectVal));
+    addTaskToList(new Task(titleVal, descriptionVal, dueDateVal, priorityVal, projectVal, false));
 }
 
 export function deleteFromLibrary(element) {
@@ -106,6 +106,8 @@ export function updateTaskCompleted (element) {
 
 export function getProjectInfo (projectName) {
     let filteredArray = taskList.filter(function(task) {
+        console.log(task.completed);
+        console.log(task.project);
             return task.project === projectName && task.completed === false;
     });
     return {filteredArray}

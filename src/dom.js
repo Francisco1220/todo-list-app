@@ -466,3 +466,8 @@ function createProjectTab (projectName) {
         }
     })
 })();
+
+// BUG: new tasks not appearing in project tab (in DOM)
+// Add edit project name functionality
+// Add notes functionality
+// Add edit notes functionality
