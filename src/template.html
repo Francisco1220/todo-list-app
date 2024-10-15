@@ -30,7 +30,6 @@
                     <div id="my-projects">
                         <img src="./assets/icons/folders.svg" alt="">
                         <li class="title" id="project-tabs">My Projects</li>
-                        <!--Project folder divs will be created in DOM via Javascript. Only for show-->
                         <img src="./assets/icons/chevron-right.svg" alt="">
                         <li id="default-project">Default</li>
                     </div>
@@ -38,7 +37,6 @@
             </div>
             <div class="main">
                 <div class="header">
-                    <!--Project name will be updated in DOM via Javascript-->
                     <h2 id="project-name">Default</h2>
                     <button class="delete-project"></button>
                     <h2>My Tasks</h2>
@@ -49,10 +47,9 @@
             </div>
             <div class="notes">
                 <p class="title">Notes
-                    <img src="./assets/icons/edit-pen.svg" alt="">
+                    <button class="edit-notesBtn"></button>
                 </p>
-                <!--Notes will be edited in DOM via Javascript-->
-                <p class="text-area">blablabla</p>
+                <p class="notes-area"></p>
             </div>
             <dialog id="task-form">
                 <form>
@@ -72,7 +69,6 @@
                     <label>Choose Project Folder</label>
                         <select class="dropdown" id="project" required>
                             <option value="Default">Default</option>
-                            <!-- <option>Project 2</option> -->
                         </select>
                         <button type="submit" id="create-task">Create</button>
                 </form>
@@ -110,6 +106,13 @@
             <dialog id="description-modal">
                 <div></div>
                 <button id="close-btn"></button>
+            </dialog>
+            <dialog id="notes-modal">
+                <form>
+                    <label>Type Note Here:</label>
+                    <textarea></textarea>
+                    <button id="notesBtn">Confirm</button>
+                </form>
             </dialog>
             
         </div>

@@ -22,13 +22,14 @@ export function checkFormComplete (firstVal, secondVal) {
 }
 
 class Task {
-    constructor(title, description, dueDate, priority, project, completed) {
+    constructor(title, description, dueDate, priority, project, completed, notes) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.project = project;
         this.completed = completed;
+        this.notes = notes;
     }
 }
 

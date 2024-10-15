@@ -502,3 +502,26 @@ function deleteProjectTab (element) {
     let defaultTab = document.getElementById("my-projects").querySelector("#default-project");
     defaultTab.click();
 }
+
+let notesModal = document.getElementById("notes-modal");
+
+document.querySelector(".edit-notesBtn").addEventListener("click", () => {
+    // Open modal
+    notesModal.showModal();
+    // Get notes input
+    getNotesInput ()
+})
+
+function getNotesInput () {
+    let textAreaInput;
+    document.getElementById("notesBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        textAreaInput = document.querySelector("textarea").value;
+        // Close modal
+        notesModal.close();
+        // Update DOM
+        // Display to DOM
+        let notes = document.querySelector(".notes-area");
+        notes.innerHTML = textAreaInput;
+    })
+}
