@@ -233,19 +233,23 @@ document.querySelector(".tasks-container").addEventListener("click", (e) => {
 // If submit task button clicked: close modal, update DOM elements, update taskList
 document.getElementById("edit-task").addEventListener("click", (e) => {
     e.preventDefault();
-    // Update TaskList
-    updateTaskList(elToEdit);
-    // Remove previous data attribute and replace with new one
     const {titleVal, dueDateVal, priorityVal} = getEditInputs();
-    elToEdit.dataset.id = titleVal;
-    // Update DOM elements
-    elToEdit.querySelector(".task-title").innerHTML = titleVal;
-    let oldDateFormat = dueDateVal;
-    const {newDateFormat} = formatDate(oldDateFormat);
-    elToEdit.querySelector(".date").innerHTML = newDateFormat;
-    setBorderColour(elToEdit, priorityVal);
-    // Close modal
-    editDialog.close();
+    // Update TaskList
+    if (titleVal === "" || priorityVal === "" || dueDateVal === "") {
+        alert('Please make sure you have filled out "Title", "Priority", and "Due Date"');
+    } else {
+        updateTaskList(elToEdit);
+        // Remove previous data attribute and replace with new one
+        elToEdit.dataset.id = titleVal;
+        // Update DOM elements
+        elToEdit.querySelector(".task-title").innerHTML = titleVal;
+        let oldDateFormat = dueDateVal;
+        const {newDateFormat} = formatDate(oldDateFormat);
+        elToEdit.querySelector(".date").innerHTML = newDateFormat;
+        setBorderColour(elToEdit, priorityVal);
+        // Close modal
+        editDialog.close();
+    }
 })
 
 // Get edit-task form inputs and update the taskList with the new values
@@ -524,6 +528,7 @@ function getNotesInput () {
     })
 }
 
-// Fix up styles
+// Add to client-side verification check to make sure calendar date is chosen
 // Add client-side verification for edit task form and project form
-// Make sidebar less ugly than it is right now
+// When edit task form clicked, update date with chosen date for that task
+// Make layout more responsive
