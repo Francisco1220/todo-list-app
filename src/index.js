@@ -7,13 +7,11 @@ import {newTask, getTaskInput, getEditInputs, createDefault} from "./dom.js";
 // Tasks stored as an array of objects
 export const taskList = [];
 
-export function checkFormComplete (firstVal, secondVal) {
-    const {titleVal, priorityVal} = getTaskInput();
-    firstVal = titleVal;
-    secondVal = priorityVal;
+export function checkFormComplete () {
+    const {titleVal, priorityVal, dueDateVal} = getTaskInput();
     let closeDialog = false;
-    let alertMessage = "Please make sure you have filled out 'Title' and 'Priority'";
-    if (firstVal === "" || secondVal === "default") {
+    let alertMessage = 'Please make sure you have filled out "Title", "Priority", and "Due Date"';
+    if (titleVal === "" || priorityVal === "default" || dueDateVal === "") {
         closeDialog = false;
     } else {
         closeDialog = true;
