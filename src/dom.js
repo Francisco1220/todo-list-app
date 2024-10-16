@@ -32,9 +32,9 @@ submitTaskBtn.addEventListener("click", (e) => {
             const {titleDiv, date} = createCards();
             // Insert title, date, and priority from user data into DOM
             createCardTxt (titleDiv, date);
-            const borderDiv = document.querySelector(".task-cards:last-child");
+            const cardDiv = document.querySelector(".task-cards:last-child");
             const {priorityVal} = getTaskInput();
-            setBorderColour(borderDiv, priorityVal);
+            setBorderColour(cardDiv, priorityVal);
         }
         // Clear form inputs to prepare for new submission
         clearForm();
@@ -73,7 +73,6 @@ function createCards () {
     titleDiv.insertAdjacentElement("afterend", cardOptionsDiv);
 
     const descriptionBtn = document.createElement("button");
-    descriptionBtn.innerHTML = "description";
     descriptionBtn.setAttribute("class", "show-description");
     cardOptionsDiv.appendChild(descriptionBtn);
 
@@ -143,14 +142,14 @@ function createDataAttributes(arr) {
     }
 }
 
-function setBorderColour (border, priority) {
+function setBorderColour (card, priority) {
     // Get the task-card div that's created
     if (priority === "High") {
-        border.style.borderColor = "red";
+        card.style.backgroundColor = "#F2B8B5";
     } else if (priority === "Medium") {
-        border.style.borderColor = "yellow";
+        card.style.backgroundColor = "#F7E3B5";
     } else if (priority === "Low") {
-        border.style.borderColor = "green";
+        card.style.backgroundColor = "#B2DFDB";
     }
 }
 
@@ -471,7 +470,7 @@ function createProjectTab (projectName) {
 document.querySelector(".delete-project").addEventListener("click", (e) => {
     let projectToDelete = e.target.parentElement.querySelector("#project-name").innerHTML;
     if (projectToDelete === "Default") {
-        alert("Default Project folder cannot be deleted");
+        alert("Default project folder cannot be deleted");
     } else {
         console.log(projectToDelete);
         // Delete from DOM
@@ -519,9 +518,12 @@ function getNotesInput () {
         textAreaInput = document.querySelector("textarea").value;
         // Close modal
         notesModal.close();
-        // Update DOM
         // Display to DOM
         let notes = document.querySelector(".notes-area");
         notes.innerHTML = textAreaInput;
     })
 }
+
+// Fix up styles
+// Add client-side verification for edit task form and project form
+// Make sidebar less ugly than it is right now
