@@ -384,17 +384,20 @@ const newProjectDialog = document.getElementById("project-form");
         e.preventDefault();
         // Get user input from form
         let newProjectName = document.getElementById("new-project-name").value;
-        console.log(newProjectName);
-        // Clear form input
-        document.querySelector("#project-form > form").reset();
-        // Add input as a dropdown option when creating new task with new-task form
-        addProjectToTaskForm(newProjectName);
-        // Add input as a dropdown option when editing task card with edit-task form
-        addProjectToEditForm (newProjectName);
-        // Create a new project tab under My Projects
-        createProjectTab (newProjectName);
-        // Close modal
-        newProjectDialog.close();
+        if (newProjectName === "") {
+            alert("Project name cannot be empty");
+        } else {
+            // Clear form input
+            document.querySelector("#project-form > form").reset();
+            // Add input as a dropdown option when creating new task with new-task form
+            addProjectToTaskForm(newProjectName);
+            // Add input as a dropdown option when editing task card with edit-task form
+            addProjectToEditForm (newProjectName);
+            // Create a new project tab under My Projects
+            createProjectTab (newProjectName);
+            // Close modal
+            newProjectDialog.close();
+        }
     });
 })();
 
@@ -528,7 +531,3 @@ function getNotesInput () {
     })
 }
 
-// Add to client-side verification check to make sure calendar date is chosen
-// Add client-side verification for edit task form and project form
-// When edit task form clicked, update date with chosen date for that task
-// Make layout more responsive
