@@ -265,7 +265,7 @@ export function getEditInputs() {
 // Get previously completed task-form data and prefill edit-task form
 function prefillForm(el) {
             let getTaskObjects = getTaskObject(el);
-            const {title, description, priority, project} = getTaskObjects;
+            const {title, description, priority, project, dueDate} = getTaskObjects;
             
             let titleInput = document.getElementById("edit-title");
             titleInput.value = title;
@@ -275,6 +275,8 @@ function prefillForm(el) {
             priorityInput.value = priority;
             let projectInput = document.getElementById("edit-project");
             projectInput = project;
+            let dateInput = document.getElementById("edit-date");
+            dateInput.value = dueDate;
 }
 
 (function completeTask() {
@@ -530,4 +532,3 @@ function getNotesInput () {
         notes.innerHTML = textAreaInput;
     })
 }
-

@@ -42,7 +42,7 @@ function addTaskToList (...task) {
 // Create default task instances
 (function createDefaultTasks() {
     const defaultTask1 = new Task("Wash car", "use a mild soap", "2024-10-12", "High", "Default", false);
-    const defaultTask2 = new Task("Buy groceries", "Need to buy chicken, eggs, rice, tomatoes, and apples", "2024-10-8", "Medium", "Default", false);
+    const defaultTask2 = new Task("Buy groceries", "Need to buy chicken, eggs, rice, tomatoes, and apples", "2024-10-08", "Medium", "Default", false);
     addTaskToList(defaultTask1);
     addTaskToList(defaultTask2);
     createDefault();
@@ -79,7 +79,7 @@ export function getTaskObject(element) {
             dueDate = taskList[i].dueDate;
         }
     }
-    return {title, description, project, priority}
+    return {title, description, project, priority, dueDate}
 }
 
 export function updateTaskList (element) {
