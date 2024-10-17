@@ -32,7 +32,7 @@ submitTaskBtn.addEventListener("click", (e) => {
         // Update task card UI if the created task is "Default" Project
         const {projectVal} = getTaskInput();
         // updatePage with new task card if the current page is not "Default" project
-        updatePage(projectVal);
+        refreshPage(projectVal);
         if (projectVal === "Default") {
             // Creates task cards
             const {titleDiv, date} = createCards();
@@ -44,13 +44,14 @@ submitTaskBtn.addEventListener("click", (e) => {
         }
         // Clear form inputs to prepare for new submission
         clearForm();
+        // Create data attributes
         createDataAttributes(taskList);
     }
 });
 
 // Updates project page with new task when one is created
 function refreshPage (projectVal) {
-        if (currentProjectName === projectVal) {
+        if (currentProjectName === projectVal && projectVal !== "Default") {
             // Get the project tab that corresponds with projectVal
             let projects = document.querySelectorAll("#my-projects > li");
             for (let i = 0; i < projects.length; i++) {
