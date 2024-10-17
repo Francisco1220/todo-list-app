@@ -12,7 +12,11 @@ newTask.addEventListener("click", () => {
     dialog.showModal();
 })
 
+let currentProjectName = "Default";
+// let taskSubmit = false;
+
 submitTaskBtn.addEventListener("click", (e) => {
+    // taskSubmit = true;
     // closes modal
     e.preventDefault();
     // client-side validation (check that inputs are completed)
@@ -27,6 +31,8 @@ submitTaskBtn.addEventListener("click", (e) => {
         createTask();
         // Update task card UI if the created task is "Default" Project
         const {projectVal} = getTaskInput();
+        // updatePage with new task card if the current page is not "Default" project
+        updatePage(projectVal);
         if (projectVal === "Default") {
             // Creates task cards
             const {titleDiv, date} = createCards();
@@ -40,7 +46,21 @@ submitTaskBtn.addEventListener("click", (e) => {
         clearForm();
         createDataAttributes(taskList);
     }
-})
+});
+
+// Updates project page with new task when one is created
+function refreshPage (projectVal) {
+        if (currentProjectName === projectVal) {
+            // Get the project tab that corresponds with projectVal
+            let projects = document.querySelectorAll("#my-projects > li");
+            for (let i = 0; i < projects.length; i++) {
+                if (projects[i].innerHTML === projectVal) {
+                    // Initiate click event programatically
+                    projects[i].click();
+                }
+            }
+        }
+}
 
 // Gets the user data from the form and exports it to index.js
 export function getTaskInput () {
@@ -136,7 +156,6 @@ export function createDefault() {
 // Assigns unique IDs to each task card (for deletion of task card from list, getting the task object to prefill form, updating the task list when done editing, and marking completed tasks)
 function createDataAttributes(arr) {
     const taskCards = document.querySelectorAll(".task-cards");
-    console.log(taskCards);
     for (let i = 0; i < taskCards.length; i++) {
         taskCards[i].setAttribute("data-id",`${arr[i].title}`);
     }
@@ -195,7 +214,6 @@ function clearForm () {
 
 function updateProjectName(projectName) {
     const headerTitle = document.getElementById("project-name");
-    console.log(headerTitle);
     headerTitle.innerHTML = projectName;
 }
 
@@ -205,8 +223,6 @@ function updateProjectName(projectName) {
         // Get element to be deleted
         if (e.target.className === "delete-task") {
             let elToRemove = e.target.parentElement.closest(".task-cards");
-            console.log(elToRemove);
-            console.log(elToRemove.getAttribute("data-id"));
             // Remove element from library
             deleteFromLibrary(elToRemove);
             // Remove element from DOM
@@ -286,8 +302,6 @@ function prefillForm(el) {
             // Get the task card that's completed
             elToComplete = e.target.parentElement;
             // Update taskList 
-            console.log(elToComplete);
-            console.log(elToComplete.getAttribute("data-id"));
             updateTaskCompleted(elToComplete);
             // Update DOM, ie. remove completed task
             elToComplete.remove();
@@ -440,16 +454,14 @@ function createProjectTab (projectName) {
         if (e.target.tagName === "LI") {
             // First check if the p element(no-completed) exists
             if (document.querySelector(".no-completed")) {
-                console.log("element exists");
                 // Remove element
                 document.querySelector(".no-completed").remove();
                 // Bring back headerBtn
                 let headerBtn = document.querySelector(".delete-project");
                 headerBtn.style.opacity = "10";
             }
-            let currentProjectName = e.target.innerHTML;
+            currentProjectName = e.target.innerHTML;
             // Update header title
-            console.log(currentProjectName);
             updateProjectName(currentProjectName);
             // Clear main
             let clearCards = document.querySelectorAll(".task-cards");
@@ -459,7 +471,6 @@ function createProjectTab (projectName) {
             // Update DOM with respective taskList object that coincides with the name of the current project
                 // Filter tasks that match currentProjectName
             const {filteredArray} = getProjectInfo (currentProjectName);
-            console.log(filteredArray);
             for (let i = 0; i < filteredArray.length; i++) {
                 // Create taskCards
                 const {titleDiv, date, cardDiv} = createCards();
@@ -481,7 +492,6 @@ document.querySelector(".delete-project").addEventListener("click", (e) => {
     if (projectToDelete === "Default") {
         alert("Default project folder cannot be deleted");
     } else {
-        console.log(projectToDelete);
         // Delete from DOM
             // Clear main
         let clearCards = document.querySelectorAll(".task-cards");
@@ -498,7 +508,6 @@ document.querySelector(".delete-project").addEventListener("click", (e) => {
 function deleteProjectTab (element) {
     let projects = document.querySelectorAll(".projects");
     let projectIcons = document.querySelectorAll(".project-icon");
-    console.log(projectIcons);
     // Delete
     for (let i = 0; i < projects.length; i++) {
         if (projects[i].innerHTML === element) {
@@ -532,3 +541,4 @@ function getNotesInput () {
         notes.innerHTML = textAreaInput;
     })
 }
+

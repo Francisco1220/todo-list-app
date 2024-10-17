@@ -36,7 +36,6 @@ function addTaskToList (...task) {
     for (let i = 0; i < task.length; i++) {
         taskList.push(task[i]);
     }
-    console.log(taskList);
 }
 
 // Create default task instances
@@ -105,8 +104,6 @@ export function updateTaskCompleted (element) {
 
 export function getProjectInfo (projectName) {
     let filteredArray = taskList.filter(function(task) {
-        console.log(task.completed);
-        console.log(task.project);
             return task.project === projectName && task.completed === false;
     });
     return {filteredArray}
