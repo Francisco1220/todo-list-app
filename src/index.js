@@ -28,6 +28,7 @@ class Task {
         this.project = project;
         this.completed = completed;
         this.notes = notes;
+        this.id = crypto.randomUUID();
     }
 }
 
@@ -36,6 +37,7 @@ function addTaskToList (...task) {
     for (let i = 0; i < task.length; i++) {
         taskList.push(task[i]);
     }
+    console.log(taskList);
 }
 
 // Create default task instances
@@ -56,12 +58,13 @@ export function createTask() {
 export function deleteFromLibrary(element) {
     for (let i = 0; i < taskList.length; i++) {
         // Compare data attribute with title from taskList
-        if (taskList[i].title === element.getAttribute("data-id")) {
+        if (taskList[i].id === element.getAttribute("data-id")) {
             taskList.splice(i, 1);
         }
     }
 }
 
+// Gets the task object from the array depending on the task that's clicked
 export function getTaskObject(element) {
     let title;
     let description;
@@ -70,7 +73,7 @@ export function getTaskObject(element) {
     let dueDate;
     for (let i = 0; i < taskList.length; i++) {
         // Compare data attribute with title from taskList
-        if (taskList[i].title === element.getAttribute("data-id")) {
+        if (taskList[i].id === element.getAttribute("data-id")) {
             title = taskList[i].title;
             description = taskList[i].description;
             project = taskList[i].project;
@@ -84,7 +87,7 @@ export function getTaskObject(element) {
 export function updateTaskList (element) {
     const {titleVal, descriptionVal, dueDateVal, priorityVal, projectVal} = getEditInputs();
     for (let i = 0; i < taskList.length; i++) {
-        if (taskList[i].title === element.getAttribute("data-id")) {
+        if (taskList[i].id === element.getAttribute("data-id")) {
             taskList[i].title = titleVal;
             taskList[i].description = descriptionVal;
             taskList[i].dueDate = dueDateVal;
@@ -96,7 +99,7 @@ export function updateTaskList (element) {
 
 export function updateTaskCompleted (element) {
     for (let i = 0; i < taskList.length; i++) {
-        if (taskList[i].title === element.getAttribute("data-id")) {
+        if (taskList[i].id === element.getAttribute("data-id")) {
             taskList[i].completed = true;
         }
     }
@@ -107,14 +110,6 @@ export function getProjectInfo (projectName) {
             return task.project === projectName && task.completed === false;
     });
     return {filteredArray}
-}
-
-export function deleteCompleted (element) {
-    for(let i = 0; i < taskList.length; i++) {
-        if (taskList[i].title === element) {
-            taskList.splice(i, 1);
-        }
-    }
 }
 
 export function deleteProject (element) {

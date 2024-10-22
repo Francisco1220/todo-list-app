@@ -2,7 +2,7 @@
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
-import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted, getProjectInfo, deleteCompleted, deleteProject} from "./index.js"
+import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted, getProjectInfo, deleteProject} from "./index.js"
 import { format } from "date-fns";
 
 import chevronImage from "./assets/icons/chevron-right.svg"
@@ -13,10 +13,8 @@ newTask.addEventListener("click", () => {
 })
 
 let currentProjectName = "Default";
-// let taskSubmit = false;
 
 submitTaskBtn.addEventListener("click", (e) => {
-    // taskSubmit = true;
     // closes modal
     e.preventDefault();
     // client-side validation (check that inputs are completed)
@@ -44,8 +42,6 @@ submitTaskBtn.addEventListener("click", (e) => {
         }
         // Clear form inputs to prepare for new submission
         clearForm();
-        // Create data attributes
-        createDataAttributes(taskList);
     }
 });
 
@@ -150,15 +146,22 @@ export function createDefault() {
         // Set the border colour for the default tasks
         setBorderColour(cardDiv, taskList[i].priority);
     }
-    handleDescriptionBtn();
-    createDataAttributes(taskList);
+    createDataAttributes();
+    handleCardInteraction();
 }
 
-// Assigns unique IDs to each task card (for deletion of task card from list, getting the task object to prefill form, updating the task list when done editing, and marking completed tasks)
-function createDataAttributes(arr) {
+// Assigns unique IDs to each task card relative to the currentProjectName
+function createDataAttributes() {
     const taskCards = document.querySelectorAll(".task-cards");
+    let idsArr = [];
+    taskList.forEach(task => {
+            if (task.project === currentProjectName) {
+                idsArr.push(task.id);
+            }
+    });
+    console.log(idsArr);
     for (let i = 0; i < taskCards.length; i++) {
-        taskCards[i].setAttribute("data-id",`${arr[i].title}`);
+        taskCards[i].setAttribute("data-id",`${idsArr[i]}`);
     }
 }
 
@@ -173,38 +176,59 @@ function setBorderColour (card, priority) {
     }
 }
 
-function handleDescriptionBtn () {
-    const description = showDescription();
-    const {descriptionDialog} = description;
-    closeDescription(descriptionDialog);
-}
+// Description button, delete button, edit task button, complete task button, and check circle (event bubbling)
 
+const editDialog = document.getElementById("edit-form");
+let elToEdit;
 
-function showDescription () {
-    const descriptionDialog = document.getElementById("description-modal");
+function handleCardInteraction () {
     document.querySelector(".tasks-container").addEventListener("click", (e) => {
-        if (e.target.className === "show-description") {
+        if (e.target.className === "circle-check") {
+            // Get the task card that's completed
+            let elToComplete = e.target.parentElement;
+            console.log(elToComplete);
+            // Update taskList 
+            updateTaskCompleted(elToComplete);
+            // Update DOM, ie. remove completed task
+            elToComplete.remove();
+        } else if (e.target.className === "show-description") {
             let taskCard = e.target.parentElement.closest(".task-cards");
             const {description} = getTaskObject(taskCard);
+            const {descriptionDialog} = showDescription(description);
+            closeDescription(descriptionDialog);
+        } else if (e.target.className === "delete-task") {
+            // Get element to be deleted
+            let elToRemove = e.target.parentElement.closest(".task-cards");
+            deleteTask (elToRemove);
+        } else if (e.target.className === "edit-task") {
             // Show modal
-            descriptionDialog.showModal();
-            // Update description text
-            const div = document.querySelector("#description-modal > div:first-child");
-            div.innerHTML = `${description}`;
-            // Add display of flex to modal
-            descriptionDialog.style.display = "flex";
+            editDialog.showModal();
+            // Get the user input for specific task-card and prefill that data in edit-task form
+            elToEdit = e.target.parentElement.closest(".task-cards");
+            prefillForm(elToEdit);
         }
     });
+}
+
+function showDescription (descriptionTxt) {
+    const descriptionDialog = document.getElementById("description-modal");
+    // Show modal
+    descriptionDialog.showModal();
+    // Update description text
+    const div = document.querySelector("#description-modal > div:first-child");
+    div.innerHTML = descriptionTxt;
+    // Add display of flex to modal
+    descriptionDialog.style.display = "flex";
     return {descriptionDialog}
 }
 
-function closeDescription(description) {
+function closeDescription(descriptionEl) {
     const closeBtn = document.getElementById("close-btn");
     closeBtn.addEventListener("click", () => {
-        description.close();
+        descriptionEl.close();
         // Remove display of flex to modal
             // NOTE: for some reason not removing display property interferes with the interactivity of the modal
-        description.style.display = "none";
+        descriptionEl.style.display = "none";
     })
 }
 
@@ -218,34 +242,12 @@ function updateProjectName(projectName) {
     headerTitle.innerHTML = projectName;
 }
 
-(function deleteTask () {
-    // Make use of event bubbling to know which task card to delete
-    document.querySelector(".tasks-container").addEventListener("click", (e) => {
-        // Get element to be deleted
-        if (e.target.className === "delete-task") {
-            let elToRemove = e.target.parentElement.closest(".task-cards");
-            // Remove element from library
-            deleteFromLibrary(elToRemove);
-            // Remove element from DOM
-            elToRemove.remove();
-        }
-    })
-})();
-
-const editDialog = document.getElementById("edit-form");
-let elToEdit;
-
-// If edit button clicked: show modal, prefill form
-document.querySelector(".tasks-container").addEventListener("click", (e) => {
-    if (e.target.className === "edit-task") {
-        // Show modal
-        editDialog.showModal();
-        // Get the user input for specific task-card and prefill that data in edit-task form
-        elToEdit = e.target.parentElement.closest(".task-cards"); // Element to edit
-        prefillForm(elToEdit);
-    }
-})
-
+function deleteTask (element) {
+    // Remove element from library
+    deleteFromLibrary(element);
+    // Remove element from DOM
+    element.remove();
+}
 
 // If submit task button clicked: close modal, update DOM elements, update taskList
 document.getElementById("edit-task").addEventListener("click", (e) => {
@@ -256,8 +258,6 @@ document.getElementById("edit-task").addEventListener("click", (e) => {
         alert('Please make sure you have filled out "Title", "Priority", and "Due Date"');
     } else {
         updateTaskList(elToEdit);
-        // Remove previous data attribute and replace with new one
-        elToEdit.dataset.id = titleVal;
         // Update DOM elements
         elToEdit.querySelector(".task-title").innerHTML = titleVal;
         let oldDateFormat = dueDateVal;
@@ -280,9 +280,9 @@ export function getEditInputs() {
 }
 
 // Get previously completed task-form data and prefill edit-task form
-function prefillForm(el) {
-            let getTaskObjects = getTaskObject(el);
-            const {title, description, priority, project, dueDate} = getTaskObjects;
+function prefillForm(element) {
+            let taskProperties = getTaskObject(element);
+            const {title, description, priority, project, dueDate} = taskProperties;
             
             let titleInput = document.getElementById("edit-title");
             titleInput.value = title;
@@ -296,29 +296,10 @@ function prefillForm(el) {
             dateInput.value = dueDate;
 }
 
-(function completeTask() {
-    let elToComplete;
-    document.querySelector(".tasks-container").addEventListener("click", (e) => {
-        if (e.target.className === "circle-check") {
-            // Get the task card that's completed
-            elToComplete = e.target.parentElement;
-            // Update taskList 
-            updateTaskCompleted(elToComplete);
-            // Update DOM, ie. remove completed task
-            elToComplete.remove();
-        }
-        // Delete task from list if delete button is clicked
-        if (e.target.className === "delete-task") {
-            const elToDelete = e.target.parentElement.closest(".task-cards").querySelector("p").innerHTML;
-            deleteCompleted(elToDelete);
-        }
-    })
-})();
-
 
 // Come back to change project name feature later
 
-// Completed Task feature
+// Completed Task feature (completed tab)
 document.querySelector("li:nth-child(10)").addEventListener("click", () => {
     // Clear main
     let clearCards = document.querySelectorAll(".task-cards");
@@ -385,6 +366,7 @@ function displayCompleted() {
             checkDiv.style["pointer-events"] = "none";
             editTaskBtn.style["pointer-events"] = "none";
             descriptionBtn.style["pointer-events"] = "none";
+            createDataAttributes();
         }
     }
 }
@@ -450,7 +432,7 @@ function createProjectTab (projectName) {
 }
 
 // Creates the project page when a project tab is clicked
-(function createProjectPage () {
+function createProjectPage () {
     document.getElementById("my-projects").addEventListener("click", (e) => {
         if (e.target.tagName === "LI") {
             // First check if the p element(no-completed) exists
@@ -481,12 +463,15 @@ function createProjectTab (projectName) {
                 date.innerHTML = newDateFormat;
                 setBorderColour(cardDiv, filteredArray[i].priority);
             }
-            createDataAttributes(filteredArray);
             // Description button functionality
-            handleDescriptionBtn();
+            console.log(currentProjectName);
+            createDataAttributes();
+            // handleCardInteraction();
         }
     })
-})();
+}
+
+createProjectPage();
 
 document.querySelector(".delete-project").addEventListener("click", (e) => {
     let projectToDelete = e.target.parentElement.querySelector("#project-name").innerHTML;
