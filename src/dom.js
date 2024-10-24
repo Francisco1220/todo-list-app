@@ -2,7 +2,7 @@
 export const newTask = document.querySelector("li:nth-child(6)");
 const dialog = document.querySelector("#task-form");
 const submitTaskBtn = document.querySelector("#create-task");
-import {checkFormComplete, createTask, taskList, deleteFromLibrary, getTaskObject, updateTaskList, updateTaskCompleted, getProjectInfo, deleteProject} from "./index.js"
+import {checkFormComplete, createTask, taskList, deleteFromLibrary, Task, getProjectInfo, deleteProject} from "./index.js"
 import { format } from "date-fns";
 
 import chevronImage from "./assets/icons/chevron-right.svg"
@@ -14,7 +14,7 @@ newTask.addEventListener("click", () => {
 
 let currentProjectName = "Default";
 
-submitTaskBtn.addEventListener("click", (e) => {
+submitTaskBtn.addEventListener("click", () => {
     // closes modal
     e.preventDefault();
     // client-side validation (check that inputs are completed)
@@ -43,6 +43,7 @@ submitTaskBtn.addEventListener("click", (e) => {
         // Clear form inputs to prepare for new submission
         clearForm();
     }
+    createDataAttributes();
 });
 
 // Updates project page with new task when one is created
@@ -159,7 +160,6 @@ function createDataAttributes() {
                 idsArr.push(task.id);
             }
     });
-    console.log(idsArr);
     for (let i = 0; i < taskCards.length; i++) {
         taskCards[i].setAttribute("data-id",`${idsArr[i]}`);
     }
@@ -186,20 +186,25 @@ function handleCardInteraction () {
         if (e.target.className === "circle-check") {
             // Get the task card that's completed
             let elToComplete = e.target.parentElement;
-            console.log(elToComplete);
-            // Update taskList 
-            updateTaskCompleted(elToComplete);
+            // Update taskList
+            let elementId = elToComplete.getAttribute("data-id");
+            let task = taskList.find(task => task.id === elementId);
+            task.completeTask();
             // Update DOM, ie. remove completed task
             elToComplete.remove();
         } else if (e.target.className === "show-description") {
             let taskCard = e.target.parentElement.closest(".task-cards");
-            const {description} = getTaskObject(taskCard);
-            const {descriptionDialog} = showDescription(description);
+            let elementId = taskCard.getAttribute("data-id");
+            let task = taskList.find(task => task.id === elementId);
+            const {descriptionDialog} = showDescription(task.taskDescription);
             closeDescription(descriptionDialog);
         } else if (e.target.className === "delete-task") {
             // Get element to be deleted
             let elToRemove = e.target.parentElement.closest(".task-cards");
-            deleteTask (elToRemove);
+            // Remove element from library
+            deleteFromLibrary(elToRemove);
+            // Remove element from DOM
+            elToRemove.remove();
         } else if (e.target.className === "edit-task") {
             // Show modal
             editDialog.showModal();
@@ -242,13 +247,6 @@ function updateProjectName(projectName) {
     headerTitle.innerHTML = projectName;
 }
 
-function deleteTask (element) {
-    // Remove element from library
-    deleteFromLibrary(element);
-    // Remove element from DOM
-    element.remove();
-}
-
 // If submit task button clicked: close modal, update DOM elements, update taskList
 document.getElementById("edit-task").addEventListener("click", (e) => {
     e.preventDefault();
@@ -257,7 +255,9 @@ document.getElementById("edit-task").addEventListener("click", (e) => {
     if (titleVal === "" || priorityVal === "" || dueDateVal === "") {
         alert('Please make sure you have filled out "Title", "Priority", and "Due Date"');
     } else {
-        updateTaskList(elToEdit);
+        let elementId = elToEdit.getAttribute("data-id");
+        let task = taskList.find(task => task.id === elementId);
+        task.updateTaskList();
         // Update DOM elements
         elToEdit.querySelector(".task-title").innerHTML = titleVal;
         let oldDateFormat = dueDateVal;
@@ -281,23 +281,19 @@ export function getEditInputs() {
 
 // Get previously completed task-form data and prefill edit-task form
 function prefillForm(element) {
-            let taskProperties = getTaskObject(element);
-            const {title, description, priority, project, dueDate} = taskProperties;
-            
+            let elementId = element.getAttribute("data-id");
+            let task = taskList.find(task => task.id === elementId);    
             let titleInput = document.getElementById("edit-title");
-            titleInput.value = title;
+            titleInput.value = task.taskTitle;
             let descriptionInput = document.getElementById("edit-description");
-            descriptionInput.value = description;
+            descriptionInput.value = task.taskDescription;
             let priorityInput = document.getElementById("edit-priority");
-            priorityInput.value = priority;
+            priorityInput.value = task.taskPriority;
             let projectInput = document.getElementById("edit-project");
-            projectInput = project;
+            projectInput = task.taskProject;
             let dateInput = document.getElementById("edit-date");
-            dateInput.value = dueDate;
+            dateInput.value = task.taskDueDate;
 }
-
-
-// Come back to change project name feature later
 
 // Completed Task feature (completed tab)
 document.querySelector("li:nth-child(10)").addEventListener("click", () => {
@@ -464,7 +460,6 @@ function createProjectPage () {
                 setBorderColour(cardDiv, filteredArray[i].priority);
             }
             // Description button functionality
-            console.log(currentProjectName);
             createDataAttributes();
             // handleCardInteraction();
         }

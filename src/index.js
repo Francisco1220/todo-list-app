@@ -1,6 +1,6 @@
 // Imported files
 import "./style.css";
-import {newTask, getTaskInput, getEditInputs, createDefault} from "./dom.js";
+import {getTaskInput, getEditInputs, createDefault} from "./dom.js";
 
 // Application Logic goes here (creating new todos, setting todos as complete, changing todo priority)
 
@@ -19,7 +19,7 @@ export function checkFormComplete () {
     return {closeDialog, alertMessage}
 }
 
-class Task {
+export class Task {
     constructor(title, description, dueDate, priority, project, completed, notes) {
         this.title = title;
         this.description = description;
@@ -30,6 +30,40 @@ class Task {
         this.notes = notes;
         this.id = crypto.randomUUID();
     }
+
+    completeTask() {
+        this.completed = true;
+    }
+
+    updateTaskList() {
+        const {titleVal, descriptionVal, dueDateVal, priorityVal, projectVal} = getEditInputs();
+        this.title = titleVal;
+        this.description = descriptionVal;
+        this.dueDate = dueDateVal;
+        this.priority = priorityVal;
+        this.project = projectVal;
+    }
+
+    get taskTitle () {
+        return this.title;
+    }
+    
+    get taskDescription () {
+        return this.description;
+    }
+
+    get taskDueDate () {
+        return this.dueDate;
+    }
+
+    get taskProject () {
+        return this.project;
+    }
+    
+    get taskPriority () {
+        return this.priority;
+    }
+
 }
 
 // Adds task object instances to array
@@ -56,53 +90,10 @@ export function createTask() {
 }
 
 export function deleteFromLibrary(element) {
-    for (let i = 0; i < taskList.length; i++) {
-        // Compare data attribute with title from taskList
-        if (taskList[i].id === element.getAttribute("data-id")) {
-            taskList.splice(i, 1);
-        }
-    }
-}
-
-// Gets the task object from the array depending on the task that's clicked
-export function getTaskObject(element) {
-    let title;
-    let description;
-    let project;
-    let priority;
-    let dueDate;
-    for (let i = 0; i < taskList.length; i++) {
-        // Compare data attribute with title from taskList
-        if (taskList[i].id === element.getAttribute("data-id")) {
-            title = taskList[i].title;
-            description = taskList[i].description;
-            project = taskList[i].project;
-            priority = taskList[i].priority;
-            dueDate = taskList[i].dueDate;
-        }
-    }
-    return {title, description, project, priority, dueDate}
-}
-
-export function updateTaskList (element) {
-    const {titleVal, descriptionVal, dueDateVal, priorityVal, projectVal} = getEditInputs();
-    for (let i = 0; i < taskList.length; i++) {
-        if (taskList[i].id === element.getAttribute("data-id")) {
-            taskList[i].title = titleVal;
-            taskList[i].description = descriptionVal;
-            taskList[i].dueDate = dueDateVal;
-            taskList[i].priority = priorityVal;
-            taskList[i].project = projectVal;
-        }
-    }
-}
-
-export function updateTaskCompleted (element) {
-    for (let i = 0; i < taskList.length; i++) {
-        if (taskList[i].id === element.getAttribute("data-id")) {
-            taskList[i].completed = true;
-        }
-    }
+    // Compare data attribute with title from taskList
+    console.log(element.getAttribute("data-id"));
+    let index = taskList.findIndex((task) => task.id === element.getAttribute("data-id"));
+    taskList.splice(index, 1);
 }
 
 export function getProjectInfo (projectName) {
