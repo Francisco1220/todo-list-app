@@ -11,6 +11,9 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Spicy+Rice&display=swap" rel="stylesheet">
     </head>
 
     <body>
@@ -24,24 +27,24 @@
                     <ul id="menu">
                         <img src="./assets/icons/menu.svg" class="placeholder" alt="">
                         <li class="title">Menu</li>
-                        <img src="./assets/icons/add-task.svg" alt="">
-                        <li>New Task</li>
-                        <img src="./assets/icons/add-folder.svg" alt="">
-                        <li id="new-project">New Project</li>
-                        <img src="./assets/icons/check-circle.svg" alt="">
-                        <li class="ul-item">Completed</li>
+                        <img class="tab-icon" src="./assets/icons/add-task.svg" alt="">
+                        <li class="tabs">New Task</li>
+                        <img class="tab-icon" src="./assets/icons/add-folder.svg" alt="">
+                        <li id="new-project" class="tabs">New Project</li>
+                        <img class="tab-icon" src="./assets/icons/check-circle.svg" alt="">
+                        <li class="ul-item tabs">Completed</li>
                     </ul>
                     <ul id="projects">
                         <img src="./assets/icons/folders.svg" class="placeholder" alt="">
                         <li class="title" id="project-tabs">My Projects</li>
-                        <img src="./assets/icons/chevron-right.svg" alt="">
-                        <li id="default-project">Default</li>
+                        <img class="tab-icon" src="./assets/icons/chevron-right.svg" alt="">
+                        <li id="default-project" class="tabs">Default</li>
                     </ul>
                 </ul>
             </div>
             <div id="main">
                 <div id="header">
-                    <h2 id="project-name">Default</h2>
+                    <h2 id="project-name" class="title">Default</h2>
                     <button id="delete-project"></button>
                 </div>
                 <div id="tasks-container">
@@ -49,7 +52,7 @@
                 </div>
             </div>
             <div id="notes">
-                <p>Notes
+                <p class="title">Notes
                     <button id="edit-notes-btn"></button>
                 </p>
                 <p id="notes-area">
