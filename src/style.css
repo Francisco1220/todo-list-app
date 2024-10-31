@@ -4,3 +4,90 @@
     box-sizing: border-box;
     font-family: "Roboto";
 }
+
+#container {
+    border: 2px solid red;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 4fr 1.5fr;
+    height: 100vh;
+    gap: 10px;
+}
+
+#header-logo {
+    width: 40px;
+    filter: invert(99%) sepia(11%) saturate(587%) hue-rotate(332deg) brightness(118%) contrast(100%);
+}
+
+#sidebar {
+    border: 2px solid black;
+    grid-row: 1 / 3;
+}
+
+#main {
+    border: 2px solid green;
+}
+
+#notes {
+    border: 2px solid orange;
+    grid-column: 2 / 3;
+}
+
+#sidebar > ul {
+    display: grid;
+    grid-template-rows: auto 1fr 1fr;
+    align-content: center;
+    gap: 10px;
+}
+
+#sidebar-header {
+    display: grid;
+    grid-template-columns: 40px 135px;
+    list-style-type: none;
+    padding-top: 12px;
+}
+
+#header-title {
+    font-size: 2.7rem;
+}
+
+#menu {
+    display: grid;
+    grid-template-columns: 40px 135px;
+    grid-template-rows: repeat(4, 40px);
+    list-style-type: none;
+    margin-top: 30px;
+}
+
+#menu > li,
+#projects > li {
+    font-size: 1.2rem;
+}
+
+#sidebar-header, 
+#menu,
+#projects {
+    justify-content: center;
+    align-items: center;
+    column-gap: 15px;
+}
+
+#projects {
+    display: grid;
+    grid-template-columns: 40px 135px;
+    grid-template-rows: repeat(2, 40px);
+    list-style-type: none;
+    margin-top: 12px;
+}
+
+#menu > img,
+#projects > img {
+    width: 30px;
+    justify-self: center;
+}
+
+#menu > .title,
+#projects > .title {
+    font-weight: bold;
+    font-size: 1.5rem;
+}

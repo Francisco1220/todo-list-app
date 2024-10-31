@@ -14,43 +14,50 @@
     </head>
 
     <body>
-        <div class="container">
-            <div class="sidebar">
+        <div id="container">
+            <div id="sidebar">
                 <ul>
-                    <img src="./assets/icons/odin-logo.png" alt="" id="header-logo">
-                    <li id="header-title">TASKY</li>
-                    <img src="./assets/icons/menu.svg" class="placeholder" alt="">
-                    <li id="menu" class="title">Menu</li>
-                    <img src="./assets/icons/add-task.svg" alt="">
-                    <li>New Task</li>
-                    <img src="./assets/icons/add-folder.svg" alt="">
-                    <li id="new-project">New Project</li>
-                    <img src="./assets/icons/check-circle.svg" alt="">
-                    <li class="ul-item">Completed</li>
-                    <div id="my-projects">
+                    <ul id="sidebar-header">
+                        <img src="./assets/icons/odin-logo.png" alt="" id="header-logo">
+                        <li id="header-title">TASKY</li>
+                    </ul>
+                    <ul id="menu">
+                        <img src="./assets/icons/menu.svg" class="placeholder" alt="">
+                        <li class="title">Menu</li>
+                        <img src="./assets/icons/add-task.svg" alt="">
+                        <li>New Task</li>
+                        <img src="./assets/icons/add-folder.svg" alt="">
+                        <li id="new-project">New Project</li>
+                        <img src="./assets/icons/check-circle.svg" alt="">
+                        <li class="ul-item">Completed</li>
+                    </ul>
+                    <ul id="projects">
                         <img src="./assets/icons/folders.svg" class="placeholder" alt="">
                         <li class="title" id="project-tabs">My Projects</li>
                         <img src="./assets/icons/chevron-right.svg" alt="">
                         <li id="default-project">Default</li>
-                    </div>
+                    </ul>
                 </ul>
             </div>
-            <div class="main">
-                <div class="header">
+            <div id="main">
+                <div id="header">
                     <h2 id="project-name">Default</h2>
                     <button class="delete-project"></button>
                     <h2>My Tasks</h2>
                 </div>
-                <div class="tasks-container">
-
+                <div id="tasks-container">
+                    <!--task-cards go here-->
                 </div>
             </div>
-            <div class="notes">
-                <p class="title">Notes
+            <div id="notes">
+                <p>Notes
                     <button class="edit-notesBtn"></button>
                 </p>
-                <p class="notes-area"></p>
+                <p class="notes-area">
+                    <!--notes go here-->
+                </p>
             </div>
+            <!--dialog forms go here-->
             <dialog id="task-form">
                 <form>
                     <label>*Title</label>
