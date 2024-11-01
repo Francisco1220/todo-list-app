@@ -188,7 +188,8 @@
 }
 
 .card-interact > button,
-#edit-notes-btn {
+#edit-notes-btn,
+.close {
     width: 20px;
     height: 30px;
     border: none;
@@ -251,4 +252,45 @@
 #delete-project:hover,
 #edit-notes-btn:hover {
     transform: scale(1.2);
+}
+
+/* New project dialog*/
+
+#project-form {
+    padding: 1em;
+    left: 1rem;
+    top: 15rem;
+}
+
+#project-form > form {
+    width: 20rem;
+    height: 8rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    font-size: 1.3rem;
+}
+
+#project-form > form > input {
+    width: 15rem;
+    height: 2rem;
+    font-size: 1rem;
+    padding-left: 10px;
+}
+
+#project-form > form > button {
+    font-size: 0.9rem;
+    padding: 2px 20px 2px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--main-colour);
+}
+
+#project-form > form > button:hover {
+    opacity: 0.7;
+}
+
+.close-form {
+    margin-left: 15px;
+    align-items: end;
 }
