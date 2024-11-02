@@ -81,6 +81,7 @@
     grid-template-rows: repeat(2, 40px);
     list-style-type: none;
     margin-top: 12px;
+    grid-auto-rows: 40px;
 }
 
 #menu > img,
@@ -256,13 +257,13 @@
 
 /* New project dialog*/
 
-#project-form {
+#project-dialog {
     padding: 1em;
     left: 1rem;
     top: 15rem;
 }
 
-#project-form > form {
+#project-dialog > form {
     width: 20rem;
     height: 8rem;
     display: flex;
@@ -271,14 +272,14 @@
     font-size: 1.3rem;
 }
 
-#project-form > form > input {
+#project-dialog > form > input {
     width: 15rem;
     height: 2rem;
     font-size: 1rem;
     padding-left: 10px;
 }
 
-#project-form > form > button {
+#project-dialog > form > button {
     font-size: 0.9rem;
     padding: 2px 20px 2px 20px;
     border-radius: 5px;
@@ -286,7 +287,7 @@
     background-color: var(--main-colour);
 }
 
-#project-form > form > button:hover {
+#project-dialog > form > button:hover {
     opacity: 0.7;
 }
 

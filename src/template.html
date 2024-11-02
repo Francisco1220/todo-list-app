@@ -37,13 +37,15 @@
                     <ul id="projects">
                         <img src="./assets/icons/folders.svg" class="placeholder" alt="">
                         <li class="title" id="project-tabs">My Projects</li>
-                        <img class="tab-icon" src="./assets/icons/chevron-right.svg" alt="">
-                        <li id="default-project" class="tabs">Default</li>
+                        <!--Tab icon and project tabs to be empty (create tab icon and project tabs with JS)-->
+                        <!-- <img class="tab-icon" src="./assets/icons/chevron-right.svg" alt="">
+                        <li class="tabs">Default</li> -->
                     </ul>
                 </ul>
             </div>
             <div id="main">
                 <div id="header">
+                    <!--project name should be empty (update project name with JS)-->
                     <h2 id="project-name" class="title">Default</h2>
                     <button id="delete-project"></button>
                 </div>
@@ -104,11 +106,12 @@
                         <button type="submit" id="edit-task">Update</button>
                 </form>
             </dialog>
-            <dialog id="project-form">
-                <form>
+            <dialog id="project-dialog">
+                <form id="project-form">
                     <label>New Project Name</label>
                     <input type="text" id="new-project-name">
-                    <button type="submit" id="edit-name">Update</button>
+                    <button type="submit" id="create-project">Create</button>
+                    <button class="close-form">Back</button>
                 </form>
 
             </dialog>
