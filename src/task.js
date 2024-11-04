@@ -11,8 +11,9 @@ export class Task {
         this.title = title;
         this.dueDate = dueDate;
         this.priority = priority;
-        this.project = `project${Task.increment()}`;
+        this.project = project;
         this.completed = false;
+        this.id = crypto.randomUUID();
     }
 
     addTaskToList () {
@@ -44,6 +45,7 @@ export class Description extends Task {
     constructor(title, dueDate, priority, project, taskDescription) {
         super(title, dueDate, priority, project);
         this.taskDescription = taskDescription;
+        this.id = crypto.randomUUID();
     }
 
     get description () {
@@ -55,6 +57,7 @@ export class Note extends Description {
     constructor(title, dueDate, priority, project, description, taskNote) {
         super(title, dueDate, priority, project, description);
         this.taskNote = taskNote;
+        this.id = crypto.randomUUID();
     }
     get note () {
         return this.taskNote;

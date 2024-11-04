@@ -10,14 +10,14 @@ export class Project {
     constructor(name) {
         const keyName = [`project${Project.increment()}`];
         this.keyName = keyName;
-        this[keyName] = {name, id: crypto.randomUUID()};
+        this[keyName] = {name};
     }
 
     addProjectToList () {
         Project.projectList.push(this);
     }
 
-    get projectId() {
-        return this[this.keyName].id
+    get projectKeyName () {
+        return this.keyName;
     }
 }
