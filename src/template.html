@@ -62,12 +62,12 @@
                 </p>
             </div>
             <!--dialog forms go here-->
-            <dialog id="task-form">
-                <form>
+            <dialog id="task-dialog">
+                <form id="task-form">
                     <label>*Title</label>
                     <input type="text" id="title" required>
                     <label>Description</label>
-                    <input type="text" id="description">
+                    <textarea type="text" id="description"></textarea>
                     <label>Due-Date</label>
                     <input type="date" id="date">
                     <label>*Priority</label>
@@ -81,7 +81,10 @@
                         <select class="dropdown" id="project" required>
                             <option value="Default">Default</option>
                         </select>
+                    <div id="task-form-btns">
                         <button type="submit" id="create-task">Create</button>
+                        <button class="close-form">Back</button>
+                    </div>
                 </form>
             </dialog>
             <dialog id="edit-form">

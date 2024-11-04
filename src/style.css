@@ -263,35 +263,106 @@
     top: 15rem;
 }
 
-#project-dialog > form {
+#project-form {
     width: 20rem;
     height: 8rem;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
     font-size: 1.3rem;
+    gap: 5px;
 }
 
-#project-dialog > form > input {
+#project-form > input {
     width: 15rem;
     height: 2rem;
     font-size: 1rem;
     padding-left: 10px;
 }
 
-#project-dialog > form > button {
-    font-size: 0.9rem;
-    padding: 2px 20px 2px 20px;
-    border-radius: 5px;
+#project-form > button {
+    font-size: 1rem;
+    padding: 3px 15px 3px 15px;
+    border-radius: 8px;
     border: none;
     background-color: var(--main-colour);
 }
 
-#project-dialog > form > button:hover {
+#project-form > button:hover,
+#task-form-btns > button:hover {
     opacity: 0.7;
 }
 
 .close-form {
     margin-left: 15px;
     align-items: end;
+}
+
+/* New task dialog*/
+
+#task-dialog {
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 40%;
+    height: 80%;
+}
+
+#task-dialog::backdrop {
+    backdrop-filter: blur(3px);
+}
+
+#task-form {
+    display: grid;
+    padding: 1em;
+    grid-template-rows: repeat(3, 1fr) 5fr repeat(6, 1fr);
+    font-size: 1.2rem;
+    gap: 8px;
+    justify-items: start;
+}
+
+#task-form > input,
+#task-form > select,
+#task-form > textarea {
+    padding-left: 10px;
+    font-size: 1rem;
+}
+
+#task-form > input,
+#task-form > select {
+    height: 25px;
+}
+
+label {
+    font-weight: 500;
+}
+
+#title {
+     width: 12rem;
+}
+
+#description {
+    height: 8rem;
+    width: 28rem;
+    resize: none;
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+#priority {
+    width: 8rem;
+}
+
+#project {
+    width: 12rem;
+}
+
+#create-task,
+#task-form-btns > .close-form {
+    margin-top: 40px;
+    padding: 3px 15px 3px 15px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    background-color: var(--main-colour);
 }
