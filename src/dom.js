@@ -1,7 +1,8 @@
 import chevronSVG from "./assets/icons/chevron-right.svg";
-import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr} from "./index.js"
+import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs} from "./index.js"
 import {Project} from "./project.js";
 import {createTask} from "./index.js";
+import {Task} from "./task.js";
 
 // Creates task cards when called
 export function createCard () {
@@ -114,7 +115,7 @@ function createProjectTab (projectName) {
     tabLi.setAttribute("class", "tabs");
     
     tabLi.innerHTML = projectName;
-    // Set last created project tab with the associated ID
+    // Set last created project tab with the associated project name
     setProjectTabAttr(tabLi);
     tabIcon.insertAdjacentElement("afterend", tabLi);
 
@@ -159,3 +160,27 @@ export function getTaskFormInputs () {
     const projectInput = project[projectIndex].getAttribute("data-project");
     return {titleInput, descriptionInput, dateInput, priorityInput, projectInput}
 }
+
+function currentProject () {
+    document.getElementById("projects").addEventListener("click", (e) => {
+        if (e.target.nodeName === "LI") {
+            // Clear all taskCards
+            const taskCards = document.querySelectorAll(".task-card");
+            for (let i = 0; i < taskCards.length; i++) {
+                taskCards[i].remove();
+            }
+
+            // Create task cards for current selected project tab. Filter taskList for 'project' key
+            const currentProject = e.target.getAttribute("data-project");
+            const projectTasks = Task.taskList.filter((task) => task.project === currentProject);
+            console.log(projectTasks)
+            for (let i = 0; i < projectTasks.length; i++) {
+                const {titleDiv, date} = createCard();
+                titleDiv.innerHTML = projectTasks[i].title;
+                date.innerHTML = projectTasks[i].dueDate;
+            }
+        }
+    })
+}
+
+currentProject();

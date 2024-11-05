@@ -33,8 +33,21 @@ export function setOptionDataAttr (option) {
 export function setProjectTabAttr (tab) {
     const arr = Project.projectList;
     const keyName = arr[arr.length - 1].projectKeyName;
-    tab.setAttribute("data", keyName);
+    tab.setAttribute("data-project", keyName);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

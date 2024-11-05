@@ -10,7 +10,7 @@ export class Project {
     constructor(name) {
         const keyName = [`project${Project.increment()}`];
         this.keyName = keyName;
-        this[keyName] = {name};
+        this[keyName] = {name, currentProject: false};
     }
 
     addProjectToList () {
