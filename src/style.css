@@ -215,7 +215,8 @@
 
 .descriptionBtn:hover,
 .editTaskBtn:hover,
-.deleteTaskBtn:hover {
+.deleteTaskBtn:hover,
+#close-btn:hover {
     transform: scale(1.2);
 }
 
@@ -375,4 +376,40 @@ label {
     border: none;
     font-size: 1rem;
     background-color: var(--main-colour);
+}
+
+/* Description modal */
+
+#description-modal {
+    transform: translate(-50%, -50%);
+    left: 0;
+    top: 50%;
+    left: 50%;
+    width: 40%;
+    height: 40%;
+    border-radius: 20px;
+}
+
+#description-modal > div {
+    height: 80%;
+    width: 90%;
+    padding: 1em;
+    margin-top: 20px;
+    font-size: 1.3rem;
+}
+
+#close-btn {
+    width: 25px;
+    height: 25px;
+    margin-top: 20px;
+    border: none;
+    background-color: inherit;
+    background-image: url("./assets/icons/close.svg");
+    background-repeat: no-repeat;
+    background-origin: border-box;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    top: 5%;
+    right: 5%;
 }

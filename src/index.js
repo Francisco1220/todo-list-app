@@ -44,6 +44,18 @@ export function updateTaskAsCompleted (id) {
     })
 }
 
+export function getDescription (id) {
+    // Get description
+    let description;
+    Task.taskList.filter((task) => {
+        if (task.id === id) {
+            description = task.description;
+            console.log(description);
+        }
+    })
+    return {description}
+}
+
 
 
 

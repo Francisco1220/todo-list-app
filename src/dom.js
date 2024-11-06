@@ -1,5 +1,5 @@
 import chevronSVG from "./assets/icons/chevron-right.svg";
-import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted} from "./index.js"
+import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription} from "./index.js"
 import {Project} from "./project.js";
 import {createTask} from "./index.js";
 import {Task} from "./task.js";
@@ -196,7 +196,8 @@ function completedTab () {
     let trueCount = 0;
     Task.taskList.filter((task) => {
         if (task.completed === true) {
-            console.log(task);
+            // REVISIT: remove event listeners from description, edit-task, and delete-task buttons
+            // REVISIT: Make entire task card opaque
             const {titleDiv, date} = createCard();
             titleDiv.innerHTML = task.title;
             date.innerHTML = task.dueDate;
@@ -224,7 +225,6 @@ function manageTaskCardUI () {
         for (let i = 0; i < taskCards.length; i++) {
             taskCards[i].addEventListener("click", (e) => {
                 if (e.target.className === "circle-check") {
-                    console.log("Mark this task as being completed");
                     // Get task card Id
                     const taskComplete = e.target.parentElement;
                     const taskCompleteId = e.target.parentElement.getAttribute("data-id");
@@ -233,7 +233,10 @@ function manageTaskCardUI () {
                     // Update completed value to "true"
                     updateTaskAsCompleted(taskCompleteId);
                 } else if (e.target.className === "descriptionBtn") {
-                    console.log("Show description of this task feature");
+                    // Get task card Id
+                    const taskCompleteId = e.target.parentElement.closest(".task-card").getAttribute("data-id");
+                    showDescription(taskCompleteId);
+                    closeDescription();
                 } else if (e.target.className === "editTaskBtn") {
                     console.log("Edit this task feature");
                 } else if (e.target.className === "deleteTaskBtn") {
@@ -241,4 +244,26 @@ function manageTaskCardUI () {
                 }
             })
         }
+}
+
+function showDescription (id) {
+    // Get description
+    const {description} = getDescription(id);
+    // Update modal with text (if any exist)
+    const textBox = document.querySelector("#description-modal > div");
+    if (description === undefined) {
+        alert("No description to show");
+    } else {
+        // Show modal
+        const descriptionModal = document.getElementById("description-modal");
+        descriptionModal.showModal();
+        textBox.innerHTML = description;
+    }
+}
+
+function closeDescription () {
+    const closeBtn = document.getElementById("close-btn");
+    closeBtn.addEventListener("click", () => {
+        document.getElementById("description-modal").close();
+    })
 }
