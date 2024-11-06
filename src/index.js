@@ -36,8 +36,13 @@ export function setProjectTabAttr (tab) {
     tab.setAttribute("data-project", keyName);
 }
 
-
-
+export function updateTaskAsCompleted (id) {
+    Task.taskList.filter((task) => {
+        if (task.id === id) {
+            task.completeTask();
+        }
+    })
+}
 
 
 
@@ -77,42 +82,3 @@ export function setProjectTabAttr (tab) {
 setDefault(); */
 
 // Create project and add to projectList
-
-
-
-
-/*
-let test = new Task ("Wash clothes", "2024-08-12", "Low", "project1");
-console.log(test);
-test.addTaskToList();
-test.completeTask();
-console.log(Task.taskList);
-
-let test2 = new Task ("Wash car", "2025-01-01", "High", "project2");
-console.log(test2);
-test2.addTaskToList();
-console.log(Task.taskList);
-
-let test3 = new Project ("Grocery List");
-test3.addProjectToList();
-console.log(test3);
-console.log(Project.projectList);
-
-let test4 = new Project ("Dinner Recipe");
-test4.addProjectToList();
-console.log(test4);
-console.log(Project.projectList);
-console.log(Project.projectList[0].project1);
-
-let test5 = new Project ("Dinner Recipe");
-test5.addProjectToList();
-
-console.log(Task.taskList.filter((task) => task.project === "project1"));
-
-const {titleDiv, date} = createCard();
-titleDiv.innerHTML = "Test title";
-date.innerHTML = "Test date";
-
-const notesTxt = document.getElementById("notes-area");
-notesTxt.innerHTML = "* Random text goes here";
-*/

@@ -219,6 +219,16 @@
     transform: scale(1.2);
 }
 
+#completed-message {
+    justify-self: center;
+    align-self: center;
+    font-size: 2rem;
+    font-style: italic;
+    color: grey;
+    opacity: 0.5;
+    letter-spacing: 3px;
+}
+
 /* Notes section layout and styles */
 
 #notes {

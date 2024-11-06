@@ -1,5 +1,5 @@
 import chevronSVG from "./assets/icons/chevron-right.svg";
-import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs} from "./index.js"
+import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted} from "./index.js"
 import {Project} from "./project.js";
 import {createTask} from "./index.js";
 import {Task} from "./task.js";
@@ -49,15 +49,14 @@ const newTaskDialog = document.getElementById("task-dialog");
 // Menu tabs
 document.getElementById("menu").addEventListener("click", (e) => {
     if (e.target.innerHTML === "New Task") {
-        console.log("New task feature coming soon");
         // show task modal
         newTaskDialog.showModal();
     } else if (e.target.innerHTML === "New Project") {
-        console.log("New project feature");
         // Show project modal
         newProjectDialog.showModal();
     } else if (e.target.innerHTML === "Completed") {
-        console.log("completed feature coming soon");
+        clearAll();
+        completedTab();
     }
 })
 
@@ -165,22 +164,81 @@ function currentProject () {
     document.getElementById("projects").addEventListener("click", (e) => {
         if (e.target.nodeName === "LI") {
             // Clear all taskCards
-            const taskCards = document.querySelectorAll(".task-card");
-            for (let i = 0; i < taskCards.length; i++) {
-                taskCards[i].remove();
-            }
-
+            clearAll();
             // Create task cards for current selected project tab. Filter taskList for 'project' key
             const currentProject = e.target.getAttribute("data-project");
-            const projectTasks = Task.taskList.filter((task) => task.project === currentProject);
+            const projectTasks = Task.taskList.filter((task) => task.project === currentProject && task.isTaskComplete === false);
             console.log(projectTasks)
             for (let i = 0; i < projectTasks.length; i++) {
-                const {titleDiv, date} = createCard();
+                const {cardDiv, titleDiv, date} = createCard();
                 titleDiv.innerHTML = projectTasks[i].title;
                 date.innerHTML = projectTasks[i].dueDate;
+                // Set data ids for task cards
+                const id = projectTasks[i].id;
+                cardDiv.setAttribute("data-id", id);
+            }
+        }
+        manageTaskCardUI();
+    })
+}
+
+// Clears all task cards when called
+function clearAll() {
+    const taskCards = document.querySelectorAll(".task-card");
+    for (let i = 0; i < taskCards.length; i++) {
+        taskCards[i].remove();
+    }
+
+}
+
+// Display completed tasks
+function completedTab () {
+    let trueCount = 0;
+    Task.taskList.filter((task) => {
+        if (task.completed === true) {
+            console.log(task);
+            const {titleDiv, date} = createCard();
+            titleDiv.innerHTML = task.title;
+            date.innerHTML = task.dueDate;
+        } else if (task.completed === true) {
+            trueCount++;
+            if (trueCount === 0) {
+                noCompletedMessage();
             }
         }
     })
 }
 
+function noCompletedMessage () {
+    const tasksContainer = document.getElementById("tasks-container");
+    const p = document.createElement("p");
+    p.innerHTML = "No Tasks Completed Yet";
+    p.setAttribute("id", "completed-message");
+    tasksContainer.appendChild(p);
+}
+
 currentProject();
+
+function manageTaskCardUI () {
+    const taskCards = document.querySelectorAll(".task-card");
+        for (let i = 0; i < taskCards.length; i++) {
+            taskCards[i].addEventListener("click", (e) => {
+                if (e.target.className === "circle-check") {
+                    console.log("Mark this task as being completed");
+                    // Get task card Id
+                    const taskComplete = e.target.parentElement;
+                    const taskCompleteId = e.target.parentElement.getAttribute("data-id");
+                    // Remove task card from container
+                    taskComplete.remove();
+                    // Update completed value to "true"
+                    updateTaskAsCompleted(taskCompleteId);
+                } else if (e.target.className === "descriptionBtn") {
+                    console.log("Show description of this task feature");
+                } else if (e.target.className === "editTaskBtn") {
+                    console.log("Edit this task feature");
+                } else if (e.target.className === "deleteTaskBtn") {
+                    console.log("Delete this task feature");
+                }
+            })
+        }
+}

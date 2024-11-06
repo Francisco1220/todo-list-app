@@ -39,6 +39,14 @@ export class Task {
     get taskPriority () {
         return this.priority;
     }
+
+    get taskId () {
+        return this.id;
+    }
+
+    get isTaskComplete () {
+        return this.completed;
+    }
 }
 
 export class Description extends Task {
