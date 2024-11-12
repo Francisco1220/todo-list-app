@@ -300,18 +300,21 @@
 }
 
 #project-form > button:hover,
-#task-form-btns > button:hover {
+#task-form-btns > button:hover,
+#edit-form-btns > button:hover {
     opacity: 0.7;
 }
 
-.close-form {
+.close-form,
+#close-edit-form {
     margin-left: 15px;
     align-items: end;
 }
 
 /* New task dialog*/
 
-#task-dialog {
+#task-dialog,
+#edit-dialog {
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
@@ -319,11 +322,13 @@
     height: 80%;
 }
 
-#task-dialog::backdrop {
+#task-dialog::backdrop,
+#edit-dialog::backdrop {
     backdrop-filter: blur(3px);
 }
 
-#task-form {
+#task-form,
+#edit-form {
     display: grid;
     padding: 1em;
     grid-template-rows: repeat(3, 1fr) 5fr repeat(6, 1fr);
@@ -334,13 +339,18 @@
 
 #task-form > input,
 #task-form > select,
-#task-form > textarea {
+#task-form > textarea,
+#edit-form > input,
+#edit-form > select,
+#edit-form > textarea {
     padding-left: 10px;
     font-size: 1rem;
 }
 
 #task-form > input,
-#task-form > select {
+#task-form > select,
+#edit-form > input,
+#edit-form > select {
     height: 25px;
 }
 
@@ -352,7 +362,8 @@ label {
      width: 12rem;
 }
 
-#description {
+#description,
+#edit-description {
     height: 8rem;
     width: 28rem;
     resize: none;
@@ -360,16 +371,21 @@ label {
     padding-top: 5px;
 }
 
-#priority {
+#priority,
+#edit-priority {
     width: 8rem;
 }
 
-#project {
+#project,
+#edit-project {
     width: 12rem;
 }
 
 #create-task,
-#task-form-btns > .close-form {
+#task-form-btns > .close-form,
+#edit-task,
+#edit-form-btns > .close-form,
+#close-edit-form {
     margin-top: 40px;
     padding: 3px 15px 3px 15px;
     border-radius: 8px;

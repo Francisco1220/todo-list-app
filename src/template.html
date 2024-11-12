@@ -87,12 +87,12 @@
                     </div>
                 </form>
             </dialog>
-            <dialog id="edit-form">
-                <form>
+            <dialog id="edit-dialog">
+                <form id="edit-form">
                     <label>*Title</label>
                     <input type="text" id="edit-title" required>
                     <label>Description</label>
-                    <input type="text" id="edit-description">
+                    <textarea type="text" id="edit-description"></textarea>
                     <label>Due-Date</label>
                     <input type="date" id="edit-date">
                     <label>*Priority</label>
@@ -104,9 +104,12 @@
                         </select>
                     <label>Choose Project Folder</label>
                         <select class="dropdown" id="edit-project" required>
-                            <option>Default</option>
+                            <!-- <option value="Default"></option> -->
                         </select>
-                        <button type="submit" id="edit-task">Update</button>
+                        <div id="edit-form-btns">
+                            <button type="submit" id="edit-task">Done</button>
+                            <button id="close-edit-form">Back</button>
+                        </div>
                 </form>
             </dialog>
             <dialog id="project-dialog">

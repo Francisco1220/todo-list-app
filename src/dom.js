@@ -1,8 +1,8 @@
 import chevronSVG from "./assets/icons/chevron-right.svg";
-import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription} from "./index.js"
+import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription, getTaskData, findTask, findTaskIndex, createDescription, createTaskFromEdit} from "./index.js"
 import {Project} from "./project.js";
 import {createTask} from "./index.js";
-import {Task} from "./task.js";
+import {Task, Description} from "./task.js";
 
 // Creates task cards when called
 export function createCard () {
@@ -45,6 +45,7 @@ export function createCard () {
 
 const newProjectDialog = document.getElementById("project-dialog");
 const newTaskDialog = document.getElementById("task-dialog");
+const editTaskDialog = document.getElementById("edit-dialog");
 
 // Menu tabs
 document.getElementById("menu").addEventListener("click", (e) => {
@@ -68,14 +69,13 @@ function createNewProject () {
         // Get input (project name)
         projectInput = document.getElementById("new-project-name").value;
         // Set input as name of project in projectList
-        console.log(projectInput);
         createProject(projectInput);
         // Create project tab
         createProjectTab(projectInput);
         // Add project as selectable option in task form
-        const {newProjectOption} = addProjectOption(projectInput);
-        // Set option with data attribute of project value
-        setOptionDataAttr(newProjectOption);
+        const {taskOption, editTaskOption} = addProjectOption(projectInput);
+        // Set option of task form and edit task form with data attribute of project value
+        setOptionDataAttr(taskOption, editTaskOption);
         // close modal
         newProjectDialog.close();
         // Clear input
@@ -85,20 +85,27 @@ function createNewProject () {
 createNewProject();
 
 function addProjectOption (project) {
-    const dropdownProject = document.getElementById("project");
-    const newProjectOption = document.createElement("option");
-    newProjectOption.innerHTML = project;
-    dropdownProject.appendChild(newProjectOption);
-    return {newProjectOption}
+    // task form
+    const taskDropdown = document.getElementById("project");
+    const taskOption = document.createElement("option");
+    taskOption.innerHTML = project;
+    taskDropdown.appendChild(taskOption);
+    // edit task form
+    const editTaskDropdown = document.getElementById("edit-project");
+    const editTaskOption = document.createElement("option");
+    editTaskOption.innerHTML = project;
+    editTaskDropdown.appendChild(editTaskOption);
+    return {taskOption, editTaskOption}
 }
 
-// Close new project form when back button clicked
+
 document.querySelector("#project-form > button:last-child").addEventListener("click", (e) => {
     e.preventDefault();
     newProjectDialog.close();
     // Clear inputs
     document.getElementById("project-form").reset();
 })
+
 
 
 // Creates project tabs and icons
@@ -120,33 +127,33 @@ function createProjectTab (projectName) {
 
 }
 
-function createNewTask () {
-    document.getElementById("create-task").addEventListener("click", (e) => {
-        console.log("new task has been created");
-        console.log("create button clicked!");
-        e.preventDefault();
-        // Get inputs
-        getTaskFormInputs();
-        // Create task object and add to taskList (check for description or notes)
-        createTask();
-        // Close modal
-        newTaskDialog.close();
-        // Clear inputs
-        document.getElementById("task-form").reset();
-    })
-}
-
-createNewTask();
-
-// Close new task form when back button clicked
-document.querySelector("#task-form-btns > button:last-child").addEventListener("click", (e) => {
-    console.log("back button clicked!");
-    e.preventDefault();
+function createNewTask (btn) {
+    // Get inputs
+    getTaskFormInputs();
+    // Create task object and add to taskList (check for description or notes)
+    createTask();
+    // Close modal
     newTaskDialog.close();
     // Clear inputs
     document.getElementById("task-form").reset();
-})
+}
 
+/////////////////////////////
+document.getElementById("task-form-btns").addEventListener("click", (e) => {
+    if (e.target.id === "create-task") {
+        e.preventDefault();
+        newTaskDialog.close();
+        createNewTask(e.target);
+        // Clear inputs
+        document.getElementById("task-form").reset();
+    } else if (e.target.className === "close-form") {
+        // Close new task form when back button clicked
+        e.preventDefault();
+        newTaskDialog.close();
+        // Clear inputs
+        document.getElementById("task-form").reset();
+    }
+})
 
 // Gets inputs from taskForm
 export function getTaskFormInputs () {
@@ -168,7 +175,7 @@ function currentProject () {
             // Create task cards for current selected project tab. Filter taskList for 'project' key
             const currentProject = e.target.getAttribute("data-project");
             const projectTasks = Task.taskList.filter((task) => task.project === currentProject && task.isTaskComplete === false);
-            console.log(projectTasks)
+            console.log(projectTasks);
             for (let i = 0; i < projectTasks.length; i++) {
                 const {cardDiv, titleDiv, date} = createCard();
                 titleDiv.innerHTML = projectTasks[i].title;
@@ -220,6 +227,8 @@ function noCompletedMessage () {
 
 currentProject();
 
+let taskCardToEdit;
+
 function manageTaskCardUI () {
     const taskCards = document.querySelectorAll(".task-card");
         for (let i = 0; i < taskCards.length; i++) {
@@ -227,18 +236,21 @@ function manageTaskCardUI () {
                 if (e.target.className === "circle-check") {
                     // Get task card Id
                     const taskComplete = e.target.parentElement;
-                    const taskCompleteId = e.target.parentElement.getAttribute("data-id");
+                    const taskId = e.target.parentElement.getAttribute("data-id");
                     // Remove task card from container
-                    taskComplete.remove();
+                    taskId.remove();
                     // Update completed value to "true"
-                    updateTaskAsCompleted(taskCompleteId);
+                    updateTaskAsCompleted(taskId);
                 } else if (e.target.className === "descriptionBtn") {
                     // Get task card Id
-                    const taskCompleteId = e.target.parentElement.closest(".task-card").getAttribute("data-id");
-                    showDescription(taskCompleteId);
+                    const taskId = e.target.parentElement.closest(".task-card").getAttribute("data-id");
+                    showDescription(taskId);
                     closeDescription();
                 } else if (e.target.className === "editTaskBtn") {
-                    console.log("Edit this task feature");
+                    editTaskDialog.showModal();
+                    // Populate with previous user input for that task card
+                    taskCardToEdit = e.target.parentElement.closest(".task-card");
+                    showTaskData(taskCardToEdit);
                 } else if (e.target.className === "deleteTaskBtn") {
                     console.log("Delete this task feature");
                 }
@@ -266,4 +278,83 @@ function closeDescription () {
     closeBtn.addEventListener("click", () => {
         document.getElementById("description-modal").close();
     })
+}
+
+function showTaskData (element) {
+    const taskCardId = element.getAttribute("data-id");
+    const {title, description, date, priority, project} = getTaskData(taskCardId);
+    document.getElementById("edit-title").value = title;
+    // Check if description property exists in specific taskList instance
+    if (description !== undefined) {
+        document.getElementById("edit-description").value = description;
+    }
+    document.getElementById("edit-date").value = date;
+    document.getElementById("edit-priority").value = priority;
+    // Preselect project based on the project the task card belongs to
+    const dropdownOptions = document.querySelectorAll("#edit-project > option");
+    dropdownOptions.forEach((option) => {
+        if (option.dataset.project === project) {
+            option.selected = true;
+        }
+    })
+}
+
+// Close edit task form when back button clicked
+document.getElementById("edit-form-btns").addEventListener("click", (e) => {
+    if (e.target.id === "edit-task") {
+        e.preventDefault();
+        // Update task
+        const taskCardId = taskCardToEdit.getAttribute("data-id");
+        console.log(`ID of task card you want to edit: ${taskCardId}`);
+        const {task} = findTask(taskCardId);
+        console.log(task);
+        // Update taskList and DOM (title, date)
+        const {newTitle, newDate, newDescription} = getEditTaskData();
+        if (task.constructor === Task && newDescription === "") {
+            // Edit Task instance
+            task.updateTaskList();
+            console.log(Task.taskList);
+        } else if (task.constructor === Task && newDescription !== "") {
+            // Change Task instance to Description instance
+            // Create new Description instance
+            const {newTask} = createDescription();
+            // Find index of the previous Task instance
+            const index = Description.findTaskIndex(task);
+            task.deleteTaskInstance(index);
+            // Replace task instance with description instance
+            newTask.newEditedList();
+            console.log(Task.taskList);
+        } else if (task.constructor === Description && newDescription !== "") {
+            // Edit Description instance
+            task.updateTaskList();
+            console.log(Task.taskList);
+        } else if (task.constructor === Description && newDescription === "") {
+            // WAS A Description INSTANCE, WANTS TO BE A Task INSTANCE
+            // Create new Task instance
+            const {newTask} = createTaskFromEdit();
+            // Find index of the previous Description instance
+            const index = Description.findTaskIndex(task);
+            task.deleteTaskInstance(index);
+            // Replace Description instance with Task instance
+            newTask.newEditedList();
+            console.log(Task.taskList);
+        }
+        taskCardToEdit.querySelector(".card-title").innerHTML = newTitle;
+        taskCardToEdit.querySelector(".date").innerHTML = newDate;
+        // close modal
+        editTaskDialog.close(); 
+    } else if (e.target.id === "close-edit-form") {
+        e.preventDefault();
+        // close modal
+        editTaskDialog.close();
+    }
+})
+
+export function getEditTaskData () {
+    const newTitle = document.getElementById("edit-title").value;
+    const newDescription = document.getElementById("edit-description").value;
+    const newDate = document.getElementById("edit-date").value;
+    const newPriority = document.getElementById("edit-priority").value;
+    const newProject = document.getElementById("edit-project").value;
+    return {newTitle, newDescription, newDate, newPriority, newProject}
 }

@@ -1,12 +1,11 @@
 import {Task, Description, Note} from "./task.js";
 import {Project} from "./project.js";
 import "./style.css";
-import {createCard, getTaskFormInputs} from "./dom.js";
+import {createCard, getTaskFormInputs, getEditTaskData} from "./dom.js";
 
 export function createProject(name) {
     const newProject = new Project(name);
     newProject.addProjectToList();
-    console.log(newProject.keyName);
     console.log(Project.projectList);
 }
 
@@ -24,10 +23,11 @@ export function createTask() {
     console.log(Task.taskList);
 }
 
-export function setOptionDataAttr (option) {
+export function setOptionDataAttr (taskForm, editTaskForm) {
     const arr = Project.projectList;
     const keyName = arr[arr.length - 1].projectKeyName;
-    option.setAttribute("data-project", `${keyName}`);
+    taskForm.setAttribute("data-project", `${keyName}`);
+    editTaskForm.setAttribute("data-project", `${keyName}`);
 }
 
 export function setProjectTabAttr (tab) {
@@ -50,14 +50,52 @@ export function getDescription (id) {
     Task.taskList.filter((task) => {
         if (task.id === id) {
             description = task.description;
-            console.log(description);
         }
     })
     return {description}
 }
 
+export function getTaskData (id) {
+    let title;
+    let description;
+    let date;
+    let priority;
+    let project;
+    Task.taskList.filter((task) => {
+        if (task.id === id) {
+            title = task.taskTitle;
+            description = task.taskDescription;
+            date = task.taskDueDate;
+            priority = task.taskPriority;
+            project = task.taskProject;
+            console.log(`Project of Selected Task Card: ${project}`);
+        }
+    });
+    return {title, description, date, priority, project}
+}
 
+export function findTask (elementId) {
+    const task = Task.taskList.find((task) => task.id === elementId);
+    return {task}
+}
 
+export function createDescription () {
+    let newTask;
+    const {newTitle, newDescription, newDate, newPriority, newProject} = getEditTaskData();
+        if (newDescription !== "") {
+            newTask = new Description(newTitle, newDate, newPriority, newProject, newDescription);
+        }
+        return {newTask}
+}
+
+export function createTaskFromEdit () {
+    let newTask;
+    const {newTitle, newDescription, newDate, newPriority, newProject} = getEditTaskData();
+    if (newDescription === "") {
+        newTask = new Task(newTitle, newDate, newPriority, newProject);
+    }
+    return {newTask}
+}
 
 
 
