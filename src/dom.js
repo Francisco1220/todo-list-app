@@ -183,6 +183,8 @@ function currentProject () {
                 // Set data ids for task cards
                 const id = projectTasks[i].id;
                 cardDiv.setAttribute("data-id", id);
+                // Set border colour
+                setBorderColour(cardDiv, projectTasks[i].priority);
             }
         }
         manageTaskCardUI();
@@ -238,7 +240,7 @@ function manageTaskCardUI () {
                     const taskComplete = e.target.parentElement;
                     const taskId = e.target.parentElement.getAttribute("data-id");
                     // Remove task card from container
-                    taskId.remove();
+                    taskComplete.remove();
                     // Update completed value to "true"
                     updateTaskAsCompleted(taskId);
                 } else if (e.target.className === "descriptionBtn") {
@@ -343,6 +345,15 @@ document.getElementById("edit-form-btns").addEventListener("click", (e) => {
         taskCardToEdit.querySelector(".date").innerHTML = newDate;
         // close modal
         editTaskDialog.close(); 
+        let getPriority
+        Task.taskList.forEach((task) => {
+            if (task.id === taskCardId) {
+                getPriority = task.priority;
+            }
+        })
+        console.log(taskCardToEdit);
+        console.log(getPriority);
+        setBorderColour(taskCardToEdit, getPriority);
     } else if (e.target.id === "close-edit-form") {
         e.preventDefault();
         // close modal
@@ -357,4 +368,14 @@ export function getEditTaskData () {
     const newPriority = document.getElementById("edit-priority").value;
     const newProject = document.getElementById("edit-project").value;
     return {newTitle, newDescription, newDate, newPriority, newProject}
+}
+
+function setBorderColour (taskCard, priority) {
+    if (priority === "High") {
+        taskCard.style.backgroundColor = "#F2B8B5";
+    } else if (priority === "Medium") {
+        taskCard.style.backgroundColor = "#F7E3B5";
+    } else {
+        taskCard.style.backgroundColor = "#B2DFDB";
+    }
 }

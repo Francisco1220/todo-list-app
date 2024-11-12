@@ -148,7 +148,6 @@
 }
 
 .task-card {
-    border: 2px solid black;
     border-radius: 12px;
     display: grid;
     grid-template-columns: 25px repeat(2, 1fr);
