@@ -136,7 +136,6 @@ function createNewTask (btn) {
     newTaskDialog.close();
     // Clear inputs
     document.getElementById("task-form").reset();
-    console.log(projectInput);
     refreshPage(projectInput);
 }
 
@@ -188,6 +187,8 @@ function currentProject () {
                 // Set border colour
                 setBorderColour(cardDiv, projectTasks[i].priority);
             }
+             // Set project title
+             setProjectTitle(currentProject);
         }
         manageTaskCardUI();
     })
@@ -391,4 +392,14 @@ function refreshPage (projectName) {
             getTaskProject.click();
         }
     })
+}
+
+function setProjectTitle (currentProjectName) {
+    // Set project title
+    const headerTitle = document.getElementById("project-name");
+    for (let i = 0; i < Project.projectList.length; i++) {
+        if (Project.projectList[i].keyName.toString() === currentProjectName) {
+            headerTitle.innerHTML = Project.projectList[i][currentProjectName].name;
+        }
+    }
 }
