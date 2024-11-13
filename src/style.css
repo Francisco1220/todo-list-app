@@ -166,6 +166,16 @@
     border: 2px solid black;
 }
 
+.circle-check:hover {
+    border: none;
+    background-size: 110%;
+    background-repeat: no-repeat;
+    background-origin: border-box;
+    background-position: center;
+    justify-self: center;
+    background-image: url("./assets/icons/check.svg");
+}
+
 .card-interact {
     display: grid;
     grid-template-columns: 50px 50px 50px;
@@ -229,6 +239,20 @@
     letter-spacing: 3px;
 }
 
+[data-check-svg] {
+    border: none;
+    background-size: 110%;
+    background-repeat: no-repeat;
+    background-origin: border-box;
+    background-position: center;
+    justify-self: center;
+    background-image: url("./assets/icons/check.svg");
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
+ 
 /* Notes section layout and styles */
 
 #notes {

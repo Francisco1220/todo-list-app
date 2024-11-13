@@ -208,11 +208,22 @@ function completedTab () {
     let trueCount = 0;
     Task.taskList.filter((task) => {
         if (task.completed === true) {
-            // REVISIT: remove event listeners from description, edit-task, and delete-task buttons
-            // REVISIT: Make entire task card opaque
-            const {titleDiv, date} = createCard();
+            const {cardDiv, titleDiv, date, checkDiv, editTaskBtn, descriptionBtn, deleteTaskBtn} = createCard();
             titleDiv.innerHTML = task.title;
             date.innerHTML = task.dueDate;
+            setBorderColour(cardDiv, task.priority);
+            // Custom styles for completed tasks
+            titleDiv.setAttribute("class", "card-title strikethrough");
+            checkDiv.setAttribute("data-check-svg", "");
+            date.setAttribute("class", "date strikethrough");
+            editTaskBtn.style.opacity = "0.2";
+            descriptionBtn.style.opacity = "0.2";
+            deleteTaskBtn.style.opacity = "0.2";
+            // Disable all click/hover events
+            checkDiv.style["pointer-events"] = "none";
+            editTaskBtn.style["pointer-events"] = "none";
+            descriptionBtn.style["pointer-events"] = "none";
+            deleteTaskBtn.style["pointer-events"] = "none";
         } else if (task.completed === true) {
             trueCount++;
             if (trueCount === 0) {
