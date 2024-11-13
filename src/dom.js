@@ -1,5 +1,5 @@
 import chevronSVG from "./assets/icons/chevron-right.svg";
-import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription, getTaskData, findTask, findTaskIndex, createDescription, createTaskFromEdit} from "./index.js"
+import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription, getTaskData, findTask, findTaskIndex, createDescription, createTaskFromEdit, deleteTask} from "./index.js"
 import {Project} from "./project.js";
 import {createTask} from "./index.js";
 import {Task, Description} from "./task.js";
@@ -257,7 +257,11 @@ function manageTaskCardUI () {
                     taskCardToEdit = e.target.parentElement.closest(".task-card");
                     showTaskData(taskCardToEdit);
                 } else if (e.target.className === "deleteTaskBtn") {
-                    console.log("Delete this task feature");
+                    const taskId = e.target.parentElement.closest(".task-card").getAttribute("data-id");
+                    // Deletes task instance
+                    deleteTask(taskId);
+                    // Deletes task card from DOM
+                    deleteTaskCard(taskId);
                 }
             })
         }
@@ -400,6 +404,18 @@ function setProjectTitle (currentProjectName) {
     for (let i = 0; i < Project.projectList.length; i++) {
         if (Project.projectList[i].keyName.toString() === currentProjectName) {
             headerTitle.innerHTML = Project.projectList[i][currentProjectName].name;
+        }
+    }
+}
+
+function deleteTaskCard (taskCardId) {
+    const taskCards = document.querySelectorAll(".task-card");
+    for (let i = 0; i < taskCards.length; i++) {
+        for (let i = 0; i < taskCards.length; i++) {
+            if (taskCards[i].getAttribute("data-id") === taskCardId) {
+                console.log("delete this task");
+                taskCards[i].remove();
+            }
         }
     }
 }

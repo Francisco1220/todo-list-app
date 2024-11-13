@@ -97,6 +97,17 @@ export function createTaskFromEdit () {
     return {newTask}
 }
 
+export function deleteTask (taskCardId) {
+    // Delete task instance
+    console.log(taskCardId);
+    Task.taskList.filter((task, index) => {
+        if (task.id === taskCardId) {
+            task.deleteTaskInstance(index);
+            console.log(Task.taskList);
+        }
+    })
+}
+
 
 
 
