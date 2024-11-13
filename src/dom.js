@@ -129,13 +129,15 @@ function createProjectTab (projectName) {
 
 function createNewTask (btn) {
     // Get inputs
-    getTaskFormInputs();
+    const {projectInput} = getTaskFormInputs();
     // Create task object and add to taskList (check for description or notes)
     createTask();
     // Close modal
     newTaskDialog.close();
     // Clear inputs
     document.getElementById("task-form").reset();
+    console.log(projectInput);
+    refreshPage(projectInput);
 }
 
 /////////////////////////////
@@ -378,4 +380,15 @@ function setBorderColour (taskCard, priority) {
     } else {
         taskCard.style.backgroundColor = "#B2DFDB";
     }
+}
+
+function refreshPage (projectName) {
+    const project = document.querySelectorAll("#projects > .tabs");
+    project.forEach((tab) => {
+        if (tab.getAttribute("data-project") === projectName) {
+            const getTaskProject = tab;
+            console.log(getTaskProject);
+            getTaskProject.click();
+        }
+    })
 }
