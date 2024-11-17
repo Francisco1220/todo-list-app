@@ -3,6 +3,7 @@ import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, ma
 import {Project} from "./project.js";
 import {createTask} from "./index.js";
 import {Task, Description} from "./task.js";
+import {format} from "date-fns";
 
 // Creates task cards when called
 export function createCard () {
@@ -180,7 +181,8 @@ function currentProject () {
             for (let i = 0; i < projectTasks.length; i++) {
                 const {cardDiv, titleDiv, date} = createCard();
                 titleDiv.innerHTML = projectTasks[i].title;
-                date.innerHTML = projectTasks[i].dueDate;
+                const {newDateFormat} = formatDate(projectTasks[i].dueDate);
+                date.innerHTML = `Due by ${newDateFormat}`;
                 // Set data ids for task cards
                 const id = projectTasks[i].id;
                 cardDiv.setAttribute("data-id", id);
@@ -210,7 +212,8 @@ function completedTab () {
         if (task.completed === true) {
             const {cardDiv, titleDiv, date, checkDiv, editTaskBtn, descriptionBtn, deleteTaskBtn} = createCard();
             titleDiv.innerHTML = task.title;
-            date.innerHTML = task.dueDate;
+            const {newDateFormat} = formatDate(task.dueDate);
+            date.innerHTML = `Due by ${newDateFormat}`;
             setBorderColour(cardDiv, task.priority);
             // Custom styles for completed tasks
             titleDiv.setAttribute("class", "card-title strikethrough");
@@ -429,4 +432,14 @@ function deleteTaskCard (taskCardId) {
             }
         }
     }
+}
+
+function formatDate(date) {
+    const dateArr = date.split("-");
+    let year = dateArr[0];
+    let month = dateArr[1] - 1;
+    let day = dateArr[2];
+    const dateObj = new Date(year, month, day);
+    const newDateFormat = format(dateObj, 'PPPP');
+    return {newDateFormat};
 }

@@ -123,7 +123,6 @@ export function deleteTask (taskCardId) {
 
 
 
-
 // Create the default project and tasks
 /* function setDefault () {
     // Create default tasks
