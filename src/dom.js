@@ -175,7 +175,6 @@ function currentProject () {
             // Clear all taskCards
             clearAll();
             // Create task cards for current selected project tab. Filter taskList for 'project' key
-            const 
             currentProject = e.target.getAttribute("data-project");
             const projectTasks = Task.taskList.filter((task) => task.project === currentProject && task.isTaskComplete === false);
             console.log(projectTasks);
@@ -193,6 +192,17 @@ function currentProject () {
              // Set project title
              setProjectTitle(currentProject);
         }
+        // Show the currently selected project tab
+        const projectTabs = document.querySelectorAll("#projects > li");
+        console.log(projectTabs);
+        projectTabs.forEach((tab) => {
+            if (tab.dataset.project === currentProject) {
+                tab.style.fontWeight = "500";
+                console.log("hi");
+            } else {
+                tab.style.fontWeight = "normal";
+            }
+        })
         manageTaskCardUI();
     })
 }
