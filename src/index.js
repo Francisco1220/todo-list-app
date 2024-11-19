@@ -7,6 +7,7 @@ export function createProject(name) {
     const newProject = new Project(name);
     newProject.addProjectToList();
     console.log(Project.projectList);
+    console.log(Project.projectList[0]);
 }
 
 export function createTask() {
@@ -104,6 +105,19 @@ export function deleteTask (taskCardId) {
         if (task.id === taskCardId) {
             task.deleteTaskInstance(index);
             console.log(Task.taskList);
+        }
+    })
+}
+
+export function deleteProject (projectKey) {
+    Task.taskList.forEach((task, index) => {
+        if (task.project === projectKey) {
+            task.deleteTaskInstance(index);
+        }
+    })
+    Project.projectList.forEach((projectFolder, index) => {
+        if (projectFolder.keyName.toString() === projectKey) {
+            projectFolder.deleteProject(index);
         }
     })
 }

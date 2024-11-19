@@ -1,5 +1,5 @@
 import chevronSVG from "./assets/icons/chevron-right.svg";
-import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription, getTaskData, findTask, findTaskIndex, createDescription, createTaskFromEdit, deleteTask} from "./index.js"
+import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription, getTaskData, findTask, findTaskIndex, createDescription, createTaskFromEdit, deleteTask, deleteProject} from "./index.js"
 import {Project} from "./project.js";
 import {createTask} from "./index.js";
 import {Task, Description} from "./task.js";
@@ -175,7 +175,8 @@ function currentProject () {
             // Clear all taskCards
             clearAll();
             // Create task cards for current selected project tab. Filter taskList for 'project' key
-            const currentProject = e.target.getAttribute("data-project");
+            const 
+            currentProject = e.target.getAttribute("data-project");
             const projectTasks = Task.taskList.filter((task) => task.project === currentProject && task.isTaskComplete === false);
             console.log(projectTasks);
             for (let i = 0; i < projectTasks.length; i++) {
@@ -352,7 +353,7 @@ document.getElementById("edit-form-btns").addEventListener("click", (e) => {
             task.updateTaskList();
             console.log(Task.taskList);
         } else if (task.constructor === Description && newDescription === "") {
-            // WAS A Description INSTANCE, WANTS TO BE A Task INSTANCE
+            // Change Description instance to Task instance
             // Create new Task instance
             const {newTask} = createTaskFromEdit();
             // Find index of the previous Description instance
@@ -412,12 +413,13 @@ function refreshPage (projectName) {
     })
 }
 
-function setProjectTitle (currentProjectName) {
+function setProjectTitle(currentProjectName) {
     // Set project title
     const headerTitle = document.getElementById("project-name");
     for (let i = 0; i < Project.projectList.length; i++) {
         if (Project.projectList[i].keyName.toString() === currentProjectName) {
             headerTitle.innerHTML = Project.projectList[i][currentProjectName].name;
+            headerTitle.setAttribute("data-project", Project.projectList[i].keyName);
         }
     }
 }
@@ -443,3 +445,22 @@ function formatDate(date) {
     const newDateFormat = format(dateObj, 'PPPP');
     return {newDateFormat};
 }
+
+document.getElementById("delete-project").addEventListener("click", () => {
+    console.log("delete button clicked");
+    const project = document.getElementById("project-name").getAttribute("data-project");
+    // Delete from DOM
+    clearAll();
+    const projectsLi = document.querySelectorAll("#projects > .tabs");
+    const projectsIcon = document.querySelectorAll("#projects > .tab-icon");
+    for (let i = 0; i < projectsLi.length; i++) {
+        if (projectsLi[i].getAttribute("data-project") === project) {
+            projectsLi[i].remove();
+            projectsIcon[i].remove();
+        }
+    }
+    // Delete from projectList and taskList
+    deleteProject(project);
+    // Switch current project
+    refreshPage(Project.projectList[0].keyName.toString());
+})

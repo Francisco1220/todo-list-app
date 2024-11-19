@@ -17,6 +17,10 @@ export class Project {
         Project.projectList.push(this);
     }
 
+    deleteProject (index) {
+        Project.projectList.splice(index, 1);
+    }
+
     get projectKeyName () {
         return this.keyName;
     }
