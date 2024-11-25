@@ -57,7 +57,7 @@
 #menu {
     display: grid;
     grid-template-columns: 40px 135px;
-    grid-template-rows: repeat(4, 40px);
+    grid-template-rows: repeat(5, 40px);
     list-style-type: none;
     margin-top: 30px;
 }
@@ -274,8 +274,33 @@
 
 #edit-notes-btn {
     margin-top: 5px;
-    background-image: url("./assets/icons/notebook-edit.svg");
+    background-image: url("./assets/icons/edit-pen.svg");
 
+}
+
+#notes-dialog ,
+#edit-note-dialog {
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 30%;
+    height: 60%;
+    padding: 1em;
+}
+
+#notes-form > textarea,
+#edit-note-form > textarea {
+    resize: none;
+    width: 400px;
+    height: 300px;
+    padding-left: 10px;
+    padding-top: 10px;
+    font-size: 1rem;
+}
+
+#notes-form > button,
+#edit-note-form > button {
+    margin-top: 25px;
 }
 
 /* Other */
@@ -297,7 +322,9 @@
     top: 15rem;
 }
 
-#project-form {
+#project-form,
+#notes-form,
+#edit-note-form {
     width: 20rem;
     height: 8rem;
     display: flex;
@@ -314,7 +341,9 @@
     padding-left: 10px;
 }
 
-#project-form > button {
+#project-form > button,
+#notes-form > button,
+#edit-note-form > button {
     font-size: 1rem;
     padding: 3px 15px 3px 15px;
     border-radius: 8px;

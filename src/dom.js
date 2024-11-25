@@ -1,9 +1,10 @@
 import chevronSVG from "./assets/icons/chevron-right.svg";
-import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription, getTaskData, findTask, findTaskIndex, createDescription, createTaskFromEdit, deleteTask, deleteProject} from "./index.js"
+import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription, getTaskData, findTask, findTaskIndex, createDescription, createTaskFromEdit, deleteTask, deleteProject, createNote} from "./index.js"
 import {Project} from "./project.js";
-import {createTask} from "./index.js";
+import {createTask, findNote} from "./index.js";
 import {Task, Description} from "./task.js";
 import {format} from "date-fns";
+import {Note} from "./note.js";
 
 // Creates task cards when called
 export function createCard () {
@@ -100,7 +101,7 @@ function addProjectOption (project) {
 }
 
 
-document.querySelector("#project-form > button:last-child").addEventListener("click", (e) => {
+document.getElementById("close-project-form").addEventListener("click", (e) => {
     e.preventDefault();
     newProjectDialog.close();
     // Clear inputs
@@ -169,7 +170,9 @@ export function getTaskFormInputs () {
     return {titleInput, descriptionInput, dateInput, priorityInput, projectInput}
 }
 
-function currentProject () {
+let currentProject;
+
+function setCurrentProject () {
     document.getElementById("projects").addEventListener("click", (e) => {
         if (e.target.nodeName === "LI") {
             // Clear all taskCards
@@ -198,12 +201,12 @@ function currentProject () {
         projectTabs.forEach((tab) => {
             if (tab.dataset.project === currentProject) {
                 tab.style.fontWeight = "500";
-                console.log("hi");
             } else {
                 tab.style.fontWeight = "normal";
             }
         })
         manageTaskCardUI();
+        showNote();
     })
 }
 
@@ -213,7 +216,6 @@ function clearAll() {
     for (let i = 0; i < taskCards.length; i++) {
         taskCards[i].remove();
     }
-
 }
 
 // Display completed tasks
@@ -255,7 +257,7 @@ function noCompletedMessage () {
     tasksContainer.appendChild(p);
 }
 
-currentProject();
+setCurrentProject();
 
 let taskCardToEdit;
 
@@ -473,4 +475,74 @@ document.getElementById("delete-project").addEventListener("click", () => {
     deleteProject(project);
     // Switch current project
     refreshPage(Project.projectList[0].keyName.toString());
+})
+
+////////////////////////////////////////////////////////////////////
+
+// Notes button (opens modal)
+document.getElementById("new-note").addEventListener("click", () => {
+    document.getElementById("notes-dialog").showModal();
+    const formLabel = document.querySelector("#notes-form > label");
+    let currentProjectName;
+    Project.projectList.find((folder) => {
+        if (folder[currentProject]) {
+            currentProjectName = folder[currentProject].name;
+        }
+    });
+    formLabel.innerHTML = `Note for ${currentProjectName} List:`;
+})
+
+// Create note when button clicked
+document.getElementById("create-note-btn").addEventListener("click", (e) => {
+    e.preventDefault();
+    const userInput = document.getElementById("note-text").value;
+    createNote(currentProject, userInput);
+    document.getElementById("notes-dialog").close();
+    console.log(currentProject);
+    refreshPage(currentProject);
+})
+
+
+// Don't touch this one. Works fine
+document.getElementById("close-notes-form").addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("notes-dialog").close();
+    document.getElementById("notes-form").reset();
+})
+
+function showNote () {
+    document.getElementById("notes-area").innerHTML = "";
+    let projectNote;
+    console.log(currentProject);
+    Note.noteList.find((note) => {
+        if (note.project === currentProject) {
+            projectNote = note.taskNote;
+            document.getElementById("notes-area").innerHTML = projectNote;
+        } 
+    })
+    return {projectNote}
+}
+
+export function getEditedNote () {
+    const editedTaskNote = document.getElementById("edit-note-text").value;
+    return {editedTaskNote}
+}
+
+// Open form to edit note
+document.getElementById("edit-notes-btn").addEventListener("click", () => {
+    document.getElementById("edit-note-dialog").showModal();
+    const {note} = findNote(currentProject);
+    console.log(note);
+    if (note !== undefined) {
+        document.getElementById("edit-note-text").innerHTML = note.note;
+    }
+})
+
+// Submit updatedNote
+document.getElementById("edit-note").addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("edit-note-dialog").close();
+    const {note} = findNote(currentProject);
+    note.updateNoteList();
+    refreshPage(currentProject);
 })

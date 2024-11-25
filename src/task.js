@@ -108,14 +108,3 @@ export class Description extends Task {
         return this.taskDescription;
     }
 }
-
-export class Note extends Description {
-    constructor(title, dueDate, priority, project, description, taskNote) {
-        super(title, dueDate, priority, project, description);
-        this.taskNote = taskNote;
-        this.id = crypto.randomUUID();
-    }
-    get note () {
-        return this.taskNote;
-    }
-}

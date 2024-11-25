@@ -1,13 +1,12 @@
-import {Task, Description, Note} from "./task.js";
+import {Task, Description} from "./task.js";
 import {Project} from "./project.js";
 import "./style.css";
 import {createCard, getTaskFormInputs, getEditTaskData} from "./dom.js";
+import {Note} from "./note.js";
 
 export function createProject(name) {
     const newProject = new Project(name);
     newProject.addProjectToList();
-    console.log(Project.projectList);
-    console.log(Project.projectList[0]);
 }
 
 export function createTask() {
@@ -122,9 +121,19 @@ export function deleteProject (projectKey) {
     })
 }
 
+export function createNote (project, userNote) {
+    const newNote = new Note(project, userNote);
+    console.log(newNote);
+    newNote.addNoteToList();
+    console.log(Note.noteList);
+    return {newNote}
+}
 
-
-
+export function findNote (currentProject) {
+    const note = Note.noteList.find((note) => note.project === currentProject);
+    console.log(note);
+    return {note}
+}
 
 
 
