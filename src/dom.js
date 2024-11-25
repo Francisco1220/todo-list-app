@@ -60,6 +60,9 @@ document.getElementById("menu").addEventListener("click", (e) => {
     } else if (e.target.innerHTML === "Completed") {
         clearAll();
         completedTab();
+        document.querySelector("#notes > p").remove();
+        document.getElementById("project-name").innerHTML = "Completed Tasks";
+        document.getElementById("delete-project").remove();
     }
 })
 
@@ -223,6 +226,7 @@ function completedTab () {
     let trueCount = 0;
     Task.taskList.filter((task) => {
         if (task.completed === true) {
+            trueCount++;
             const {cardDiv, titleDiv, date, checkDiv, editTaskBtn, descriptionBtn, deleteTaskBtn} = createCard();
             titleDiv.innerHTML = task.title;
             const {newDateFormat} = formatDate(task.dueDate);
@@ -240,11 +244,9 @@ function completedTab () {
             editTaskBtn.style["pointer-events"] = "none";
             descriptionBtn.style["pointer-events"] = "none";
             deleteTaskBtn.style["pointer-events"] = "none";
-        } else if (task.completed === true) {
-            trueCount++;
-            if (trueCount === 0) {
-                noCompletedMessage();
-            }
+        }
+        if (trueCount === 0) {
+            noCompletedMessage();
         }
     })
 }
@@ -476,8 +478,6 @@ document.getElementById("delete-project").addEventListener("click", () => {
     // Switch current project
     refreshPage(Project.projectList[0].keyName.toString());
 })
-
-////////////////////////////////////////////////////////////////////
 
 // Notes button (opens modal)
 document.getElementById("new-note").addEventListener("click", () => {
