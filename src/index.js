@@ -148,7 +148,10 @@ function createDefault () {
     defaultTask1.addTaskToList();
     defaultTask2.addTaskToList(); 
     defaultTask3.addTaskToList();
+    const defaultNote = new Note("project1", "Need to buy laundry detergent");
     console.log(Task.taskList);
+    console.log(defaultNote);
+    defaultNote.addNoteToList();
 }
 
 createDefault();

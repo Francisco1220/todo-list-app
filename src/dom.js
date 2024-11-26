@@ -502,8 +502,6 @@ document.getElementById("create-note-btn").addEventListener("click", (e) => {
     refreshPage(currentProject);
 })
 
-
-// Don't touch this one. Works fine
 document.getElementById("close-notes-form").addEventListener("click", (e) => {
     e.preventDefault();
     document.getElementById("notes-dialog").close();
@@ -532,7 +530,7 @@ export function getEditedNote () {
 document.getElementById("edit-notes-btn").addEventListener("click", () => {
     document.getElementById("edit-note-dialog").showModal();
     const {note} = findNote(currentProject);
-    console.log(note);
+    document.querySelector("#edit-note-form > label").innerHTML = Project.projectList.find((project) => project[currentProject])[currentProject].name;
     if (note !== undefined) {
         document.getElementById("edit-note-text").innerHTML = note.note;
     }
