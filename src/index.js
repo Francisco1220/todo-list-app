@@ -135,33 +135,20 @@ export function findNote (currentProject) {
     return {note}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-// Create the default project and tasks
-/* function setDefault () {
-    // Create default tasks
-    const defaultTask1 = new Task("Do laundry", "2024-08-12", "Low");
-    const defaultTask2 = new Task("Buy groceries", "2024-11-29", "High");
-    defaultTask1.addTaskToList();
-    defaultTask2.addTaskToList(); 
-    console.log(Task.taskList);
+function createDefault () {
     // Create default project
-    const defaultProject = new Project("Default");
+    const defaultProject = new Project ("Chores");
+    console.log(defaultProject);
     defaultProject.addProjectToList();
     console.log(Project.projectList);
-    
-    return {defaultTask1, defaultTask2, defaultProject}
+    // Create default tasks
+    const defaultTask1 = new Task ("Do laundry", "2024-08-12", "High", "project1");
+    const defaultTask2 = new Task ("Buy groceries", "2024-11-29", "Medium", "project1");
+    const defaultTask3 = new Task ("Wash dishes", "2024-11-30", "Low", "project1");
+    defaultTask1.addTaskToList();
+    defaultTask2.addTaskToList(); 
+    defaultTask3.addTaskToList();
+    console.log(Task.taskList);
 }
 
-setDefault(); */
-
-// Create project and add to projectList
+createDefault();

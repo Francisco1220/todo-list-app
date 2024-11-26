@@ -1,7 +1,7 @@
 import chevronSVG from "./assets/icons/chevron-right.svg";
 import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription, getTaskData, findTask, findTaskIndex, createDescription, createTaskFromEdit, deleteTask, deleteProject, createNote} from "./index.js"
 import {Project} from "./project.js";
-import {createTask, findNote} from "./index.js";
+import {createTask, findNote, createDefault} from "./index.js";
 import {Task, Description} from "./task.js";
 import {format} from "date-fns";
 import {Note} from "./note.js";
@@ -144,7 +144,6 @@ function createNewTask (btn) {
     refreshPage(projectInput);
 }
 
-/////////////////////////////
 document.getElementById("task-form-btns").addEventListener("click", (e) => {
     if (e.target.id === "create-task") {
         e.preventDefault();
@@ -170,6 +169,7 @@ export function getTaskFormInputs () {
     // Get select option element instead of value and use that to set a data attribute to it
     const projectIndex = document.getElementById("project").selectedIndex;
     const projectInput = project[projectIndex].getAttribute("data-project");
+    console.log(projectInput);
     return {titleInput, descriptionInput, dateInput, priorityInput, projectInput}
 }
 
@@ -546,3 +546,15 @@ document.getElementById("edit-note").addEventListener("click", (e) => {
     note.updateNoteList();
     refreshPage(currentProject);
 })
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log(Project.projectList[0].project1.name);
+    setDefault();
+    console.log(Project.projectList[0].keyName.toString());
+})
+
+function setDefault() {
+    createProjectTab(Project.projectList[0].project1.name);
+    setProjectTitle(Project.projectList[0].keyName.toString());
+    refreshPage(Project.projectList[0].keyName.toString());
+}
