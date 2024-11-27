@@ -58,11 +58,11 @@ document.getElementById("menu").addEventListener("click", (e) => {
         // Show project modal
         newProjectDialog.showModal();
     } else if (e.target.innerHTML === "Completed") {
-        clearAll();
+        clearMain();
         completedTab();
-        document.querySelector("#notes > p").remove();
+        document.getElementById("edit-notes-btn").style.opacity = "0%";
         document.getElementById("project-name").innerHTML = "Completed Tasks";
-        document.getElementById("delete-project").remove();
+        document.getElementById("notes-area").innerHTML = "";
     }
 })
 
@@ -178,8 +178,9 @@ let currentProject;
 function setCurrentProject () {
     document.getElementById("projects").addEventListener("click", (e) => {
         if (e.target.nodeName === "LI") {
+            document.getElementById("edit-notes-btn").style.opacity = "100%";
             // Clear all taskCards
-            clearAll();
+            clearMain();
             // Create task cards for current selected project tab. Filter taskList for 'project' key
             currentProject = e.target.getAttribute("data-project");
             const projectTasks = Task.taskList.filter((task) => task.project === currentProject && task.isTaskComplete === false);
@@ -214,7 +215,10 @@ function setCurrentProject () {
 }
 
 // Clears all task cards when called
-function clearAll() {
+function clearMain() {
+    if (document.getElementById("completed-message")) {
+        document.getElementById("completed-message").remove();
+    }
     const taskCards = document.querySelectorAll(".task-card");
     for (let i = 0; i < taskCards.length; i++) {
         taskCards[i].remove();
@@ -245,10 +249,10 @@ function completedTab () {
             descriptionBtn.style["pointer-events"] = "none";
             deleteTaskBtn.style["pointer-events"] = "none";
         }
-        if (trueCount === 0) {
-            noCompletedMessage();
-        }
     })
+    if (trueCount === 0) {
+        noCompletedMessage();
+    }
 }
 
 function noCompletedMessage () {
@@ -464,7 +468,7 @@ document.getElementById("delete-project").addEventListener("click", () => {
     console.log("delete button clicked");
     const project = document.getElementById("project-name").getAttribute("data-project");
     // Delete from DOM
-    clearAll();
+    clearMain();
     const projectsLi = document.querySelectorAll("#projects > .tabs");
     const projectsIcon = document.querySelectorAll("#projects > .tab-icon");
     for (let i = 0; i < projectsLi.length; i++) {

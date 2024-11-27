@@ -211,7 +211,6 @@
     background-repeat: no-repeat;
     background-origin: border-box;
     background-position: center;
-    justify-self: center;
 }
 
 .editTaskBtn {
@@ -264,6 +263,7 @@
     padding-bottom: 10px;
     padding-right: 10px;
     background-color: var(--main-colour);
+    position: relative;
 }
 
 #notes-area {
@@ -275,7 +275,9 @@
 #edit-notes-btn {
     margin-top: 5px;
     background-image: url("./assets/icons/edit-pen.svg");
-
+    position: absolute;
+    right: 35px;
+    top: 8px;
 }
 
 #notes-dialog ,
