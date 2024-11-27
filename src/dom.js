@@ -199,6 +199,12 @@ function setCurrentProject () {
              // Set project title
              setProjectTitle(currentProject);
         }
+        // Disable delete button for default project
+        if (currentProject === "project1") {
+            document.getElementById("delete-project").disabled = true;
+        } else {
+            document.getElementById("delete-project").disabled = false;
+        }
         // Show the currently selected project tab
         showCurrentTab();
         manageTaskCardUI();
@@ -552,6 +558,7 @@ function setDefault() {
     createProjectTab(Project.projectList[0].project1.name);
     setProjectTitle(Project.projectList[0].keyName.toString());
     refreshPage(Project.projectList[0].keyName.toString());
+    console.log(currentProject);
 }
 
 function checkNoteExists () {
@@ -582,7 +589,7 @@ function completedTabClicked () {
     document.querySelector(".ul-item").addEventListener("click", (e) => {
         e.target.style.fontWeight = "500";
         const projectTabs = document.querySelectorAll("#projects > li");
-        const currentProjectTab = projectTabs.forEach((tab) => {
+        projectTabs.forEach((tab) => {
             if (tab.dataset.project === currentProject) {
                 tab.style.fontWeight = "normal";
             }
