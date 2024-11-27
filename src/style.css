@@ -51,7 +51,7 @@
 
 #header-title {
     font-size: 3rem;
-    font-family: "Spicy rice";
+    font-family: "Protest Revolution", "Roboto";
 }
 
 #menu {
@@ -120,14 +120,16 @@
 
 #project-name {
     font-size: 2.3rem;
-    font-weight: normal;
+    font-weight: 400px;
     padding-left: 13px;
     padding-top: 13px;
+    letter-spacing: 1px;
 }
 
 #delete-project {
+    border: none;
     align-self: end;
-    margin-left: 12px;
+    margin-left: 15px;
     background-color: var(--main-colour);
     width: 110px;
     font-size: 0.9rem;
@@ -137,7 +139,7 @@
     background-color: rgb(242 71 62);
     color: #fffcfcf5;
     letter-spacing: 0.3px;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 }
 
 #tasks-container {
@@ -270,8 +272,9 @@
 
 #notes-area {
     height: 100%;
-    font-size: 1.2rem;
-    padding: 10px 10px 10px 10px;
+    font-size: 1.4rem;
+    padding: 20px 10px 15px 10px;
+    font-style: italic;
 }
 
 #edit-notes-btn {
