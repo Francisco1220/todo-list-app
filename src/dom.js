@@ -200,15 +200,7 @@ function setCurrentProject () {
              setProjectTitle(currentProject);
         }
         // Show the currently selected project tab
-        const projectTabs = document.querySelectorAll("#projects > li");
-        console.log(projectTabs);
-        projectTabs.forEach((tab) => {
-            if (tab.dataset.project === currentProject) {
-                tab.style.fontWeight = "500";
-            } else {
-                tab.style.fontWeight = "normal";
-            }
-        })
+        showCurrentTab();
         manageTaskCardUI();
         showNote();
         checkNoteExists();
@@ -540,7 +532,7 @@ document.getElementById("edit-notes-btn").addEventListener("click", () => {
         document.getElementById("edit-note-text").innerHTML = note.note;
     }
 })
-////////////////////////////////
+
 // Submit updatedNote
 document.getElementById("edit-note").addEventListener("click", (e) => {
     e.preventDefault();
@@ -573,3 +565,29 @@ function checkNoteExists () {
         document.getElementById("edit-notes-btn").disabled = false;
     }
 }
+
+function showCurrentTab () {
+    const projectTabs = document.querySelectorAll("#projects > li");
+    document.querySelector(".ul-item").style.fontWeight = "normal";
+    projectTabs.forEach((tab) => {
+        if (tab.dataset.project === currentProject) {
+            tab.style.fontWeight = "500";
+        } else {
+            tab.style.fontWeight = "normal";
+        }
+    })
+}
+
+function completedTabClicked () {
+    document.querySelector(".ul-item").addEventListener("click", (e) => {
+        e.target.style.fontWeight = "500";
+        const projectTabs = document.querySelectorAll("#projects > li");
+        const currentProjectTab = projectTabs.forEach((tab) => {
+            if (tab.dataset.project === currentProject) {
+                tab.style.fontWeight = "normal";
+            }
+        });
+    })
+}
+
+completedTabClicked ();
