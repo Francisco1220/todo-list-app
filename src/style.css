@@ -126,16 +126,18 @@
 }
 
 #delete-project {
-    border: none;
-    width: 20px;
-    height: 30px;
-    background-image: url("./assets/icons/remove-file.svg");
-    background-repeat: no-repeat;
-    background-origin: border-box;
-    background-position: center;
     align-self: end;
     margin-left: 12px;
     background-color: var(--main-colour);
+    width: 110px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 5px 5px 5px 5px;
+    border-radius: 8px;
+    background-color: rgb(242 71 62);
+    color: #fffcfcf5;
+    letter-spacing: 0.3px;
+    margin-bottom: 3px;
 }
 
 #tasks-container {
@@ -311,7 +313,6 @@
     font-family: "Roboto";
 }
 
-#delete-project:hover,
 #edit-notes-btn:hover {
     transform: scale(1.2);
 }
@@ -355,7 +356,8 @@
 
 #project-form > button:hover,
 #task-form-btns > button:hover,
-#edit-form-btns > button:hover {
+#edit-form-btns > button:hover,
+#delete-project:hover {
     opacity: 0.7;
 }
 
