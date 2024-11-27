@@ -199,12 +199,6 @@ function setCurrentProject () {
              // Set project title
              setProjectTitle(currentProject);
         }
-        // Disable delete button for default project
-        if (currentProject === "project1") {
-            document.getElementById("delete-project").disabled = true;
-        } else {
-            document.getElementById("delete-project").disabled = false;
-        }
         // Show the currently selected project tab
         showCurrentTab();
         manageTaskCardUI();
@@ -464,22 +458,25 @@ function formatDate(date) {
 }
 
 document.getElementById("delete-project").addEventListener("click", () => {
-    console.log("delete button clicked");
     const project = document.getElementById("project-name").getAttribute("data-project");
-    // Delete from DOM
-    clearMain();
-    const projectsLi = document.querySelectorAll("#projects > .tabs");
-    const projectsIcon = document.querySelectorAll("#projects > .tab-icon");
-    for (let i = 0; i < projectsLi.length; i++) {
-        if (projectsLi[i].getAttribute("data-project") === project) {
-            projectsLi[i].remove();
-            projectsIcon[i].remove();
+    if (currentProject === "project1") {
+        alert("Default project 'Chores' cannot be deleted");
+    } else {
+        // Delete from DOM
+        clearMain();
+        const projectsLi = document.querySelectorAll("#projects > .tabs");
+        const projectsIcon = document.querySelectorAll("#projects > .tab-icon");
+        for (let i = 0; i < projectsLi.length; i++) {
+            if (projectsLi[i].getAttribute("data-project") === project) {
+                projectsLi[i].remove();
+                projectsIcon[i].remove();
+            }
         }
+        // Delete from projectList and taskList
+        deleteProject(project);
+        // Switch current project
+        refreshPage(Project.projectList[0].keyName.toString());
     }
-    // Delete from projectList and taskList
-    deleteProject(project);
-    // Switch current project
-    refreshPage(Project.projectList[0].keyName.toString());
 })
 
 // Notes button (opens modal)
@@ -596,5 +593,7 @@ function completedTabClicked () {
         });
     })
 }
+
+
 
 completedTabClicked ();
