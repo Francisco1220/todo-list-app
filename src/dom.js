@@ -211,6 +211,7 @@ function setCurrentProject () {
         })
         manageTaskCardUI();
         showNote();
+        checkNoteExists();
     })
 }
 
@@ -539,7 +540,7 @@ document.getElementById("edit-notes-btn").addEventListener("click", () => {
         document.getElementById("edit-note-text").innerHTML = note.note;
     }
 })
-
+////////////////////////////////
 // Submit updatedNote
 document.getElementById("edit-note").addEventListener("click", (e) => {
     e.preventDefault();
@@ -559,4 +560,16 @@ function setDefault() {
     createProjectTab(Project.projectList[0].project1.name);
     setProjectTitle(Project.projectList[0].keyName.toString());
     refreshPage(Project.projectList[0].keyName.toString());
+}
+
+function checkNoteExists () {
+    const {note} = findNote(currentProject);
+    if (note === undefined) {
+        console.log("Note not found");
+        document.getElementById("edit-notes-btn").style.opacity = "0%"
+        document.getElementById("edit-notes-btn").disabled = true;
+    } else {
+        document.getElementById("edit-notes-btn").style.opacity = "100%"
+        document.getElementById("edit-notes-btn").disabled = false;
+    }
 }
