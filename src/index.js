@@ -1,7 +1,7 @@
 import {Task, Description} from "./task.js";
 import {Project} from "./project.js";
 import "./style.css";
-import {createCard, getTaskFormInputs, getEditTaskData} from "./dom.js";
+import {createCard, getTaskFormInputs, getEditTaskData, getEditedNote} from "./dom.js";
 import {Note} from "./note.js";
 
 export function createProject(name) {
@@ -12,15 +12,15 @@ export function createProject(name) {
 export function createTask() {
     // Create task (check for description and notes)
     const {titleInput, descriptionInput, dateInput, priorityInput, projectInput} = getTaskFormInputs();
-    // Add task to list
-    if (descriptionInput === "") {
-        const newTask = new Task (titleInput, dateInput, priorityInput, projectInput);
-        newTask.addTaskToList();
-    } else {
-        const newTask = new Description (titleInput, dateInput, priorityInput, projectInput, descriptionInput);
-        newTask.addTaskToList();
-    }
-    console.log(Task.taskList);
+        // Add task to list
+        if (descriptionInput === "") {
+            const newTask = new Task (titleInput, dateInput, priorityInput, projectInput);
+            newTask.addTaskToList();
+        } else {
+            const newTask = new Description (titleInput, dateInput, priorityInput, projectInput, descriptionInput);
+            newTask.addTaskToList();
+        }
+        console.log(Task.taskList);
 }
 
 export function setOptionDataAttr (taskForm, editTaskForm) {
@@ -155,3 +155,44 @@ function createDefault () {
 }
 
 createDefault();
+
+export function validateUserInput (formType) {
+    let taskFormError = false;
+    let projectFormError = false;
+    let noteFormError = false;
+    let editTaskError = false;
+    let editNoteError = false;
+    if (formType === "Create Task") {
+        const {titleInput, dateInput, priorityInput, projectInput} = getTaskFormInputs();
+        if (titleInput === "" || dateInput === "" || priorityInput === "default" || projectInput === "default") {
+            alert("Required fields cannot be empty: 'Title', 'Due-Date', 'Priority', 'Choose Project Folder'")
+            taskFormError = true;
+        }
+    } else if (formType === "Create Project") {
+        const projectInput = document.getElementById("new-project-name").value;
+        if (projectInput === "") {
+            alert("Required field cannot be empty");
+            projectFormError = true;
+        }
+    } else if (formType === "Create Note") {
+        const userInput = document.getElementById("note-text").value;
+        if (userInput === "") {
+            alert("Required field cannot be empty");
+            noteFormError = true;
+        }
+    } else if (formType === "Edit Task") {
+        const {newTitle, newDate, newPriority, newProject} = getEditTaskData ();
+        console.log(newPriority);
+        if (newTitle === "" || newDate === "" || newPriority === "default" || newProject === "default") {
+            alert("Required fields cannot be empty: 'Title', 'Due-Date', 'Priority', 'Choose Project Folder'");
+            editTaskError = true;
+        }
+    } else if (formType === "Edit Note") {
+        const {editedTaskNote} = getEditedNote();
+        if (editedTaskNote === "") {
+            alert("Required field cannot be empty");
+            editNoteError = true;
+        }
+    }
+    return {taskFormError, projectFormError, noteFormError, editTaskError, editNoteError}
+}
