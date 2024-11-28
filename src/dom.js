@@ -63,6 +63,7 @@ document.getElementById("menu").addEventListener("click", (e) => {
         document.getElementById("edit-notes-btn").style.opacity = "0%";
         document.getElementById("project-name").innerHTML = "Completed Tasks";
         document.getElementById("notes-area").innerHTML = "";
+        document.getElementById("delete-project").remove();
     }
 })
 
@@ -179,6 +180,13 @@ function setCurrentProject () {
     document.getElementById("projects").addEventListener("click", (e) => {
         if (e.target.nodeName === "LI") {
             document.getElementById("edit-notes-btn").style.opacity = "100%";
+            if (!document.getElementById("delete-project")) {
+                const deleteProject = document.createElement("button");
+                deleteProject.setAttribute("id", "delete-project");
+                deleteProject.innerHTML = "Delete Project";
+                document.getElementById("header").appendChild(deleteProject);
+                deleteProjectBtn();
+            }
             // Clear all taskCards
             clearMain();
             // Create task cards for current selected project tab. Filter taskList for 'project' key
@@ -457,27 +465,31 @@ function formatDate(date) {
     return {newDateFormat};
 }
 
-document.getElementById("delete-project").addEventListener("click", () => {
-    const project = document.getElementById("project-name").getAttribute("data-project");
-    if (currentProject === "project1") {
-        alert("Default project 'Chores' cannot be deleted");
-    } else {
-        // Delete from DOM
-        clearMain();
-        const projectsLi = document.querySelectorAll("#projects > .tabs");
-        const projectsIcon = document.querySelectorAll("#projects > .tab-icon");
-        for (let i = 0; i < projectsLi.length; i++) {
-            if (projectsLi[i].getAttribute("data-project") === project) {
-                projectsLi[i].remove();
-                projectsIcon[i].remove();
+function deleteProjectBtn () {
+    document.getElementById("delete-project").addEventListener("click", () => {
+        const project = document.getElementById("project-name").getAttribute("data-project");
+        if (currentProject === "project1") {
+            alert("Default project 'Chores' cannot be deleted");
+        } else {
+            // Delete from DOM
+            clearMain();
+            const projectsLi = document.querySelectorAll("#projects > .tabs");
+            const projectsIcon = document.querySelectorAll("#projects > .tab-icon");
+            for (let i = 0; i < projectsLi.length; i++) {
+                if (projectsLi[i].getAttribute("data-project") === project) {
+                    projectsLi[i].remove();
+                    projectsIcon[i].remove();
+                }
             }
+            // Delete from projectList and taskList
+            deleteProject(project);
+            // Switch current project
+            refreshPage(Project.projectList[0].keyName.toString());
         }
-        // Delete from projectList and taskList
-        deleteProject(project);
-        // Switch current project
-        refreshPage(Project.projectList[0].keyName.toString());
-    }
-})
+    })
+}
+
+deleteProjectBtn ();
 
 // Notes button (opens modal)
 document.getElementById("new-note").addEventListener("click", () => {
@@ -594,6 +606,5 @@ function completedTabClicked () {
     })
 }
 
-
-
 completedTabClicked ();
+
