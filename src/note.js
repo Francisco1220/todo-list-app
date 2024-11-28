@@ -21,11 +21,9 @@ export class Note {
     updateNoteList () {
         const {editedTaskNote} = getEditedNote();
         this.taskNote = editedTaskNote;
-        console.log(Note.noteList);
     }
 
     deleteNote (index) {
         Note.noteList.splice(index, 1);
-        console.log(Note.noteList);
     }
 }

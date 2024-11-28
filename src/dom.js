@@ -1,7 +1,20 @@
 import chevronSVG from "./assets/icons/chevron-right.svg";
-import {createProject, getProjectTabID, setOptionDataAttr, setProjectTabAttr, manageProjectTabs, setTaskDataAttr, updateTaskAsCompleted, getDescription, getTaskData, findTask, findTaskIndex, createDescription, createTaskFromEdit, deleteTask, deleteProject, createNote} from "./index.js"
+import {createProject, 
+        setOptionDataAttr, 
+        setProjectTabAttr, 
+        updateTaskAsCompleted, 
+        getDescription, 
+        getTaskData, 
+        findTask, 
+        createDescription, 
+        createTaskFromEdit, 
+        deleteTask, 
+        deleteProject, 
+        createNote,
+        createTask,
+        findNote,
+        validateUserInput} from "./index.js"
 import {Project} from "./project.js";
-import {createTask, findNote, createDefault, validateUserInput} from "./index.js";
 import {Task, Description} from "./task.js";
 import {format} from "date-fns";
 import {Note} from "./note.js";
@@ -72,21 +85,16 @@ function createNewProject () {
     let projectInput;
     document.getElementById("create-project").addEventListener("click", (e) => {
         e.preventDefault();
-        // Get input (project name)
         projectInput = document.getElementById("new-project-name").value;
         const {projectFormError} = validateUserInput("Create Project");
         if (projectFormError === false) {
-            // Set input as name of project in projectList
             createProject(projectInput);
-            // Create project tab
             createProjectTab(projectInput);
             // Add project as selectable option in task form
             const {taskOption, editTaskOption} = addProjectOption(projectInput);
             // Set option of task form and edit task form with data attribute of project value
             setOptionDataAttr(taskOption, editTaskOption);
-            // close modal
             newProjectDialog.close();
-            // Clear input
             document.getElementById("project-form").reset();
         }
     })
@@ -111,7 +119,6 @@ function addProjectOption (project) {
 document.getElementById("close-project-form").addEventListener("click", (e) => {
     e.preventDefault();
     newProjectDialog.close();
-    // Clear inputs
     document.getElementById("project-form").reset();
 })
 
@@ -137,13 +144,9 @@ function createProjectTab (projectName) {
 }
 
 function createNewTask () {
-    // Get inputs
     const {projectInput} = getTaskFormInputs();
-    // Create task object and add to taskList (check for description or notes)
     createTask();
-    // Close modal
     newTaskDialog.close();
-    // Clear inputs
     document.getElementById("task-form").reset();
     refreshPage(projectInput);
 }
@@ -155,14 +158,11 @@ document.getElementById("task-form-btns").addEventListener("click", (e) => {
         if (taskFormError === false) {
             createNewTask();
             newTaskDialog.close();
-            // Clear inputs
             document.getElementById("task-form").reset();
         } 
     } else if (e.target.className === "close-form") {
-        // Close new task form when back button clicked
         e.preventDefault();
         newTaskDialog.close();
-        // Clear inputs
         document.getElementById("task-form").reset();
     }
 })
@@ -173,7 +173,6 @@ export function getTaskFormInputs () {
     const descriptionInput = document.getElementById("description").value;
     const dateInput = document.getElementById("date").value;
     const priorityInput = document.getElementById("priority").value;
-    // Get select option element instead of value and use that to set a data attribute to it
     const projectIndex = document.getElementById("project").selectedIndex;
     const projectInput = project[projectIndex].getAttribute("data-project");
     return {titleInput, descriptionInput, dateInput, priorityInput, projectInput}
@@ -192,27 +191,21 @@ function setCurrentProject () {
                 document.getElementById("header").appendChild(deleteProject);
                 deleteProjectBtn();
             }
-            // Clear all taskCards
             clearMain();
             // Create task cards for current selected project tab. Filter taskList for 'project' key
             currentProject = e.target.getAttribute("data-project");
             const projectTasks = Task.taskList.filter((task) => task.project === currentProject && task.isTaskComplete === false);
-            console.log(projectTasks);
             for (let i = 0; i < projectTasks.length; i++) {
                 const {cardDiv, titleDiv, date} = createCard();
                 titleDiv.innerHTML = projectTasks[i].title;
                 const {newDateFormat} = formatDate(projectTasks[i].dueDate);
                 date.innerHTML = `Due by ${newDateFormat}`;
-                // Set data ids for task cards
                 const id = projectTasks[i].id;
                 cardDiv.setAttribute("data-id", id);
-                // Set border colour
                 setBorderColour(cardDiv, projectTasks[i].priority);
             }
-             // Set project title
              setProjectTitle(currentProject);
         }
-        // Show the currently selected project tab
         showCurrentTab();
         manageTaskCardUI();
         showNote();
@@ -278,15 +271,11 @@ function manageTaskCardUI () {
         for (let i = 0; i < taskCards.length; i++) {
             taskCards[i].addEventListener("click", (e) => {
                 if (e.target.className === "circle-check") {
-                    // Get task card Id
                     const taskComplete = e.target.parentElement;
                     const taskId = e.target.parentElement.getAttribute("data-id");
-                    // Remove task card from container
                     taskComplete.remove();
-                    // Update completed value to "true"
                     updateTaskAsCompleted(taskId);
                 } else if (e.target.className === "descriptionBtn") {
-                    // Get task card Id
                     const taskId = e.target.parentElement.closest(".task-card").getAttribute("data-id");
                     showDescription(taskId);
                     closeDescription();
@@ -297,9 +286,7 @@ function manageTaskCardUI () {
                     showTaskData(taskCardToEdit);
                 } else if (e.target.className === "deleteTaskBtn") {
                     const taskId = e.target.parentElement.closest(".task-card").getAttribute("data-id");
-                    // Deletes task instance
                     deleteTask(taskId);
-                    // Deletes task card from DOM
                     deleteTaskCard(taskId);
                 }
             })
@@ -307,14 +294,12 @@ function manageTaskCardUI () {
 }
 
 function showDescription (id) {
-    // Get description
     const {description} = getDescription(id);
-    // Update modal with text (if any exist)
+    // Populate modal with text (if any description exists)
     const textBox = document.querySelector("#description-modal > div");
     if (description === undefined) {
         alert("No description to show");
     } else {
-        // Show modal
         const descriptionModal = document.getElementById("description-modal");
         descriptionModal.showModal();
         textBox.innerHTML = description;
@@ -347,23 +332,18 @@ function showTaskData (element) {
     })
 }
 
-// Close edit task form when back button clicked
 document.getElementById("edit-form-btns").addEventListener("click", (e) => {
     if (e.target.id === "edit-task") {
         e.preventDefault();
-        // Update task
-        const taskCardId = taskCardToEdit.getAttribute("data-id");
-        console.log(`ID of task card you want to edit: ${taskCardId}`);
-        const {task} = findTask(taskCardId);
-        console.log(task);
         // Update taskList and DOM (title, date)
         const {editTaskError} = validateUserInput("Edit Task");
         if (editTaskError === false) {
+            const taskCardId = taskCardToEdit.getAttribute("data-id");
+            const {task} = findTask(taskCardId);
             const {newTitle, newDate, newDescription} = getEditTaskData();
             if (task.constructor === Task && newDescription === "") {
                 // Edit Task instance
                 task.updateTaskList();
-                console.log(Task.taskList);
             } else if (task.constructor === Task && newDescription !== "") {
                 // Change Task instance to Description instance
                 // Create new Description instance
@@ -373,11 +353,9 @@ document.getElementById("edit-form-btns").addEventListener("click", (e) => {
                 task.deleteTaskInstance(index);
                 // Replace task instance with description instance
                 newTask.newEditedList();
-                console.log(Task.taskList);
             } else if (task.constructor === Description && newDescription !== "") {
                 // Edit Description instance
                 task.updateTaskList();
-                console.log(Task.taskList);
             } else if (task.constructor === Description && newDescription === "") {
                 // Change Description instance to Task instance
                 // Create new Task instance
@@ -387,11 +365,9 @@ document.getElementById("edit-form-btns").addEventListener("click", (e) => {
                 task.deleteTaskInstance(index);
                 // Replace Description instance with Task instance
                 newTask.newEditedList();
-                console.log(Task.taskList);
             }
             taskCardToEdit.querySelector(".card-title").innerHTML = newTitle;
             taskCardToEdit.querySelector(".date").innerHTML = newDate;
-            // close modal
             editTaskDialog.close(); 
             let getPriority
             Task.taskList.forEach((task) => {
@@ -399,12 +375,9 @@ document.getElementById("edit-form-btns").addEventListener("click", (e) => {
                     getPriority = task.priority;
                 }
             })
-            console.log(taskCardToEdit);
-            console.log(getPriority);
             setBorderColour(taskCardToEdit, getPriority);
         } else if (e.target.id === "close-edit-form") {
             e.preventDefault();
-            // close modal
             editTaskDialog.close();
         }
         }
@@ -434,14 +407,12 @@ function refreshPage (projectName) {
     project.forEach((tab) => {
         if (tab.getAttribute("data-project") === projectName) {
             const getTaskProject = tab;
-            console.log(getTaskProject);
             getTaskProject.click();
         }
     })
 }
 
 function setProjectTitle(currentProjectName) {
-    // Set project title
     const headerTitle = document.getElementById("project-name");
     for (let i = 0; i < Project.projectList.length; i++) {
         if (Project.projectList[i].keyName.toString() === currentProjectName) {
@@ -456,7 +427,6 @@ function deleteTaskCard (taskCardId) {
     for (let i = 0; i < taskCards.length; i++) {
         for (let i = 0; i < taskCards.length; i++) {
             if (taskCards[i].getAttribute("data-id") === taskCardId) {
-                console.log("delete this task");
                 taskCards[i].remove();
             }
         }
@@ -472,14 +442,13 @@ function formatDate(date) {
     const newDateFormat = format(dateObj, 'PPPP');
     return {newDateFormat};
 }
-///////////////////////////////
+
 function deleteProjectBtn () {
     document.getElementById("delete-project").addEventListener("click", () => {
         const project = document.getElementById("project-name").getAttribute("data-project");
         if (currentProject === "project1") {
             alert("Default project 'Chores' cannot be deleted");
         } else {
-            // Delete from DOM
             clearMain();
             const projectsLi = document.querySelectorAll("#projects > .tabs");
             const projectsIcon = document.querySelectorAll("#projects > .tab-icon");
@@ -489,15 +458,13 @@ function deleteProjectBtn () {
                     projectsIcon[i].remove();
                 }
             }
-            // Delete from projectList and taskList
             deleteProject(project);
-            // Switch current project
             refreshPage(Project.projectList[0].keyName.toString());
         }
     })
 }
 
-deleteProjectBtn ();
+deleteProjectBtn();
 
 // Notes button (opens modal)
 document.getElementById("new-note").addEventListener("click", () => {
@@ -520,7 +487,6 @@ document.getElementById("create-note-btn").addEventListener("click", (e) => {
         const userInput = document.getElementById("note-text").value;
         createNote(currentProject, userInput);
         document.getElementById("notes-dialog").close();
-        console.log(currentProject);
         refreshPage(currentProject);
     }
 })
@@ -534,7 +500,6 @@ document.getElementById("close-notes-form").addEventListener("click", (e) => {
 function showNote () {
     document.getElementById("notes-area").innerHTML = "";
     let projectNote;
-    console.log(currentProject);
     Note.noteList.find((note) => {
         if (note.project === currentProject) {
             projectNote = note.taskNote;
@@ -563,8 +528,6 @@ document.getElementById("edit-notes-btn").addEventListener("click", () => {
 document.getElementById("edit-note").addEventListener("click", (e) => {
     e.preventDefault();
     const {editNoteError} = validateUserInput("Edit Note");
-    console.log("edit button working");
-    console.log(editNoteError);
     if (editNoteError === false) {
         document.getElementById("edit-note-dialog").close();
         const {note} = findNote(currentProject);
@@ -574,9 +537,7 @@ document.getElementById("edit-note").addEventListener("click", (e) => {
 })
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log(Project.projectList[0].project1.name);
     setDefault();
-    console.log(Project.projectList[0].keyName.toString());
 })
 
 function setDefault() {
@@ -585,13 +546,11 @@ function setDefault() {
     const {taskOption, editTaskOption} = addProjectOption (Project.projectList[0].project1.name);
     setOptionDataAttr(taskOption, editTaskOption);
     refreshPage(Project.projectList[0].keyName.toString());
-    console.log(currentProject);
 }
 
 function checkNoteExists () {
     const {note} = findNote(currentProject);
     if (note === undefined) {
-        console.log("Note not found");
         document.getElementById("edit-notes-btn").style.opacity = "0%"
         document.getElementById("edit-notes-btn").disabled = true;
     } else {
@@ -600,29 +559,27 @@ function checkNoteExists () {
     }
 }
 
+// Shows user which project tab is currently selected (by making font bold)
 function showCurrentTab () {
-    const projectTabs = document.querySelectorAll("#projects > li");
-    document.querySelector(".ul-item").style.fontWeight = "normal";
-    projectTabs.forEach((tab) => {
-        if (tab.dataset.project === currentProject) {
-            tab.style.fontWeight = "500";
-        } else {
-            tab.style.fontWeight = "normal";
-        }
-    })
-}
-
-function completedTabClicked () {
-    document.querySelector(".ul-item").addEventListener("click", (e) => {
-        e.target.style.fontWeight = "500";
+        document.querySelector(".ul-item").style.fontWeight = "normal";
         const projectTabs = document.querySelectorAll("#projects > li");
         projectTabs.forEach((tab) => {
             if (tab.dataset.project === currentProject) {
+                tab.style.fontWeight = "500";
+            } else {
                 tab.style.fontWeight = "normal";
             }
-        });
     })
 }
 
-completedTabClicked ();
+// Shows user whether 'Completed tab' is selected (by making font bold)
+document.querySelector(".ul-item").addEventListener("click", (e) => {
+    e.target.style.fontWeight = "500";
+    const projectTabs = document.querySelectorAll("#projects > li");
+    projectTabs.forEach((tab) => {
+        if (tab.dataset.project === currentProject) {
+            tab.style.fontWeight = "normal";
+        }
+    });
+})
 
