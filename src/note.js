@@ -23,4 +23,9 @@ export class Note {
         this.taskNote = editedTaskNote;
         console.log(Note.noteList);
     }
+
+    deleteNote (index) {
+        Note.noteList.splice(index, 1);
+        console.log(Note.noteList);
+    }
 }

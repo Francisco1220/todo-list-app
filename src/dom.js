@@ -472,7 +472,7 @@ function formatDate(date) {
     const newDateFormat = format(dateObj, 'PPPP');
     return {newDateFormat};
 }
-
+///////////////////////////////
 function deleteProjectBtn () {
     document.getElementById("delete-project").addEventListener("click", () => {
         const project = document.getElementById("project-name").getAttribute("data-project");

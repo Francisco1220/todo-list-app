@@ -119,6 +119,11 @@ export function deleteProject (projectKey) {
             projectFolder.deleteProject(index);
         }
     })
+    Note.noteList.forEach((note, index) => {
+        if (note.project === projectKey) {
+            note.deleteNote(index);
+        }
+    })
 }
 
 export function createNote (project, userNote) {
