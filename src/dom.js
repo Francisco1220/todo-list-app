@@ -133,7 +133,7 @@ function createProjectTab (projectName) {
 
 }
 
-function createNewTask (btn) {
+function createNewTask () {
     // Get inputs
     const {projectInput} = getTaskFormInputs();
     // Create task object and add to taskList (check for description or notes)
@@ -149,7 +149,7 @@ document.getElementById("task-form-btns").addEventListener("click", (e) => {
     if (e.target.id === "create-task") {
         e.preventDefault();
         newTaskDialog.close();
-        createNewTask(e.target);
+        createNewTask();
         // Clear inputs
         document.getElementById("task-form").reset();
     } else if (e.target.className === "close-form") {
@@ -566,6 +566,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function setDefault() {
     createProjectTab(Project.projectList[0].project1.name);
     setProjectTitle(Project.projectList[0].keyName.toString());
+    addProjectOption (Project.projectList[0].project1.name);
     refreshPage(Project.projectList[0].keyName.toString());
     console.log(currentProject);
 }
@@ -607,4 +608,3 @@ function completedTabClicked () {
 }
 
 completedTabClicked ();
-
