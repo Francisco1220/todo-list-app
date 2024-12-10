@@ -12,7 +12,9 @@ export function createProject(name) {
 export function createTask() {
     // Create task (check for description and notes)
     const {titleInput, descriptionInput, dateInput, priorityInput, projectInput} = getTaskFormInputs();
+    console.log(projectInput);
         if (descriptionInput === "") {
+            console.log(projectInput)
             const newTask = new Task (titleInput, dateInput, priorityInput, projectInput);
             newTask.addTaskToList();
         } else {
@@ -30,7 +32,7 @@ export function setOptionDataAttr (taskForm, editTaskForm) {
 
 export function setProjectTabAttr (tab) {
     const arr = Project.projectList;
-    const keyName = arr[arr.length - 1].projectKeyName;
+    const keyName = arr[arr.length - 1].keyName.toString();
     tab.setAttribute("data-project", keyName);
 }
 
@@ -184,3 +186,16 @@ export function validateUserInput (formType) {
     }
     return {taskFormError, projectFormError, noteFormError, editTaskError, editNoteError}
 }
+
+export function setStorage() {
+    localStorage.setItem("tasks", JSON.stringify(Task.taskList));
+    localStorage.setItem("projects", JSON.stringify(Project.projectList));
+    localStorage.setItem("notes", JSON.stringify(Note.noteList));
+}
+
+/* export function getStorage() {
+    const tasksStored = JSON.parse(localStorage.getItem("tasks"));
+    const projectsStored = JSON.parse(localStorage.getItem("projects"));
+    const notesStored = JSON.parse(localStorage.getItem("notes"));
+    return {tasksStored, projectsStored, notesStored}
+} */

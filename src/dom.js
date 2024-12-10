@@ -13,7 +13,8 @@ import {createProject,
         createNote,
         createTask,
         findNote,
-        validateUserInput} from "./index.js"
+        validateUserInput,
+        setStorage} from "./index.js"
 import {Project} from "./project.js";
 import {Task, Description} from "./task.js";
 import {format} from "date-fns";
@@ -96,10 +97,10 @@ function createNewProject () {
             setOptionDataAttr(taskOption, editTaskOption);
             newProjectDialog.close();
             document.getElementById("project-form").reset();
+            setStorage();
         }
     })
 }
-createNewProject();
 
 function addProjectOption (project) {
     // task form
@@ -138,14 +139,15 @@ function createProjectTab (projectName) {
     
     tabLi.innerHTML = projectName;
     // Set last created project tab with the associated project name
+    console.log(tabLi);
     setProjectTabAttr(tabLi);
     tabIcon.insertAdjacentElement("afterend", tabLi);
-
 }
 
 function createNewTask () {
     const {projectInput} = getTaskFormInputs();
     createTask();
+    setStorage();
     newTaskDialog.close();
     document.getElementById("task-form").reset();
     refreshPage(projectInput);
@@ -184,6 +186,7 @@ function setCurrentProject () {
     document.getElementById("projects").addEventListener("click", (e) => {
         if (e.target.nodeName === "LI") {
             document.getElementById("edit-notes-btn").style.opacity = "100%";
+            console.log(e.target);
             if (!document.getElementById("delete-project")) {
                 const deleteProject = document.createElement("button");
                 deleteProject.setAttribute("id", "delete-project");
@@ -194,7 +197,11 @@ function setCurrentProject () {
             clearMain();
             // Create task cards for current selected project tab. Filter taskList for 'project' key
             currentProject = e.target.getAttribute("data-project");
-            const projectTasks = Task.taskList.filter((task) => task.project === currentProject && task.isTaskComplete === false);
+            console.log(currentProject);
+            console.log(Task.taskList);
+            console.log(Project.projectList);
+            const projectTasks = Task.taskList.filter((task) => task.project === currentProject && task.completed === false);
+            console.log(projectTasks);
             for (let i = 0; i < projectTasks.length; i++) {
                 const {cardDiv, titleDiv, date} = createCard();
                 titleDiv.innerHTML = projectTasks[i].title;
@@ -262,8 +269,6 @@ function noCompletedMessage () {
     tasksContainer.appendChild(p);
 }
 
-setCurrentProject();
-
 let taskCardToEdit;
 
 function manageTaskCardUI () {
@@ -275,6 +280,7 @@ function manageTaskCardUI () {
                     const taskId = e.target.parentElement.getAttribute("data-id");
                     taskComplete.remove();
                     updateTaskAsCompleted(taskId);
+                    setStorage();
                 } else if (e.target.className === "descriptionBtn") {
                     const taskId = e.target.parentElement.closest(".task-card").getAttribute("data-id");
                     showDescription(taskId);
@@ -288,6 +294,7 @@ function manageTaskCardUI () {
                     const taskId = e.target.parentElement.closest(".task-card").getAttribute("data-id");
                     deleteTask(taskId);
                     deleteTaskCard(taskId);
+                    setStorage();
                 }
             })
         }
@@ -332,6 +339,7 @@ function showTaskData (element) {
     })
 }
 
+// Submit edited task
 document.getElementById("edit-form-btns").addEventListener("click", (e) => {
     if (e.target.id === "edit-task") {
         e.preventDefault();
@@ -344,6 +352,7 @@ document.getElementById("edit-form-btns").addEventListener("click", (e) => {
             if (task.constructor === Task && newDescription === "") {
                 // Edit Task instance
                 task.updateTaskList();
+                setStorage();
             } else if (task.constructor === Task && newDescription !== "") {
                 // Change Task instance to Description instance
                 // Create new Description instance
@@ -353,9 +362,11 @@ document.getElementById("edit-form-btns").addEventListener("click", (e) => {
                 task.deleteTaskInstance(index);
                 // Replace task instance with description instance
                 newTask.newEditedList();
+                setStorage();
             } else if (task.constructor === Description && newDescription !== "") {
                 // Edit Description instance
                 task.updateTaskList();
+                setStorage();
             } else if (task.constructor === Description && newDescription === "") {
                 // Change Description instance to Task instance
                 // Create new Task instance
@@ -365,6 +376,7 @@ document.getElementById("edit-form-btns").addEventListener("click", (e) => {
                 task.deleteTaskInstance(index);
                 // Replace Description instance with Task instance
                 newTask.newEditedList();
+                setStorage();
             }
             taskCardToEdit.querySelector(".card-title").innerHTML = newTitle;
             taskCardToEdit.querySelector(".date").innerHTML = newDate;
@@ -407,6 +419,7 @@ function refreshPage (projectName) {
     project.forEach((tab) => {
         if (tab.getAttribute("data-project") === projectName) {
             const getTaskProject = tab;
+            console.log(getTaskProject);
             getTaskProject.click();
         }
     })
@@ -460,11 +473,10 @@ function deleteProjectBtn () {
             }
             deleteProject(project);
             refreshPage(Project.projectList[0].keyName.toString());
+            setStorage();
         }
     })
 }
-
-deleteProjectBtn();
 
 // Notes button (opens modal)
 document.getElementById("new-note").addEventListener("click", () => {
@@ -488,6 +500,7 @@ document.getElementById("create-note-btn").addEventListener("click", (e) => {
         createNote(currentProject, userInput);
         document.getElementById("notes-dialog").close();
         refreshPage(currentProject);
+        setStorage();
     }
 })
 
@@ -533,11 +546,8 @@ document.getElementById("edit-note").addEventListener("click", (e) => {
         const {note} = findNote(currentProject);
         note.updateNoteList();
         refreshPage(currentProject);
+        setStorage();
     }
-})
-
-document.addEventListener("DOMContentLoaded", () => {
-    setDefault();
 })
 
 function setDefault() {
@@ -583,3 +593,42 @@ document.querySelector(".ul-item").addEventListener("click", (e) => {
     });
 })
 
+
+document.addEventListener("DOMContentLoaded", () => {
+    setCurrentProject();
+    setDefault();
+    createNewProject();
+    deleteProjectBtn();
+    /* const {tasksStored, projectsStored} = getStorage();
+    if (tasksStored !== null && projectsStored !== null) {
+        
+    } */
+})
+
+/* 
+document.addEventListener("DOMContentLoaded", () => {
+    setCurrentProject();
+    setDefault();
+    createNewProject();
+    deleteProjectBtn();
+    const {tasksStored, projectsStored} = getStorage();
+    if (tasksStored !== null && projectsStored !== null) {
+        Task.taskList = tasksStored;
+        Project.projectList = projectsStored;
+        setCurrentProject();
+        for (let i = 0; i < Project.projectList.length; i++) {
+            if (Project.projectList[i].keyName.toString() !== "project1") {
+                const key = Project.projectList[i].keyName.toString();
+                createProjectTab(Project.projectList[i][key].name);
+                const {taskOption, editTaskOption} = addProjectOption(Project.projectList[i][key].name);
+                setOptionDataAttr(taskOption, editTaskOption);
+                
+            }
+        }
+        createNewProject();
+        deleteProjectBtn();
+    } else {
+        console.log("No tasks or projects are stored in localStorage yet");
+    }
+})
+*/
